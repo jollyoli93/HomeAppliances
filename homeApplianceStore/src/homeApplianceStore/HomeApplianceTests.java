@@ -9,22 +9,32 @@ class HomeApplianceTests {
 	HomeAppliance home;
 	
 	@BeforeEach
-	public void IsInitialized() {
-		this.home = new HomeAppliance(1, "TV001", "TV", "VCR Television", 200);
+	public void isInitialized() {
+		this.home = new HomeAppliance(1, "TV001", "TV", "Entertainment", 200);
 	}
 
 	@Test
-	public void CorrectApplianceDescription() {
+	public void correctApplianceDescription() {
 		assertEquals("TV", this.home.getDescription());
 	}
 
 	@Test
-	public void IdNotNull() {
+	public void idNotNull() {
 		assertTrue(this.home.getId() != 0);
 	}
 	
 	@Test
-	public void CorrectApplianceSku() {
+	public void correctApplianceSku() {
 		assertEquals("TV001", home.getSku());
+	}
+	
+	@Test
+	public void priceNotNull() {
+		assertTrue(home.getPrice() != 0.0);
+	}
+	
+	@Test
+	public void zeroPriceIsFalse() {
+		assertFalse(home.getPrice()== 0.0);
 	}
 }

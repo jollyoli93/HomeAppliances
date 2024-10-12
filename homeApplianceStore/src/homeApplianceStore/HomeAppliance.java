@@ -5,7 +5,7 @@ public class HomeAppliance {
 	private String sku;
 	private String description;
 	private String category;
-	private int price;
+	private double price;
 	
 //	private static int totalAppliances = 0;  potentaly?
 
@@ -18,10 +18,6 @@ public class HomeAppliance {
 		
 	}
 	
-	public String getDescription() {
-		return this.description;
-	}
-	
 	public int getId() {
 		return this.id;
 	}
@@ -29,5 +25,18 @@ public class HomeAppliance {
 	public String getSku() {
 		return this.sku;
 	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	
+	public String getCategory() {
+		return this.category;
+	}
+	
+	public double getPrice() {
+		return this.price;
+	}
+	
 	
 }
