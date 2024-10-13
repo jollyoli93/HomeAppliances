@@ -1,10 +1,15 @@
+//STUDENT NO. 24862664
+
 package homeApplianceStore;
 
 import java.util.Scanner;
 
+import homeApplianceStoreDAO.HomeApplianceDAOImpl;
+
 public class MenuConsole {
 	void displayMenu() {
 		Scanner scanner = new Scanner(System.in);
+		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl();
 		
 		int input;
 		
@@ -30,7 +35,8 @@ public class MenuConsole {
 						System.out.println("Listing products");
 						break;
 					case 2:
-						System.out.println("Searching");
+						int id = scanner.nextInt();
+						System.out.println("Searching for product " + id);
 						break;
 					case 3:
 						System.out.println("Adding new product");
@@ -39,6 +45,7 @@ public class MenuConsole {
 						System.out.println("Updating");
 						break;
 					case 5:
+						dao.deleteProduct(input);
 						System.out.println("Deleting");
 						break;
 					case 6:

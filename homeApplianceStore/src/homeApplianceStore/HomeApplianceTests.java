@@ -1,3 +1,5 @@
+//STUDENT NO. 24862664
+
 package homeApplianceStore;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +28,11 @@ class HomeApplianceTests {
 	@Test
 	public void correctApplianceSku() {
 		assertEquals("TV001", home.getSku());
+	}
+	
+	@Test
+	public void correctCategory() {
+		assertEquals("Entertainment", home.getCategory());
 	}
 	
 	@Test

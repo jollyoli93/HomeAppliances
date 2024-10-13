@@ -1,0 +1,7 @@
+[
+  { "id": 1, "sku": "TV001", "description": "TV", "category": "Entertainment", "price": 200.00 },
+  { "id": 2, "sku": "FR001", "description": "Refrigerator", "category": "Kitchen", "price": 500.00 },
+  { "id": 3, "sku": "WM001", "description": "Washing Machine", "category": "Laundry", "price": 300.00 },
+  { "id": 4, "sku": "AC001", "description": "Air Conditioner", "category": "Cooling", "price": 400.00 },
+  { "id": 5, "sku": "MW001", "description": "Microwave", "category": "Kitchen", "price": 100.00 }
+]
