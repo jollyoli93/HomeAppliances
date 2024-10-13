@@ -9,7 +9,7 @@ import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 public class MenuConsole {
 	void displayMenu() {
 		Scanner scanner = new Scanner(System.in);
-		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl();
+		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl(null);
 		
 		int input;
 		
