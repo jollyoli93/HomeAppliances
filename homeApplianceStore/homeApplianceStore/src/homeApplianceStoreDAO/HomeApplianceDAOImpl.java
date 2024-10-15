@@ -31,17 +31,17 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
 		ArrayList<HomeAppliance> applianceList = null; 
 		DbConnection con = new DbConnection(this.dbPath, this.driver);
 		
-		con.initializeDBConnection(); 
+		Connection connect= con.initializeDBConnection(); 
 		
 		String query = "SELECT * FROM appliances";
 		
-        try (Statement statement = ((Connection) con).createStatement();
-                ResultSet result = statement.executeQuery(query)) {
+        try (Statement statement = connect.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
 
                System.out.println("DBQuery = " + query);
 
                if (result.next()) {
-                   System.out.println("First Row Name: " + result.getString("id"));
+                   System.out.println("TEST ID: " + result.getInt("id"));
                } else {
                    System.out.println("No results found.");
                }
