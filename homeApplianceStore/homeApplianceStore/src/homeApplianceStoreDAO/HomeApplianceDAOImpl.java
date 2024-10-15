@@ -3,28 +3,62 @@
 package homeApplianceStoreDAO;
 
 import java.sql.Connection;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import database.DbConnection;
 import homeApplianceStore.HomeAppliance;
 
 //import java.util.ArrayList;
 
 public class HomeApplianceDAOImpl implements HomeApplianceDAO {
 	private DbConnection connection;
+	String dbPath;
+	String driver;
+
 	
-    public HomeApplianceDAOImpl(DbConnection dbConnection) {
-    	//connection type etc sqlite db
-        connection = dbConnection;
+    public HomeApplianceDAOImpl(DbConnection connection, String dbPath, String driver) {
+        this.connection = connection;
+        this.dbPath = dbPath;
+        this.driver = driver;
     }
 	
 	@Override
 	public ArrayList<HomeAppliance> findAllProducts() {
 		ArrayList<HomeAppliance> applianceList = null; 
-		HomeAppliance appliance;
-	
-		//use SQL statement to retrieve all items
+		DbConnection con = new DbConnection(this.dbPath, this.driver);
+		
+		con.initializeDBConnection(); 
+		
+		String query = "SELECT * FROM appliances";
+		
+        try (Statement statement = ((Connection) con).createStatement();
+                ResultSet result = statement.executeQuery(query)) {
+
+               System.out.println("DBQuery = " + query);
+
+               if (result.next()) {
+                   System.out.println("First Row Name: " + result.getString("id"));
+               } else {
+                   System.out.println("No results found.");
+               }
+
+               do {
+                   System.out.println("ID: " + result.getInt("id"));
+                   System.out.println("SKU: " + result.getString("sku"));
+                   System.out.println("Description " + result.getString("description"));
+                   System.out.println("Category " + result.getString("category"));
+               } while (result.next());
+
+           } catch (SQLException e) {
+               System.out.println("SQL Exception: " + e.getMessage());
+           }
+		
+		
+		
 		return applianceList;
 	}
 	

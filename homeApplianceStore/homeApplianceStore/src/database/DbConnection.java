@@ -1,20 +1,23 @@
-package homeApplianceStoreDAO;
+package database;
+
 import java.sql.*;
 
 
 public class DbConnection {
 	    private String path;
+	    private String driver;
+	    private Connection connect = null;
 
-    public DbConnection(String path) {
+    public DbConnection(String path, String driver) {
         this.path = path;
+        this.driver = driver;
     }
 
     public Connection initializeDBConnection() {
-	    Connection connect = null;
         String dbURL = "jdbc:sqlite:" + this.path;
 
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName(driver);
         } catch (ClassNotFoundException e) {
             System.out.println("SQLite JDBC Driver not found: " + e.getMessage());
         }
@@ -28,7 +31,7 @@ public class DbConnection {
 		return connect;
     }
 
-//    void queryDB(String query) {
+    public void queryDB(String query) {
 //        try (Statement statement = connect.createStatement();
 //             ResultSet result = statement.executeQuery(query)) {
 //
@@ -36,8 +39,7 @@ public class DbConnection {
 //
 //            // Checking if result has at least one row
 //            if (result.next()) {
-//                // Print first row's 'name'
-//                System.out.println("First Row Name: " + result.getString("name"));
+//                System.out.println("First Row Name: " + result.getString("id"));
 //            } else {
 //                System.out.println("No results found.");
 //            }
@@ -45,14 +47,14 @@ public class DbConnection {
 //            // Printing all the results starting from the second row
 //            do {
 //                System.out.println("ID: " + result.getInt("id"));
-//                System.out.println("First Row Name: " + result.getString("name"));
-//                System.out.println("Date of Birth: " + result.getString("dob"));
-//                // You can print other columns here as needed
+//                System.out.println("SKU: " + result.getString("sku"));
+//                System.out.println("Description " + result.getString("description"));
+//                System.out.println("Category " + result.getString("category"));
 //            } while (result.next());
 //
 //        } catch (SQLException e) {
 //            System.out.println("SQL Exception: " + e.getMessage());
 //        }
-//    }
+    }
 
 }

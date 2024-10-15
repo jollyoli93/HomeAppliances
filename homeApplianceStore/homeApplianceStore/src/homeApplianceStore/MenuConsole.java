@@ -9,7 +9,7 @@ import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 public class MenuConsole {
 	void displayMenu() {
 		Scanner scanner = new Scanner(System.in);
-		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl(null);
+//		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl(null);
 		
 		int input;
 		
@@ -45,7 +45,7 @@ public class MenuConsole {
 						System.out.println("Updating");
 						break;
 					case 5:
-						dao.deleteProduct(input);
+//						dao.deleteProduct(input);
 						System.out.println("Deleting");
 						break;
 					case 6:
