@@ -73,6 +73,10 @@ public class MenuConsole {
 						System.out.println("Not valid, please select again...");
 						break;
 						}
+				
+				System.out.println("Press 0 to continue or 6 to exit");
+				input = scanner.nextInt();
+				
 		} while (input != 6);
 		
 		scanner.close();

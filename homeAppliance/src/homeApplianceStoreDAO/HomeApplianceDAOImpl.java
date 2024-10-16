@@ -63,8 +63,6 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
                System.out.println("SQL Exception: " + e.getMessage());
            }
 		
-		
-		
 		return applianceList;
 	}
 	
