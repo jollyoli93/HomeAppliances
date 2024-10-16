@@ -2,8 +2,6 @@
 
 package homeApplianceStore;
 
-import database.DbConnection;
-import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 
 public class Main {
 

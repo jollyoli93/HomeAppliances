@@ -2,6 +2,7 @@
 
 package homeApplianceStore;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import homeApplianceStoreDAO.HomeApplianceDAOImpl;
@@ -44,7 +45,12 @@ public class MenuConsole {
 				switch (input) {
 					case 1:
 						System.out.println("Listing products");
-						homeDAO.findAllProducts();
+						ArrayList<HomeAppliance> list = homeDAO.findAllProducts();
+						
+						for (HomeAppliance obj : list) {
+							System.out.println(obj.getId() +obj.getDescription());
+						}
+						
 						break;
 					case 2:
 						int id = scanner.nextInt();

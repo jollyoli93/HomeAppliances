@@ -26,7 +26,7 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
 	
 	@Override
 	public ArrayList<HomeAppliance> findAllProducts() {
-		ArrayList<HomeAppliance> applianceList = null; 
+		ArrayList<HomeAppliance> applianceList = new ArrayList<>(); 
 		DbConnection con = new DbConnection(this.dbPath, this.driver);
 		
 		Connection connect= con.initializeDBConnection(); 
