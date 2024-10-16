@@ -44,7 +44,6 @@ public class MenuConsole {
 			
 				switch (input) {
 					case 1:
-						System.out.println("Listing products");
 						ArrayList<HomeAppliance> list = homeDAO.findAllProducts();
 						
 						for (HomeAppliance obj : list) {
