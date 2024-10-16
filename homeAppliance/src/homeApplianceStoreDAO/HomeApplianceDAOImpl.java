@@ -3,7 +3,7 @@
 package homeApplianceStoreDAO;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,7 +29,7 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
 		ArrayList<HomeAppliance> applianceList = null; 
 		DbConnection con = new DbConnection(this.dbPath, this.driver);
 		
-		Connection connect = con.initializeDBConnection(); 
+		Connection connect= con.initializeDBConnection(); 
 		
 		String query = "SELECT * FROM appliances";
 		
@@ -81,6 +81,7 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
 	@Override
 	public boolean updateProduct(int id) {
 		DbConnection con = new DbConnection(this.dbPath, this.driver);
+		//Create query to update
 		String query;
 		
         // Try-with-resources for the Statement to ensure it's closed
