@@ -10,12 +10,9 @@ public class Main {
 	public static void main(String[] args) {
 //		MenuConsole menu = new MenuConsole();
 		
-		String driver = "org.sqlite.JDBC";
-		String dbPath = "HomeAppliances.db";
+		MenuConsole console = new MenuConsole();
 		
-		HomeApplianceDAOImpl homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
-		homeDAO.findAllProducts();
-		
+		console.displayMenu();
 		
 	}
 

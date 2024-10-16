@@ -45,10 +45,18 @@ public class HomeApplianceDAOImpl implements HomeApplianceDAO {
                }
 
                do {
-                   System.out.println("ID: " + result.getInt("id"));
-                   System.out.println("SKU: " + result.getString("sku"));
-                   System.out.println("Description " + result.getString("description"));
-                   System.out.println("Category " + result.getString("category"));
+            	   HomeAppliance product;
+            	   
+                   int id = result.getInt("id");
+                   String sku = result.getString("sku");
+                   String desc = result.getString("description");
+                   String cat = result.getString("category");
+                   int price = result.getInt("price");
+                   
+                   product = new HomeAppliance(id, sku, desc, cat, price);
+                   
+                   applianceList.add(product);
+                   
                } while (result.next());
 
            } catch (SQLException e) {

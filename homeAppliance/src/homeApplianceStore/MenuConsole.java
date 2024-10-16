@@ -7,6 +7,17 @@ import java.util.Scanner;
 import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 
 public class MenuConsole {
+	String driver;
+	String dbPath;
+	HomeApplianceDAOImpl homeDAO;
+	
+	public MenuConsole() {
+		String driver = "org.sqlite.JDBC";
+		String dbPath = "HomeAppliances.db";
+		
+		homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
+	}	
+	
 	void displayMenu() {
 		Scanner scanner = new Scanner(System.in);
 //		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl(null);
@@ -33,6 +44,7 @@ public class MenuConsole {
 				switch (input) {
 					case 1:
 						System.out.println("Listing products");
+						homeDAO.findAllProducts();
 						break;
 					case 2:
 						int id = scanner.nextInt();
