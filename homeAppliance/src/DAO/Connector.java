@@ -10,12 +10,11 @@ public interface Connector {
 
 class SqlLiteConnection implements Connector {
     private String path;
-    private String driver;
+    private String driver = "org.sqlite.JDBC";
     private Connection connect = null;
 
-	public SqlLiteConnection(String path, String driver) {
+	public SqlLiteConnection(String path) {
 	    this.path = path;
-	    this.driver = driver;
 	}
 	
 	public Connection initializeDBConnection() {

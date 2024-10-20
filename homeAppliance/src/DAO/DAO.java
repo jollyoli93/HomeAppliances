@@ -7,14 +7,26 @@ package DAO;
 //import java.sql.ResultSet;
 //import java.sql.SQLException;
 
-public abstract class DAO {
+public abstract class DAO<T> {
 	Connector connector;
 	
-	public Connector setConnection(Connector connector) {
+	public DAO(){
+		
+	}
+	
+	public Connector changeConnection(Connector connector) {
 		this.connector = connector;
 		return connector;
 	}
 	
+	public void initializeDBConnection() {
+		connector.initializeDBConnection();
+		
+	}
+	
+	public void closeDbConnection() {
+		//TODO
+	};	
 	
 	
 	
