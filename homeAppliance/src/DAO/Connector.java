@@ -1,14 +1,14 @@
-package database;
+package DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public interface connector {
+public interface Connector {
 	Connection initializeDBConnection();
 }
 
-class SqlLiteConnection implements connector {
+class SqlLiteConnection implements Connector {
     private String path;
     private String driver;
     private Connection connect = null;
