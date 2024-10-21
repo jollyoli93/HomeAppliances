@@ -15,6 +15,7 @@ public class Main {
 		ApplianceDao dao = new ApplianceDao("HomeAppliances.db");
 		dao.initializeDBConnection();
 		
+		
 		System.out.println();
 		
 	}

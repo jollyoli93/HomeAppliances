@@ -1,11 +1,6 @@
 package DAO;
 
-//import java.sql.*;
-//import java.sql.Connection;
-//import java.sql.DatabaseMetaData;
-//import java.sql.DriverManager;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
+import java.util.ArrayList;
 
 public abstract class DAO<T> {
 	Connector connector;
@@ -14,9 +9,8 @@ public abstract class DAO<T> {
 		
 	}
 	
-	public Connector changeConnection(Connector connector) {
+	public void changeConnection(Connector connector) {
 		this.connector = connector;
-		return connector;
 	}
 	
 	public void initializeDBConnection() {
@@ -24,17 +18,11 @@ public abstract class DAO<T> {
 		
 	}
 	
-	public void closeDbConnection() {
-		//TODO
-	};	
-	
-	
-	
-//	Object getById(int id);
-//	<T> ArrayList<T> findAll();
-//	boolean addById(int id);
-//	boolean deleteById(int id);
-//	boolean updateById(int id);
+	public abstract ArrayList<T> findAll();
+	public abstract T getById(int id);
+	public abstract boolean addById(int id);
+	public abstract boolean deleteById(int id);
+	public abstract boolean updateById(int id);
 //}
 //
 //class findAll () {
