@@ -11,7 +11,7 @@ public class HomeAppliance {
 	
 //	private static int totalAppliances = 0;  potentaly?
 
-	public HomeAppliance (int id, String sku, String description, String category, int price) {
+	public HomeAppliance (int id, String sku, String description, String category, double price) {
 		this.id = id;
 		this.sku = sku;
 		this.description = description;
