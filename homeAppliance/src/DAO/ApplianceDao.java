@@ -2,6 +2,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -63,8 +64,27 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 
 	@Override
 	public boolean addNew(HomeAppliance newAppliance) {
-		//INSERT INTO appliances (id, sku, description, category, price)
-		//VALUES (002, 'WM001', 'Washing machine', 'cleaning', 300.00)
+		//connect to the db, prepare statement using ? as placeholders. In the try catch block run the preparedstatement on the query. In the block use the setter methods to update from the object
+		// execute rows returns the number of rows that has been updated, returning true if successful.
+		
+		String query =  "INSERT INTO appliances (id, sku, description, category, price) VALUES (?, ?, ?, ?, ?)";
+		Connection connect = connector.initializeDBConnection(); 
+		
+		try (PreparedStatement preparedStatement = connect.prepareStatement(query)){
+			preparedStatement.setInt(1, newAppliance.getId());
+			preparedStatement.setString(2, newAppliance.getSku());
+			preparedStatement.setString(3, newAppliance.getDescription());
+			preparedStatement.setString(4, newAppliance.getCategory());
+			preparedStatement.setDouble(5, newAppliance.getPrice());
+					
+			int executeRows = preparedStatement.executeUpdate();
+			
+			return executeRows > 0;
+					 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
