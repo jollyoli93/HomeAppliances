@@ -11,7 +11,7 @@ import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 public class MenuConsole {
 	String driver;
 	String dbPath;
-	HomeApplianceDAOImpl homeDAO;
+	ApplianceDao applianceDAO;
 	
 	public MenuConsole() {
 //		String driver = "org.sqlite.JDBC";
@@ -19,8 +19,8 @@ public class MenuConsole {
 		
 		// homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
 		
-		ApplianceDao applianceDAO = new ApplianceDao(dbPath);
-//		System.out.println(applianceDAO);
+		applianceDAO = new ApplianceDao(dbPath);
+		System.out.println(applianceDAO);
 	}	
 	
 	void displayMenu() {
@@ -47,7 +47,7 @@ public class MenuConsole {
 			
 				switch (input) {
 					case 1:
-						ArrayList<HomeAppliance> list = homeDAO.findAllProducts();
+						ArrayList<HomeAppliance> list = applianceDAO.findAll();
 						
 						for (HomeAppliance obj : list) {
 							System.out.println(obj.getId() +obj.getDescription());
