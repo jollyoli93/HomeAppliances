@@ -8,6 +8,7 @@ public interface Connector {
 	Connection initializeDBConnection();
 }
 
+
 class SqlLiteConnection implements Connector {
     private String path;
     private String driver = "org.sqlite.JDBC";

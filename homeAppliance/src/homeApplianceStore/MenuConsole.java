@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import DAO.ApplianceDao;
 import homeApplianceStoreDAO.HomeApplianceDAOImpl;
+import printer.AppliancePrinter;
 
 public class MenuConsole {
 	String driver;
@@ -47,7 +48,7 @@ public class MenuConsole {
 						
 						for (HomeAppliance obj : list) {
 							AppliancePrinter print = new AppliancePrinter(obj);
-							print.printAppliance();
+							print.print();
 						}
 						
 						break;
@@ -82,20 +83,3 @@ public class MenuConsole {
 	}
 }
 
-class AppliancePrinter {
-	HomeAppliance obj;
-	
-	AppliancePrinter (HomeAppliance obj){
-		this.obj  = obj;
-	}
-	
-	public void printAppliance() {
-		System.out.println("ID: " + obj.getId());
-		System.out.println("SKU: " + obj.getSku());
-		System.out.println("Description: " + obj.getDescription());
-		System.out.println("Category: " + obj.getCategory());
-		System.out.println("Price: £" + obj.getPrice());
-		System.out.println("-----------------------");
-		System.out.print("");
-	}
-}
