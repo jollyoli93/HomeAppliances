@@ -20,7 +20,7 @@ public abstract class DAO<T> {
 	
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
-	public abstract boolean addById(int id);
+	public abstract boolean addNew(T add);
 	public abstract boolean deleteById(int id);
 	public abstract boolean updateById(int id);
 //}

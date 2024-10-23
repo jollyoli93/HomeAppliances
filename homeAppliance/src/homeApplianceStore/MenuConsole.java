@@ -55,9 +55,14 @@ public class MenuConsole {
 					case 2:
 						int id = scanner.nextInt();
 						System.out.println("Searching for product " + id);
+						applianceDAO.getById(id);]
+								
 						break;
 					case 3:
 						System.out.println("Adding new product");
+						HomeAppliance addAppliance = new HomeAppliance(id, dbPath, driver, dbPath, id);
+						applianceDAO.addNew(addAppliance);
+						
 						break;
 					case 4:
 						System.out.println("Updating");

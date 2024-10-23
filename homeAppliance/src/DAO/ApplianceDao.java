@@ -62,7 +62,7 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 	}
 
 	@Override
-	public boolean addById(int id) {
+	public boolean addNew(int id) {
 		//INSERT INTO appliances (id, sku, description, category, price)
 		//VALUES (002, 'WM001', 'Washing machine', 'cleaning', 300.00)
 		return false;
