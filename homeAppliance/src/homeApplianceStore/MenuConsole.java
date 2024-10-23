@@ -5,6 +5,7 @@ package homeApplianceStore;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import DAO.ApplianceDao;
 import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 
 public class MenuConsole {
@@ -13,15 +14,17 @@ public class MenuConsole {
 	HomeApplianceDAOImpl homeDAO;
 	
 	public MenuConsole() {
-		String driver = "org.sqlite.JDBC";
+//		String driver = "org.sqlite.JDBC";
 		String dbPath = "HomeAppliances.db";
 		
-		homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
+		// homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
+		
+		ApplianceDao applianceDAO = new ApplianceDao(dbPath);
+//		System.out.println(applianceDAO);
 	}	
 	
 	void displayMenu() {
 		Scanner scanner = new Scanner(System.in);
-//		HomeApplianceDAOImpl dao = new HomeApplianceDAOImpl(null);
 		
 		int input;
 		
