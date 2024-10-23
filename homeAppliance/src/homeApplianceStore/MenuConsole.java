@@ -59,11 +59,17 @@ public class MenuConsole {
 								
 						break;
 					case 3:
-						System.out.println("Adding new product");
-						int newId = scanner.nextInt();
+						//get latest ID
+						int newId = 0;
+						
+						System.out.println("Enter SKU");
 						String newSku = scanner.nextLine();
+						
+						System.out.println("Enter Description");
 						String newDesc = scanner.nextLine();
+						System.out.println("Enter Category");
 						String newCat = scanner.nextLine();
+						System.out.println("Enter Price");
 						double newPrice = scanner.nextDouble();
 						
 						
