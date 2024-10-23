@@ -14,13 +14,9 @@ public class MenuConsole {
 	ApplianceDao applianceDAO;
 	
 	public MenuConsole() {
-//		String driver = "org.sqlite.JDBC";
 		String dbPath = "HomeAppliances.db";
-		
-		// homeDAO = new HomeApplianceDAOImpl(dbPath, driver);
-		
+
 		applianceDAO = new ApplianceDao(dbPath);
-		System.out.println(applianceDAO);
 	}	
 	
 	void displayMenu() {
@@ -50,7 +46,8 @@ public class MenuConsole {
 						ArrayList<HomeAppliance> list = applianceDAO.findAll();
 						
 						for (HomeAppliance obj : list) {
-							System.out.println(obj.getId() +obj.getDescription());
+							AppliancePrinter print = new AppliancePrinter(obj);
+							print.printAppliance();
 						}
 						
 						break;
@@ -82,5 +79,23 @@ public class MenuConsole {
 		} while (input != 6);
 		
 		scanner.close();
+	}
+}
+
+class AppliancePrinter {
+	HomeAppliance obj;
+	
+	AppliancePrinter (HomeAppliance obj){
+		this.obj  = obj;
+	}
+	
+	public void printAppliance() {
+		System.out.println("ID: " + obj.getId());
+		System.out.println("SKU: " + obj.getSku());
+		System.out.println("Description: " + obj.getDescription());
+		System.out.println("Category: " + obj.getCategory());
+		System.out.println("Price: £" + obj.getPrice());
+		System.out.println("-----------------------");
+		System.out.print("");
 	}
 }

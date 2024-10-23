@@ -1,3 +1,4 @@
+//STUDENT NO. 24862664
 package DAO;
 
 import java.sql.Connection;
@@ -38,7 +39,7 @@ public class ApplianceDao extends DAO<HomeAppliance> {
                        int price = result.getInt("price");
                        
                        product = new HomeAppliance(id, sku, desc, cat, price);
-                       
+
                        applianceList.add(product);
                        
                    } while (result.next());
