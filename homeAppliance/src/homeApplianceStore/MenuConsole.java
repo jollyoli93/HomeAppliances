@@ -2,8 +2,11 @@
 
 package homeApplianceStore;
 
+
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import DAO.ApplianceDao;
 import homeApplianceStoreDAO.HomeApplianceDAOImpl;
@@ -54,21 +57,50 @@ public class MenuConsole {
 						break;
 					case 2:
 						int id = scanner.nextInt();
+
 						System.out.println("Searching for product " + id);
 						applianceDAO.getById(id);
 								
 						break;
+						
 					case 3:
+						//needs logic to prevent null values
+						
 						//get latest ID
 						int newId = 0;
 						
-						System.out.println("Enter SKU");
-						String newSku = scanner.nextLine();
+						
+						String newSku;
+						do {
+							System.out.println("Enter SKU (Format as AA000)");
+							scanner.nextLine();
+							newSku = scanner.nextLine();
+							
+							if (newSku == null || newSku.trim().isEmpty()) {
+					            System.out.println("SKU cannot be null or empty. Please try again.");
+					            continue; // Go to the next iteration of the loop
+						    }
+							
+							String skuPattern = "^[A-Z]{2}\\d{3}$";
+							CheckPattern skuMatch = new CheckPattern(newSku, skuPattern);
+							
+							if (skuMatch.matches()) {
+								System.out.println("SKU Added");
+								break;
+							} else {
+								System.out.println("Incorrect format, please try again");
+							}
+							
+							
+							//stuck in endless loop when SKU Matches
+						} while (true);
 						
 						System.out.println("Enter Description");
 						String newDesc = scanner.nextLine();
+						
 						System.out.println("Enter Category");
 						String newCat = scanner.nextLine();
+						
 						System.out.println("Enter Price");
 						double newPrice = scanner.nextDouble();
 						
@@ -99,5 +131,21 @@ public class MenuConsole {
 		
 		scanner.close();
 	}
+}
+
+class CheckPattern {
+	Pattern pattern;
+	Matcher matcher;
+	
+	public CheckPattern(String input, String pattern) {
+		this.pattern  = Pattern.compile(pattern);
+		this.matcher = this.pattern.matcher(input);
+	
+	}
+	
+	public boolean matches() {
+		return matcher.matches();
+	}
+	
 }
 
