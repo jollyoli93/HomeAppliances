@@ -9,8 +9,6 @@ public class HomeAppliance {
 	private String category;
 	private double price;
 	
-//	private static int totalAppliances = 0;  potentaly?
-
 	public HomeAppliance (int id, String sku, String description, String category, double price) {
 		this.id = id;
 		this.sku = sku;

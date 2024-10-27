@@ -4,6 +4,7 @@ package homeApplianceStore;
 
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,21 +65,20 @@ public class MenuConsole {
 						break;
 						
 					case 3:
-						//needs logic to prevent null values
-						
-						//get latest ID
+						//ID and SKU are unique get db checker 
 						int newId = 0;
 						
-						
+						scanner.nextLine(); // Clear the newline char
 						String newSku;
+						
 						do {
 							System.out.println("Enter SKU (Format as AA000)");
-							scanner.nextLine();
+
 							newSku = scanner.nextLine();
 							
 							if (newSku == null || newSku.trim().isEmpty()) {
 					            System.out.println("SKU cannot be null or empty. Please try again.");
-					            continue; // Go to the next iteration of the loop
+					            continue; 
 						    }
 							
 							String skuPattern = "^[A-Z]{2}\\d{3}$";
@@ -86,13 +86,11 @@ public class MenuConsole {
 							
 							if (skuMatch.matches()) {
 								System.out.println("SKU Added");
+								System.out.println("-----------");
 								break;
 							} else {
 								System.out.println("Incorrect format, please try again");
 							}
-							
-							
-							//stuck in endless loop when SKU Matches
 						} while (true);
 						
 						System.out.println("Enter Description");
@@ -101,9 +99,26 @@ public class MenuConsole {
 						System.out.println("Enter Category");
 						String newCat = scanner.nextLine();
 						
-						System.out.println("Enter Price");
-						double newPrice = scanner.nextDouble();
-						
+						System.out.println("Enter Price");	
+						double newPrice = 0.0;
+						boolean validInput = false;
+
+						do {
+						    System.out.print("Enter the price: ");
+						    
+						    try {
+						        newPrice = scanner.nextDouble();
+						        
+						        if (newPrice < 1) {
+						            System.out.println("Price must be greater than zero");
+						        } else {
+						            validInput = true; 
+						        }
+						    } catch (InputMismatchException e) {
+						        System.out.println("Please enter a valid number for the price.");
+						        scanner.next(); // Clear the invalid input
+						    }
+						} while (!validInput);
 						
 						HomeAppliance addAppliance = new HomeAppliance(newId, newSku, newDesc, newCat, newPrice);
 						applianceDAO.addNew(addAppliance);
