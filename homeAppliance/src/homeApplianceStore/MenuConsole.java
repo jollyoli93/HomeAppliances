@@ -10,7 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import DAO.ApplianceDao;
-import homeApplianceStoreDAO.HomeApplianceDAOImpl;
 import printer.AppliancePrinter;
 
 public class MenuConsole {
@@ -54,8 +53,8 @@ public class MenuConsole {
 							AppliancePrinter print = new AppliancePrinter(obj);
 							print.print();
 						}
-						
 						break;
+						
 					case 2:
 						int id = scanner.nextInt();
 
@@ -163,4 +162,5 @@ class CheckPattern {
 	}
 	
 }
+
 

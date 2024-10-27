@@ -83,9 +83,9 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 					 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-		
-		return false;
+
 	}
 
 	@Override
@@ -99,5 +99,13 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+
+	@Override
+	public boolean isIdUnique(int value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }
