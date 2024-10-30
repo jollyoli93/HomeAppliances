@@ -47,12 +47,7 @@ public class MenuConsole {
 			
 				switch (input) {
 					case 1:
-						ArrayList<HomeAppliance> list = applianceDAO.findAll();
-						
-						for (HomeAppliance obj : list) {
-							AppliancePrinter print = new AppliancePrinter(obj);
-							print.print();
-						}
+						allProducts();
 						break;
 						
 					case 2:
@@ -145,22 +140,47 @@ public class MenuConsole {
 		
 		scanner.close();
 	}
-}
 
-class CheckPattern {
-	Pattern pattern;
-	Matcher matcher;
-	
-	public CheckPattern(String input, String pattern) {
-		this.pattern  = Pattern.compile(pattern);
-		this.matcher = this.pattern.matcher(input);
-	
+	private void allProducts() {
+		ArrayList<HomeAppliance> list = applianceDAO.findAll();
+		
+		for (HomeAppliance obj : list) {
+			AppliancePrinter print = new AppliancePrinter(obj);
+			print.print();
+		}
 	}
 	
-	public boolean matches() {
-		return matcher.matches();
+	private void productById() {
+		
 	}
 	
+	private void addProduct() {
+		
+	}
+	
+	private void updateProduct() {
+		
+	}
+	
+	private void deleteProduct() {
+		
+	}
+
+
+	class CheckPattern {
+		Pattern pattern;
+		Matcher matcher;
+		
+		public CheckPattern(String input, String pattern) {
+			this.pattern  = Pattern.compile(pattern);
+			this.matcher = this.pattern.matcher(input);
+		
+		}
+		
+		public boolean matches() {
+			return matcher.matches();
+		}
+	}
 }
 
 
