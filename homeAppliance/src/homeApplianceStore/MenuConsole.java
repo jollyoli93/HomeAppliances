@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import DAO.ApplianceDao;
 import printer.AppliancePrinter;
+import printer.Printer;
 
 public class MenuConsole {
 	String driver;
@@ -90,11 +91,18 @@ public class MenuConsole {
 	}
 	
 	private void getProductById() {
+		HomeAppliance appliance = null;
+		AppliancePrinter printer = null;
+		
 		System.out.println("Enter Product ID");
 		int id = handleInput.getInputInt();
 
 		System.out.println("Searching for product " + id);
-		applianceDAO.getById(id);
+		appliance = applianceDAO.getById(id);
+		
+		printer = new AppliancePrinter(appliance);
+		printer.print();
+
 	}
 	
 	private void addProduct() {
