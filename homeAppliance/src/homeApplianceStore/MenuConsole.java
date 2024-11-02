@@ -102,6 +102,10 @@ public class MenuConsole {
 		
 		printer = new AppliancePrinter(appliance);
 		printer.print();
+		
+		//debug
+		int unique = applianceDAO.getUniqueId();
+		System.out.println("The unique id is " + unique);
 
 	}
 	
