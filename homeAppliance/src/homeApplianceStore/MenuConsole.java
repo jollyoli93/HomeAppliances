@@ -48,11 +48,11 @@ public class MenuConsole {
 			
 				switch (input) {
 					case 1:
-						allProducts();
+						getAllProducts();
 						break;
 						
 					case 2:
-						productById();								
+						getProductById();								
 						break;
 						
 					case 3:
@@ -80,7 +80,7 @@ public class MenuConsole {
 		
 	}
 
-	private void allProducts() {
+	private void getAllProducts() {
 		ArrayList<HomeAppliance> list = applianceDAO.findAll();
 		
 		for (HomeAppliance obj : list) {
@@ -89,7 +89,8 @@ public class MenuConsole {
 		}
 	}
 	
-	private void productById() {
+	private void getProductById() {
+		System.out.println("Enter Product ID");
 		int id = handleInput.getInputInt();
 
 		System.out.println("Searching for product " + id);
