@@ -97,7 +97,6 @@ public class MenuConsole {
 	}
 	
 	private void addProduct() {
-		//Scanner scan = new Scanner(System.in);
 		//ID and SKU are unique get db checker 
 		int newId = 0;
 

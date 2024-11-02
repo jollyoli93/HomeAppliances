@@ -58,8 +58,28 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 
 	@Override
 	public HomeAppliance getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
+		Connection connect = connector.initializeDBConnection(); 
+		HomeAppliance appliance = null;
+		
+		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		        preparedStatement.setInt(1, id);
+		        ResultSet resultSet = preparedStatement.executeQuery();
+        	
+        	if (resultSet.next()) {
+        		String sku = resultSet.getString("sku");
+                String desc = resultSet.getString("description");
+                String cat = resultSet.getString("category");
+                double price = resultSet.getDouble("price");
+        		
+        		appliance = new HomeAppliance(id, sku, desc, cat, price);
+        	}
+        	
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+    	return appliance;
 	}
 
 	@Override
