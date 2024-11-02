@@ -73,7 +73,9 @@ public class ApplianceDao extends DAO<HomeAppliance> {
                 double price = resultSet.getDouble("price");
         		
         		appliance = new HomeAppliance(id, sku, desc, cat, price);
-        	}
+        	} else {
+                System.out.println("No results found.");
+            }
         	
         } catch (SQLException e) {
 			e.printStackTrace();
@@ -122,9 +124,28 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 	
 
 	@Override
-	public boolean isIdUnique(int value) {
-		// TODO Auto-generated method stub
-		return false;
+	public int getUniqueId() {
+		Connection connect = connector.initializeDBConnection(); 
+		
+		String query = "SELECT * FROM appliances";
+		
+        try (Statement statement = connect.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+
+               if (result.next()) {
+            	   
+
+               } else {
+                   System.out.println("No results found.");
+               }
+
+
+           } catch (SQLException e) {
+               System.out.println("SQL Exception: " + e.getMessage());
+           }
+		
+		return applianceList;
+		return 0;
 	}
 
 
