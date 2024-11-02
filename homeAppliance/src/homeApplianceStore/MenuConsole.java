@@ -25,7 +25,7 @@ public class MenuConsole {
 	}	
 	
 	void displayMenu() {
-		Scanner scanner = new Scanner(System.in);
+//		Scanner scanner = new Scanner(System.in);
 		
 		int input;
 		
@@ -44,7 +44,7 @@ public class MenuConsole {
 			System.out.println("[5] Delete a product by ID");
 			System.out.println("[6] Exit");
 			
-			input = scanner.nextInt();
+			input = handleInput.getInputInt();
 			
 				switch (input) {
 					case 1:
@@ -74,11 +74,10 @@ public class MenuConsole {
 						}
 				
 				System.out.println("Press 0 to continue or 6 to exit");
-				input = scanner.nextInt();
+				input = handleInput.getInputInt();
 				
 		} while (input != 6);
 		
-		scanner.close();
 	}
 
 	private void allProducts() {
@@ -98,10 +97,10 @@ public class MenuConsole {
 	}
 	
 	private void addProduct() {
+		//Scanner scan = new Scanner(System.in);
 		//ID and SKU are unique get db checker 
 		int newId = 0;
-		
-		handleInput.clearInput(); // Clear the newline char
+
 		String newSku;
 		
 		do {
@@ -132,7 +131,6 @@ public class MenuConsole {
 		System.out.println("Enter Category");
 		String newCat = handleInput.getInputString();
 		
-		System.out.println("Enter Price");	
 		double newPrice = 0.0;
 		boolean validInput = false;
 

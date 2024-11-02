@@ -16,7 +16,9 @@ class ConsoleIOHandler implements InputOutputHandler {
 
     @Override
     public int getInputInt() {
-        return scanner.nextInt();
+    	int next = scanner.nextInt();
+    	scanner.nextLine();
+        return next;
     }
 
 	@Override
@@ -26,7 +28,9 @@ class ConsoleIOHandler implements InputOutputHandler {
 
 	@Override
 	public double getInputDouble() {
-        return scanner.nextDouble();
+    	double next = scanner.nextDouble();
+    	scanner.nextLine();
+        return next;
 	}
 	
     @Override
@@ -35,7 +39,6 @@ class ConsoleIOHandler implements InputOutputHandler {
     }
     
     public void clearInput() {
-    	scanner.nextInt();
     	scanner.next();
     };
 }
