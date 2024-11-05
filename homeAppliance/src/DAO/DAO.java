@@ -23,6 +23,5 @@ public abstract class DAO<T> {
 	public abstract boolean addNew(T add);
 	public abstract boolean deleteById(int id);
 	public abstract boolean updateById(int id);
-	public abstract int getUniqueId();
 
 }

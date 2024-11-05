@@ -18,7 +18,7 @@ public class HomeAppliance {
 		
 	}
 	
-	public int getId() {
+	public int getId () {
 		return this.id;
 	}
 	

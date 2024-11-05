@@ -121,34 +121,4 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-
-	@Override
-	public int getUniqueId() {
-		Connection connect = connector.initializeDBConnection(); 
-		int uniqueId = 0;
-		
-		String query = "SELECT id FROM appliances ORDER BY id desc LIMIT 1";
-		
-        try (Statement statement = connect.createStatement();
-             ResultSet result = statement.executeQuery(query)) {
-
-               if (result.next()) {
-            	   int last_id = result.getInt("id");
-            	   uniqueId = last_id + 1;
-            	   return uniqueId;
-
-               } else {
-                   System.out.println("No results found.");
-               }
-
-
-           } catch (SQLException e) {
-               System.out.println("SQL Exception: " + e.getMessage());
-           }
-        
-		return 0;
-	}
-
-
 }
