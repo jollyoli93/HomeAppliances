@@ -107,7 +107,7 @@ public class MenuConsole {
 	
 	private void addProduct() {
 		//ID and SKU are unique get db checker 
-		int newId = 0;
+		int newId = ;
 
 		String newSku;
 		

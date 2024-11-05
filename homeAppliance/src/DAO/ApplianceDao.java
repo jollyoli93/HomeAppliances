@@ -121,4 +121,6 @@ public class ApplianceDao extends DAO<HomeAppliance> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+
 }
