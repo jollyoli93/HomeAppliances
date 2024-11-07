@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public abstract class DAO<T> {
@@ -26,11 +27,10 @@ public abstract class DAO<T> {
 		Connection connect = connector.initializeDBConnection(); 
 		int uniqueId = 0;
 		
-		String query = "SELECT id FROM ? ORDER BY id desc LIMIT 1";
+		String query = "SELECT id FROM " + table + " ORDER BY id desc LIMIT 1";
 		
-		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-	        preparedStatement.setString(1, table);
-	        ResultSet resultSet = preparedStatement.executeQuery();
+		try (Statement statement = connect.createStatement();
+		         ResultSet resultSet = statement.executeQuery(query)){
 
                if (resultSet.next()) {
             	   int last_id = resultSet.getInt("id");
@@ -39,10 +39,10 @@ public abstract class DAO<T> {
 
                } else {
                    System.out.println("No results found.");
-               }
-           } catch (SQLException e) {
+                   }
+          } catch (SQLException e) {
                System.out.println("SQL Exception: " + e.getMessage());
-           }
+          }
         
 		return 1;
 	}

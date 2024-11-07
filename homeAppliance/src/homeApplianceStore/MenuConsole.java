@@ -107,9 +107,8 @@ public class MenuConsole {
 	
 	private void addProduct() {
 		//ID and SKU are unique get db checker 
-		int newId = ;
-
-		String newSku;
+		int newId = applianceDAO.getUniqueId("appliances");
+		String newSku = "";
 		
 		do {
 			System.out.println("Enter SKU (Format as AA000)");
