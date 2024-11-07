@@ -19,9 +19,12 @@ public abstract class ApplianceFactory {
 
 class EntertainmentFactory extends ApplianceFactory{
 	Appliance createAppliance(String type) {
-		if (type.equals("basic television")) {
+		if (type.equalsIgnoreCase("basic television")) {
 			return new BasicTVAppliance();
+		} else if (type.equalsIgnoreCase("LCD television")){
+			return new LCDTVAppliance();
+		} else {
+			return null;
 		}
-		return null;
 	}
 }

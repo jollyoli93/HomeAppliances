@@ -38,3 +38,13 @@ class BasicTVAppliance extends Appliance {
 		this.price = 100;
 	}
 }
+
+class LCDTVAppliance extends Appliance {
+	public LCDTVAppliance() {
+		Appliance.id += 1;
+		this.sku = "TV002";
+		this.description = "LCD Television";
+		this.category = "Entertainment";
+		this.price = 300;
+	}
+}
