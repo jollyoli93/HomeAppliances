@@ -1,4 +1,4 @@
-package appliances;
+package homeApplianceStore;
 
 public abstract class Appliance {
 	protected int id = 0;
@@ -27,6 +27,9 @@ public abstract class Appliance {
 		return this.price;
 	}
 	
+	public String getDetails() {
+		return "ID:" + id + ", SKU: " + sku + ", Description: " + description + ", Category: " + category + ", Price: " + price;
+	}
 }
 
 class BasicTVAppliance extends Appliance {

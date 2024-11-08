@@ -1,4 +1,4 @@
-package appliances;
+package homeApplianceStore;
 
 import static org.junit.jupiter.api.Assertions.*;
 

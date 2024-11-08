@@ -1,42 +1,68 @@
-package appliances;
+package homeApplianceStore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public abstract class ApplianceFactory {
-	
-	public Appliance selectAppliance(String type, int id) {
-		Appliance appliance;
-		
-		appliance = createAppliance(type, id);
-		
-        if (appliance == null) {
+    
+    protected Map<String, Function<Integer, Appliance>> applianceMap = new HashMap<>();
+    
+    public Appliance selectAppliance(String type, int id) {
+        Function<Integer, Appliance> applianceCreator = applianceMap.get(type.toLowerCase());
+        
+        if (applianceCreator == null) {
             throw new IllegalArgumentException("Unknown appliance type: " + type);
         }
         
-        return appliance;
+        return applianceCreator.apply(id);
     }
-	
-	abstract Appliance createAppliance(String type, int id);
+    
+    // Methods to add or remove appliance types from the map dynamically
+    protected void addType(String type, Function<Integer, Appliance> creatorFunction) {
+        applianceMap.put(type.toLowerCase(), creatorFunction);
+    }
+    
+    protected void removeType(String type) {
+        applianceMap.remove(type.toLowerCase());
+    }
+    
+    public ArrayList<String> listAllApplianceTypes () {
+    	ArrayList<String> types = new ArrayList<>();
+    	applianceMap.forEach( (key, value) -> {
+    		types.add(key);
+    	});
+    	
+    	return types;
+    }
+
+    abstract void initializeApplianceTypes();
 }
 
-class EntertainmentFactory extends ApplianceFactory{
-	Appliance createAppliance(String type, int id) {
-		if (type.equalsIgnoreCase("basic television")) {
-			return new BasicTVAppliance(id);
-		} else if (type.equalsIgnoreCase("LCD television")){
-			return new LCDTVAppliance(id);
-		} else {
-			return null;
-		}
-	}
+
+class EntertainmentFactory extends ApplianceFactory {
+
+    public EntertainmentFactory() {
+        initializeApplianceTypes();
+    }
+
+    @Override
+    void initializeApplianceTypes() {
+        addType("basic television", id -> new BasicTVAppliance(id));
+        addType("lcd television", id -> new LCDTVAppliance(id));
+    }
 }
 
-class HomeCleaningFactory extends ApplianceFactory{
-	Appliance createAppliance(String type, int id) {
-		if (type.equalsIgnoreCase("basic washing machine")) {
-			return new BasicWashingMachineAppliance(id);
-		} else if (type.equalsIgnoreCase("super fast washing machine")){
-			return new SuperFastWashingMachineAppliance(id);
-		} else {
-			return null;
-		}
-	}
+class HomeCleaningFactory extends ApplianceFactory {
+
+    public HomeCleaningFactory() {
+        initializeApplianceTypes();
+    }
+
+    @Override
+    void initializeApplianceTypes() {
+        addType("basic washing machine", id -> new BasicWashingMachineAppliance(id));
+        addType("super fast washing machine", id -> new SuperFastWashingMachineAppliance(id));
+    }
 }
