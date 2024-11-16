@@ -165,12 +165,14 @@ public class ApplianceDao extends DAO<Appliance> {
 			preparedStatement.setDouble(1, (Double) update);
 			preparedStatement.setInt(2, id);
 			
+	        int updated = preparedStatement.executeUpdate();
+	        return updated > 0;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
-		
-		return false;
 	}
 
 }
