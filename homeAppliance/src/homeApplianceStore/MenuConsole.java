@@ -109,17 +109,24 @@ public class MenuConsole {
 	}
 	
 	private void getProductById() {
-		Appliance appliance = null;
-		AppliancePrinter printer = null;
-		
-		System.out.println("Enter Product ID");
-		int id = handleInput.getInputInt();
+		int id = 0;
+		try {
+			Appliance appliance = null;
+			AppliancePrinter printer = null;
+			
+			System.out.println("Enter Product ID");
+			id = handleInput.getInputInt();
 
-		System.out.println("Searching for product " + id);
-		appliance = applianceDAO.getById(id);
-		
-		printer = new AppliancePrinter(appliance);
-		printer.print();
+			System.out.println("Searching for product " + id);
+			appliance = applianceDAO.getById(id);
+			
+			printer = new AppliancePrinter(appliance);
+			printer.print();
+		} catch (NullPointerException e) {
+			System.out.println("ID " + id + " does not exist in the database");
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid character please try again");
+		}
 
 	}
 	
