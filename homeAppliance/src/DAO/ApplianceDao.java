@@ -43,6 +43,7 @@ public class ApplianceDao extends DAO<Appliance> {
                        int id = result.getInt("id");
                        String desc = result.getString("description");
                        String cat = result.getString("category");
+                       double price = result.getDouble("price");
                        
                        try {
                            // Get the appropriate factory for the category
@@ -53,6 +54,7 @@ public class ApplianceDao extends DAO<Appliance> {
                            
                            // Set the common properties
                            product.setId(id);
+                           product.setPrice(price);
                            
                            applianceList.add(product);
                            
@@ -85,12 +87,12 @@ public class ApplianceDao extends DAO<Appliance> {
 		
 		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 		        preparedStatement.setInt(1, id);
-		        ResultSet resultSet = preparedStatement.executeQuery();
+		        ResultSet result = preparedStatement.executeQuery();
         	
-        	if (resultSet.next()) {     
-                String desc = resultSet.getString("description");
-                String cat = resultSet.getString("category");
-    
+        	if (result.next()) {     
+                String desc = result.getString("description");
+                String cat = result.getString("category");
+                double price = result.getDouble("price");  
         		
                 try {
                     // Get the appropriate factory for the category
@@ -101,6 +103,7 @@ public class ApplianceDao extends DAO<Appliance> {
                     
                     // Set the common properties
                     appliance.setId(id);
+                    appliance.setPrice(price);
                     
                     System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
 
