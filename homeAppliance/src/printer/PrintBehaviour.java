@@ -1,13 +1,10 @@
 package printer;
 
 import homeApplianceStore.Appliance;
-import homeApplianceStore.HomeApplianceSS;
 
 public interface PrintBehaviour {
 	void print();
 }
-
-
 
 class ApplianceBehaviour implements PrintBehaviour {
 	Appliance obj;

@@ -12,10 +12,3 @@ public class Main {
 	}
 
 }
-//                       System.out.println(factory.listFactoryTypes());
-//for (String type : factory.listFactoryTypes()) {
-//	   if (type.equalsIgnoreCase(type)) {
-//		   factory = ApplianceFactory.selectApplianceFactory(desc);
-//		   System.out.println(factory + " " + type);
-//	   }
-//}

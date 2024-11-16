@@ -153,34 +153,10 @@ public class MenuConsole {
 	}
 	
 	private void addProduct() {
-		ApplianceFactory applianceFactory = null;
+		ApplianceFactory applianceFactory = selectDepartment();
 		Appliance appliance = null;
 
 		int userInput;
-		
-		do {
-			System.out.println("Please select department from the list below");
-			System.out.println("[1] Entertainment");
-			System.out.println("[2] Home Cleaning");
-			System.out.println("[3] Go back");
-			
-			userInput = handleInput.getInputInt();
-			
-			switch (userInput) {
-				case 1:
-					applianceFactory = new EntertainmentFactory();
-					break;
-				case 2:
-					applianceFactory = new HomeCleaningFactory();
-					break;
-				case 3:
-					break;
-				default:
-					System.out.println("Please try again");
-					System.out.println();
-
-			}
-		} while (userInput == 3);
 		
 		// list out concrete classes that are available for that particular factory. Must be called on the applianceFactory
 		ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
@@ -188,7 +164,7 @@ public class MenuConsole {
 		int endOfList = sizeOfTypesList + 1;
 		
 		do {
-			System.out.println("Please select an appliace to add");
+			System.out.println("Please select an appliance type");
 			System.out.println();
 
 			
@@ -216,10 +192,47 @@ public class MenuConsole {
 			
 		} while (userInput == sizeOfTypesList + 1);
 		
-		System.out.println("You have added - " + appliance.getDetails());
+		System.out.println("How many would you like to add to your stock?");
+		
+		userInput = handleInput.getInputInt();
+		
+		for (int i = 0; i < userInput; i++) {
+			applianceDAO.addNew(appliance);
+		}
+		
+		System.out.println("You have added " + userInput + " - " + appliance.getDescription());
 		System.out.println();
 
-		applianceDAO.addNew(appliance);
+	}
+	private ApplianceFactory selectDepartment () {
+		ApplianceFactory applianceFactory = null;
+		
+		int userInput = 0;
+		do {
+			System.out.println("Please select department from the list below");
+			System.out.println("[1] Entertainment");
+			System.out.println("[2] Home Cleaning");
+			System.out.println("[3] Go back");
+			
+			userInput = handleInput.getInputInt();
+			
+			switch (userInput) {
+				case 1:
+					applianceFactory = new EntertainmentFactory();
+					break;
+				case 2:
+					applianceFactory = new HomeCleaningFactory();
+					break;
+				case 3:
+					break;
+				default:
+					System.out.println("Please try again");
+					System.out.println();
+
+			}
+		} while (userInput == 3);
+		
+		return applianceFactory;
 	}
 	
 	private void updateProduct() {
