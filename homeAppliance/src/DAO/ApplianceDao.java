@@ -45,11 +45,8 @@ public class ApplianceDao extends DAO<Appliance> {
             		   Appliance product;
                 	   
                        int id = result.getInt("id");
-                       String sku = result.getString("sku");
                        String desc = result.getString("description");
                        String cat = result.getString("category");
-                       int price = result.getInt("price");
-                       
                        
                        try {
                            // Get the appropriate factory for the category
@@ -83,34 +80,49 @@ public class ApplianceDao extends DAO<Appliance> {
 		
 		return applianceList;
 	}
-//
-//	@Override
-//	public Appliance getById(int id) {
-//	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
-//		Connection connect = connector.initializeDBConnection(); 
-//		Appliance appliance = null;
-//		
-//		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-//		        preparedStatement.setInt(1, id);
-//		        ResultSet resultSet = preparedStatement.executeQuery();
-//        	
-//        	if (resultSet.next()) {
-//        		String sku = resultSet.getString("sku");
-//                String desc = resultSet.getString("description");
-//                String cat = resultSet.getString("category");
-//                double price = resultSet.getDouble("price");
-//        		
-//        		appliance = new Appliance(id, sku, desc, cat, price);
+
+	@Override
+	public Appliance getById(int id) {
+	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
+		Connection connect = connector.initializeDBConnection(); 
+		Appliance appliance = null;
+		
+		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		        preparedStatement.setInt(1, id);
+		        ResultSet resultSet = preparedStatement.executeQuery();
+        	
+        	if (resultSet.next()) {     
+                String desc = resultSet.getString("description");
+                String cat = resultSet.getString("category");
+    
+        		
+                try {
+                    // Get the appropriate factory for the category
+                    ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+                    
+                    // Create the specific appliance using the factory
+                    appliance = factory.selectAppliance(desc);
+                    
+                    // Set the common properties
+                    appliance.setId(id);
+                    
+                    System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
+
+                    
+                } catch (IllegalArgumentException e) {
+//             	   e.printStackTrace();
+                    System.out.println("Error retrieving appliance: " + e.getMessage());
+                }
 //        	} else {
 //                System.out.println("No results found.");
-//            }
-//        	
-//        } catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//    	return appliance;
-//	}
+            }
+        	
+        } catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+    	return appliance;
+	}
 
 	@Override
 	public boolean addNew(Appliance newAppliance) {	
@@ -151,22 +163,10 @@ public class ApplianceDao extends DAO<Appliance> {
         }
     }
 
-    
-    //Temporary
-    
 	@Override
 	public boolean updateById(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-
-
-	@Override
-	public Appliance getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 
 }

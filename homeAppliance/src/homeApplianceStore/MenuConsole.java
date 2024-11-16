@@ -16,8 +16,6 @@ import printer.Printer;
 
 public class MenuConsole {
 	private String output = null;
-    private String driver;
-    private String dbPath;
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
 
@@ -243,7 +241,7 @@ public class MenuConsole {
 		return appliance;
 	}
 	
-	private void updateProduct() {
+	private void updatePrice() {
 		
 	}
 	
@@ -268,20 +266,7 @@ public class MenuConsole {
 		
 	}
 //
-//	class CheckPattern {
-//		Pattern pattern;
-//		Matcher matcher;
-//		
-//		public CheckPattern(String input, String pattern) {
-//			this.pattern  = Pattern.compile(pattern);
-//			this.matcher = this.pattern.matcher(input);
-//		
-//		}
-//		
-//		public boolean matches() {
-//			return matcher.matches();
-//		}
-//	}
+
 }
 
 
