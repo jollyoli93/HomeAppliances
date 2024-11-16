@@ -53,4 +53,19 @@ class MenuConsoleTest {
 		
 		assertEquals("Exiting", statement);
 	}
+	
+	@Test
+	public void deleteProductById () { 
+		int[] delete = {5, 0};
+		
+		console.setHandler(new MockIOHandler(delete));
+		
+		System.out.println();
+		System.out.println("--------------------------");
+		System.out.println("Mock Test: Deleting product ID: 1");
+		
+		String statement = console.displayMenu();	
+		
+		assertEquals("Exiting", statement);
+	}
 }

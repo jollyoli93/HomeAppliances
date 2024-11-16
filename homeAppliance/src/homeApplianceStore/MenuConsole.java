@@ -88,10 +88,9 @@ public class MenuConsole {
 						break;
 						
 					case 5:
-//						dao.deleteProduct(input);
-						output = handleInput.output("Deleting");
-						System.out.println(output);
-						System.out.println();
+						deleteProduct();
+//						Boolean delete = deleteProduct();
+
 						break;
 						
 					case 6:
@@ -220,7 +219,7 @@ public class MenuConsole {
 		System.out.println("You have added - " + appliance.getDetails());
 		System.out.println();
 
-//		applianceDAO.addNew(appliance);
+		applianceDAO.addNew(appliance);
 	}
 	
 	private void updateProduct() {
@@ -228,6 +227,23 @@ public class MenuConsole {
 	}
 	
 	private void deleteProduct() {
+		System.out.println("Please enter ID");
+		System.out.println();
+		
+		int input = handleInput.getInputInt();
+		
+		Boolean deleted = applianceDAO.deleteById(input);
+		
+		if (deleted) {
+			System.out.println("ID: " + input + " Deleted");
+			System.out.println();
+
+		} else {
+			System.out.println("Failed");
+			System.out.println();
+
+		}
+
 		
 	}
 //

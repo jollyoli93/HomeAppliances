@@ -37,8 +37,7 @@ public abstract class Appliance {
 }
 
 class BasicTVAppliance extends Appliance {
-	public BasicTVAppliance(int id) {
-		this.id = id;
+	public BasicTVAppliance() {
 		this.sku = "TV001";
 		this.description = "Basic Television";
 		this.category = "Entertainment";
@@ -47,8 +46,7 @@ class BasicTVAppliance extends Appliance {
 }
 
 class LCDTVAppliance extends Appliance {
-	public LCDTVAppliance(int id) {
-		this.id = id;
+	public LCDTVAppliance() {
 		this.sku = "TV002";
 		this.description = "LCD Television";
 		this.category = "Entertainment";
@@ -57,8 +55,7 @@ class LCDTVAppliance extends Appliance {
 }
 
 class BasicWashingMachineAppliance extends Appliance {
-	public BasicWashingMachineAppliance(int id) {
-		this.id = id;
+	public BasicWashingMachineAppliance() {
 		this.sku = "WM001";
 		this.description = "Basic Washing Machine";
 		this.category = "Home Cleaning";
@@ -67,8 +64,7 @@ class BasicWashingMachineAppliance extends Appliance {
 }
 
 class SuperFastWashingMachineAppliance extends Appliance {
-	public SuperFastWashingMachineAppliance(int id) {
-		this.id = id;
+	public SuperFastWashingMachineAppliance() {
 		this.sku = "WM002";
 		this.description = "Super Fast Washing Machine";
 		this.category = "Home Cleaning";

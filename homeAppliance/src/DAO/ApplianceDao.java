@@ -28,7 +28,15 @@ public class ApplianceDao extends DAO<Appliance> {
 	   
    };
 
-    
+	@Override
+	public ArrayList<Appliance> findAll() {
+		ArrayList<Appliance> applianceList = new ArrayList<>(); 
+		Connection connect = connector.initializeDBConnection(); 
+		
+		String query = "SELECT * FROM appliances";
+		
+		return null;
+	}
 
 //	@Override
 //	public ArrayList<Appliance> findAll() {
@@ -128,8 +136,10 @@ public class ApplianceDao extends DAO<Appliance> {
         try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
             int executeRows = preparedStatement.executeUpdate();
+            
             return executeRows > 0;
         } catch (SQLException e) {
+        	
             e.printStackTrace();
             return false;
         }
@@ -144,11 +154,7 @@ public class ApplianceDao extends DAO<Appliance> {
 		return false;
 	}
 
-	@Override
-	public ArrayList<Appliance> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Appliance getById(int id) {
