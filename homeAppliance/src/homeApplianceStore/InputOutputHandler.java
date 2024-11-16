@@ -74,35 +74,53 @@ class ConsoleIOHandler implements InputOutputHandler {
 }
 
 class MockIOHandler implements InputOutputHandler {
+    private int mockIntValue = 0;
+    private String mockStringValue = "";
+    private double mockDoubleValue = 0.0;
+    
+    // Constructor for setting mock values
+    public MockIOHandler(int mockInt, String mockString, double mockDouble) {
+        this.mockIntValue = mockInt;
+        this.mockStringValue = mockString;
+        this.mockDoubleValue = mockDouble;
+    }
+    
+    @Override
+    public int getInputInt() {
+        return mockIntValue;
+    }
 
-	@Override
-	public int getInputInt() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public String getInputString() {
+        return mockStringValue;
+    }
 
-	@Override
-	public String getInputString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public double getInputDouble() {
+        return mockDoubleValue;
+    }
 
-	@Override
-	public double getInputDouble() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public void clearInput() {
+        // No action needed for mock
+    }
 
-	@Override
-	public void clearInput() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void output(String message) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+    @Override
+    public void output(String message) {
+        // Optional: Store output messages for testing
+        System.out.println("Mock output: " + message);
+    }
+    
+    // Setters for testing different scenarios
+    public void setMockIntValue(int value) {
+        this.mockIntValue = value;
+    }
+    
+    public void setMockStringValue(String value) {
+        this.mockStringValue = value;
+    }
+    
+    public void setMockDoubleValue(double value) {
+        this.mockDoubleValue = value;
+    }
 }
