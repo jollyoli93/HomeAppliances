@@ -110,12 +110,9 @@ public class ApplianceDao extends DAO<Appliance> {
 
                     
                 } catch (IllegalArgumentException e) {
-//             	   e.printStackTrace();
                     System.out.println("Error retrieving appliance: " + e.getMessage());
                 }
-//        	} else {
-//                System.out.println("No results found.");
-            }
+        	}
         	
         } catch (SQLException e) {
 			e.printStackTrace();
