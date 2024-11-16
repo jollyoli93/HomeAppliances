@@ -31,6 +31,10 @@ public abstract class Appliance {
 		return this.price;
 	}
 	
+	public void setPrice(double updatedPrice) {
+		this.price = updatedPrice;
+	}
+	
 	public String getDetails() {
 		return "Description: " + description + ", Category: " + category + ", Price: " + price + " ID:" + id + ", SKU: " + sku;
 	}
