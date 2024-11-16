@@ -1,26 +1,24 @@
 package homeApplianceStore;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public abstract class ApplianceFactory {
     
-    protected Map<String, Function<Integer, Appliance>> applianceMap = new HashMap<>();
+    protected Map<String, Supplier<Appliance>> applianceMap = new HashMap<>();
     
-    public Appliance selectAppliance(String type, int id) {
-        Function<Integer, Appliance> applianceCreator = applianceMap.get(type.toLowerCase());
+    public Appliance selectAppliance(String type) {
+        Supplier<Appliance> applianceCreator = applianceMap.get(type.toLowerCase());
         
         if (applianceCreator == null) {
             throw new IllegalArgumentException("Unknown appliance type: " + type);
         }
         
-        return applianceCreator.apply(id);
+        return applianceCreator.get();
     }
     
-    // Methods to add or remove appliance types from the map dynamically
-    protected void addType(String type, Function<Integer, Appliance> creatorFunction) {
+    protected void addType(String type, Supplier<Appliance> creatorFunction) {
         applianceMap.put(type.toLowerCase(), creatorFunction);
     }
     
@@ -28,41 +26,38 @@ public abstract class ApplianceFactory {
         applianceMap.remove(type.toLowerCase());
     }
     
-    public ArrayList<String> listAllApplianceTypes () {
-    	ArrayList<String> types = new ArrayList<>();
-    	applianceMap.forEach( (key, value) -> {
-    		types.add(key);
-    	});
-    	
-    	return types;
+    public ArrayList<String> listAllApplianceTypes() {
+        ArrayList<String> types = new ArrayList<>();
+        applianceMap.forEach((key, value) -> {
+            types.add(key);
+        });
+        
+        return types;
     }
-
+    
     abstract void initializeApplianceTypes();
 }
 
-
 class EntertainmentFactory extends ApplianceFactory {
-
     public EntertainmentFactory() {
         initializeApplianceTypes();
     }
-
+    
     @Override
     void initializeApplianceTypes() {
-        addType("basic television", id -> new BasicTVAppliance(id));
-        addType("lcd television", id -> new LCDTVAppliance(id));
+        addType("basic television", () -> new BasicTVAppliance());
+        addType("lcd television", () -> new LCDTVAppliance());
     }
 }
 
 class HomeCleaningFactory extends ApplianceFactory {
-
     public HomeCleaningFactory() {
         initializeApplianceTypes();
     }
-
+    
     @Override
     void initializeApplianceTypes() {
-        addType("basic washing machine", id -> new BasicWashingMachineAppliance(id));
-        addType("super fast washing machine", id -> new SuperFastWashingMachineAppliance(id));
+        addType("basic washing machine", () -> new BasicWashingMachineAppliance());
+        addType("super fast washing machine", () -> new SuperFastWashingMachineAppliance());
     }
 }
