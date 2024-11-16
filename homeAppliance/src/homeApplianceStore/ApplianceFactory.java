@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public abstract class ApplianceFactory {
-    
-    protected Map<String, Supplier<Appliance>> applianceMap = new HashMap<>();
+	public static Map<String, Supplier<ApplianceFactory>> applianceFactoryMap = new HashMap<>();
+	protected Map<String, Supplier<Appliance>> applianceMap = new HashMap<>();
     
     public Appliance selectAppliance(String type) {
         Supplier<Appliance> applianceCreator = applianceMap.get(type.toLowerCase());
@@ -18,12 +18,31 @@ public abstract class ApplianceFactory {
         return applianceCreator.get();
     }
     
+    public static ApplianceFactory selectApplianceFactory(String type) {
+        Supplier<ApplianceFactory> factoryCreator = applianceFactoryMap.get(type);
+        
+        if (factoryCreator == null) {
+            throw new IllegalArgumentException("Unknown appliance type: " + type);
+        }
+        
+        return factoryCreator.get();
+    }
+    
     protected void addType(String type, Supplier<Appliance> creatorFunction) {
         applianceMap.put(type.toLowerCase(), creatorFunction);
     }
     
     protected void removeType(String type) {
         applianceMap.remove(type.toLowerCase());
+    }
+    
+    public ArrayList<String> listFactoryTypes () {
+        ArrayList<String> types = new ArrayList<>();
+        applianceFactoryMap.forEach((key, value) -> {
+            types.add(key);
+        });
+        
+        return types;
     }
     
     public ArrayList<String> listAllApplianceTypes() {
@@ -41,6 +60,7 @@ public abstract class ApplianceFactory {
 class EntertainmentFactory extends ApplianceFactory {
     public EntertainmentFactory() {
         initializeApplianceTypes();
+        applianceFactoryMap.put("Entertainment", () -> new EntertainmentFactory());
     }
     
     @Override
@@ -53,6 +73,7 @@ class EntertainmentFactory extends ApplianceFactory {
 class HomeCleaningFactory extends ApplianceFactory {
     public HomeCleaningFactory() {
         initializeApplianceTypes();
+        applianceFactoryMap.put("Home Cleaning", () -> new HomeCleaningFactory());
     }
     
     @Override

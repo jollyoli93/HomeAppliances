@@ -20,7 +20,7 @@ class MenuConsoleTest {
 		console.setHandler(new MockIOHandler(enterThenExit));
 		
 		System.out.println();
-		System.out.println("--------------------------");
+		System.out.println("***********************************");
 		System.out.println("Mock Test: Test Exiting");
 		
 		String statement = console.displayMenu();	
@@ -33,7 +33,7 @@ class MenuConsoleTest {
 		console.setHandler(new MockIOHandler(listAll));
 		
 		System.out.println();
-		System.out.println("--------------------------");
+		System.out.println("***********************************");
 		System.out.println("Mock Test: List all products");
 		
 		String statement = console.displayMenu();	
@@ -46,7 +46,7 @@ class MenuConsoleTest {
 		console.setHandler(new MockIOHandler(emptyProduct));
 		
 		System.out.println();
-		System.out.println("--------------------------");
+		System.out.println("***********************************");
 		System.out.println("Mock Test: No product ID");
 		
 		String statement = console.displayMenu();	
@@ -60,7 +60,7 @@ class MenuConsoleTest {
 		console.setHandler(new MockIOHandler(adding));
 		
 		System.out.println();
-		System.out.println("--------------------------");
+		System.out.println("***********************************");
 		System.out.println("Mock Test: Add Product");
 		String statement = console.displayMenu();	
 		
@@ -74,7 +74,7 @@ class MenuConsoleTest {
 		console.setHandler(new MockIOHandler(delete));
 		
 		System.out.println();
-		System.out.println("--------------------------");
+		System.out.println("***********************************");
 		System.out.println("Mock Test: Deleting product ID: 1");
 		
 		String statement = console.displayMenu();	

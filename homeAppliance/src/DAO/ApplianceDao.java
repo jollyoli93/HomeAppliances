@@ -31,51 +31,58 @@ public class ApplianceDao extends DAO<Appliance> {
 	@Override
 	public ArrayList<Appliance> findAll() {
 		ArrayList<Appliance> applianceList = new ArrayList<>(); 
-		Connection connect = connector.initializeDBConnection(); 
+		Connection connect = connector.initializeDBConnection();
 		
 		String query = "SELECT * FROM appliances";
 		
+        try (Statement statement = connect.createStatement();
+             ResultSet result = statement.executeQuery(query)) {
+
+               if (result.next()) {
+            	   System.out.println("Listing products");
+				
+            	   do {
+            		   Appliance product;
+                	   
+                       int id = result.getInt("id");
+                       String sku = result.getString("sku");
+                       String desc = result.getString("description");
+                       String cat = result.getString("category");
+                       int price = result.getInt("price");
+                       
+                       
+                       try {
+                           // Get the appropriate factory for the category
+                           ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+                           
+                           // Create the specific appliance using the factory
+                           product = factory.selectAppliance(desc);
+                           
+                           // Set the common properties
+                           product.setId(id);
+                           
+                           applianceList.add(product);
+                           
+                           System.out.println("Created: " + product.getCategory() + " - " + product.getDescription());
+
+                           
+                       } catch (IllegalArgumentException e) {
+//                    	   e.printStackTrace();
+                           System.out.println("Error creating appliance: " + e.getMessage());
+                       }
+                       
+                   } while (result.next());
+               } else {
+                   System.out.println("No results found.");
+               }
+
+
+           } catch (SQLException e) {
+               System.out.println("SQL Exception: " + e.getMessage());
+           }
+		
 		return applianceList;
 	}
-
-//	@Override
-//	public ArrayList<Appliance> findAll() {
-//		ArrayList<Appliance> applianceList = new ArrayList<>(); 
-//		Connection connect = connector.initializeDBConnection(); 
-//		
-//		String query = "SELECT * FROM appliances";
-//		
-//        try (Statement statement = connect.createStatement();
-//             ResultSet result = statement.executeQuery(query)) {
-//
-//               if (result.next()) {
-//            	   System.out.println("Listing products");
-//				
-//            	   do {
-//            		   Appliance product;
-//                	   
-//                       int id = result.getInt("id");
-//                       String sku = result.getString("sku");
-//                       String desc = result.getString("description");
-//                       String cat = result.getString("category");
-//                       int price = result.getInt("price");
-//                       
-//                       product = new Appliance(id, sku, desc, cat, price);
-//
-//                       applianceList.add(product);
-//                       
-//                   } while (result.next());
-//               } else {
-//                   System.out.println("No results found.");
-//               }
-//
-//
-//           } catch (SQLException e) {
-//               System.out.println("SQL Exception: " + e.getMessage());
-//           }
-//		
-//		return applianceList;
-//	}
 //
 //	@Override
 //	public Appliance getById(int id) {
