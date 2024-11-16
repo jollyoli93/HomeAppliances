@@ -1,10 +1,4 @@
 package DAO;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public abstract class DAO<T> {
@@ -23,34 +17,11 @@ public abstract class DAO<T> {
 		
 	}
 	
-	public int getUniqueId(String table) {
-		Connection connect = connector.initializeDBConnection(); 
-		int uniqueId = 0;
-		
-		String query = "SELECT id FROM " + table + " ORDER BY id desc LIMIT 1";
-		
-		try (Statement statement = connect.createStatement();
-		         ResultSet resultSet = statement.executeQuery(query)){
-
-               if (resultSet.next()) {
-            	   int last_id = resultSet.getInt("id");
-            	   uniqueId = last_id + 1;
-            	   return uniqueId;
-
-               } else {
-                   System.out.println("No results found.");
-                   }
-          } catch (SQLException e) {
-               System.out.println("SQL Exception: " + e.getMessage());
-          }
-        
-		return 1;
-	}
-	
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
 	public abstract boolean addNew(T add);
 	public abstract boolean deleteById(int id);
-	public abstract boolean updateById(int id);
+	public abstract boolean updateById(int id, Object update);
+
 
 }
