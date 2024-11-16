@@ -35,7 +35,7 @@ public class ApplianceDao extends DAO<Appliance> {
 		
 		String query = "SELECT * FROM appliances";
 		
-		return null;
+		return applianceList;
 	}
 
 //	@Override
@@ -111,7 +111,6 @@ public class ApplianceDao extends DAO<Appliance> {
 		Connection connect = connector.initializeDBConnection(); 
 		
 		try (PreparedStatement preparedStatement = connect.prepareStatement(query)){
-			preparedStatement.setInt(1, newAppliance.getId());
 			preparedStatement.setString(2, newAppliance.getSku());
 			preparedStatement.setString(3, newAppliance.getDescription());
 			preparedStatement.setString(4, newAppliance.getCategory());

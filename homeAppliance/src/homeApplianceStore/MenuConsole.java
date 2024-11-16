@@ -155,9 +155,8 @@ public class MenuConsole {
 	private void addProduct() {
 		ApplianceFactory applianceFactory = null;
 		Appliance appliance = null;
-		
-		int newId = applianceDAO.getUniqueId("appliances");
-		int input;
+
+		int userInput;
 		
 		do {
 			System.out.println("Please select department from the list below");
@@ -165,9 +164,9 @@ public class MenuConsole {
 			System.out.println("[2] Home Cleaning");
 			System.out.println("[3] Go back");
 			
-			input = handleInput.getInputInt();
+			userInput = handleInput.getInputInt();
 			
-			switch (input) {
+			switch (userInput) {
 				case 1:
 					applianceFactory = new EntertainmentFactory();
 					break;
@@ -181,31 +180,32 @@ public class MenuConsole {
 					System.out.println();
 
 			}
-		} while (input == 3);
+		} while (userInput == 3);
 		
 		// list out concrete classes that are available for that particular factory. Must be called on the applianceFactory
 		ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
-		int countOfTypes = applianceTypes.size();
+		int sizeOfTypesList = applianceTypes.size();
+		int endOfList = sizeOfTypesList + 1;
 		
 		do {
 			System.out.println("Please select an appliace to add");
 			System.out.println();
 
 			
-			for (int i =  0; i < countOfTypes; i++) {
-				String type =  applianceTypes.get(i);
-				int userInput = i + 1;
+			for (int i =  0; i < sizeOfTypesList; i++) {
+				String applianceType =  applianceTypes.get(i);
+				int printUserSelectionIndex = i + 1;
 				
-				System.out.println("[" + userInput + "] " + type);
+				System.out.println("[" + printUserSelectionIndex + "] " + applianceType);
 			}
 			
-			input = handleInput.getInputInt();
+			userInput = handleInput.getInputInt();
 			
-			if (input == countOfTypes + 1) {
+			if (userInput == endOfList) {
 				System.out.println("Exiting");
 			}
-			else if (input >= 0 & input <= countOfTypes + 1) {
-				appliance = applianceFactory.selectAppliance(applianceTypes.get(input -1), newId);
+			else if (userInput >= 0 & userInput <= sizeOfTypesList + 1) {
+				appliance = applianceFactory.selectAppliance(applianceTypes.get(userInput -1));
 
 			}
 			else {
@@ -214,7 +214,7 @@ public class MenuConsole {
 
 			}
 			
-		} while (input == countOfTypes + 1);
+		} while (userInput == sizeOfTypesList + 1);
 		
 		System.out.println("You have added - " + appliance.getDetails());
 		System.out.println();

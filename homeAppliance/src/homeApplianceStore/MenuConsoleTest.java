@@ -54,6 +54,19 @@ class MenuConsoleTest {
 		assertEquals("Exiting", statement);
 	}
 	
+	@Test void addTVAppliance () {
+		int[] adding = {3, 1, 1};
+		
+		console.setHandler(new MockIOHandler(adding));
+		
+		System.out.println();
+		System.out.println("--------------------------");
+		System.out.println("Mock Test: Add Product");
+		String statement = console.displayMenu();	
+		
+		assertEquals("Exiting", statement);
+	}
+	
 	@Test
 	public void deleteProductById () { 
 		int[] delete = {5, 0};

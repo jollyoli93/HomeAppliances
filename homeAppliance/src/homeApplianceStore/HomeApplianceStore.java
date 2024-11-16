@@ -6,7 +6,7 @@ public class HomeApplianceStore {
 	public static void main(String[] args ) {
 	ApplianceFactory entertainment = new EntertainmentFactory();
 		
-		Appliance tv = entertainment.selectAppliance("Basic Television", 1);
+		Appliance tv = entertainment.selectAppliance("Basic Television");
 		
 		ArrayList<String> list = entertainment.listAllApplianceTypes();
 		
