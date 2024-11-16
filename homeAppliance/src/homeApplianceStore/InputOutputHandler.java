@@ -1,15 +1,16 @@
 package homeApplianceStore;
 
 import java.util.InputMismatchException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public interface InputOutputHandler {
-    int getInputInt();
-    String getInputString();
-    double getInputDouble();
+	public int getInputInt();
+	public String getInputString();
+	public double getInputDouble();
     public void clearInput();
-    
-    void output(String message);
+    public String output(String message);
 }
 
 class ConsoleIOHandler implements InputOutputHandler {
@@ -64,8 +65,8 @@ class ConsoleIOHandler implements InputOutputHandler {
     }
 	
     @Override
-    public void output(String message) {
-        System.out.println(message);
+    public String output(String message) {
+		return message;
     }
     
     public void clearInput() {
@@ -76,53 +77,46 @@ class ConsoleIOHandler implements InputOutputHandler {
 
 
 class MockIOHandler implements InputOutputHandler {
-    private int mockIntValue = 0;
-    private String mockStringValue = "";
-    private double mockDoubleValue = 0.0;
-    
-    // Constructor for setting mock values
-    public MockIOHandler(int mockInt, String mockString, double mockDouble) {
-        this.mockIntValue = mockInt;
-        this.mockStringValue = mockString;
-        this.mockDoubleValue = mockDouble;
+    private Queue<Integer> mockIntValue = new LinkedList<>();
+    String outputLog = "";
+
+    public MockIOHandler(int[] mockInt) {
+        for (int input : mockInt) {
+        	mockIntValue.offer(input);
+        }
     }
-    
-    @Override
+
+	@Override
     public int getInputInt() {
-        return mockIntValue;
+        if (mockIntValue.isEmpty()) {
+        	return 6;
+        }
+		return mockIntValue.poll();
     }
 
     @Override
     public String getInputString() {
-        return mockStringValue;
+        return null;
     }
 
     @Override
     public double getInputDouble() {
-        return mockDoubleValue;
+        return 0;
     }
 
     @Override
     public void clearInput() {
-        // No action needed for mock
+        // Not applicable
     }
 
     @Override
-    public void output(String message) {
-        // Optional: Store output messages for testing
-        System.out.println("Mock output: " + message);
+    public String output(String message) {
+        return outputLog = message;
     }
-    
-    // Setters for testing different scenarios
-    public void setMockIntValue(int value) {
-        this.mockIntValue = value;
+
+    // Method to get all captured output
+    public String getOutputLog() {
+        return outputLog.toString();
     }
-    
-    public void setMockStringValue(String value) {
-        this.mockStringValue = value;
-    }
-    
-    public void setMockDoubleValue(double value) {
-        this.mockDoubleValue = value;
-    }
+   
 }

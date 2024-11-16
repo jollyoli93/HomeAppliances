@@ -15,20 +15,25 @@ import printer.AppliancePrinter;
 import printer.Printer;
 
 public class MenuConsole {
-	String driver;
-	String dbPath;
-	ApplianceDao applianceDAO;
-	ConsoleIOHandler handleInput;
+	private String output = null;
+    private String driver;
+    private String dbPath;
+    private ApplianceDao applianceDAO;
+    private InputOutputHandler handleInput;
 
 	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
 
 	public MenuConsole() {
 		String dbPath = "HomeAppliances.db";
 		initFactoriesMap();
+		this.handleInput = new ConsoleIOHandler(); 
 		
 		this.applianceDAO = new ApplianceDao(dbPath, factories);
-		this.handleInput = new ConsoleIOHandler();
-	}	
+	}
+	
+	public void setHandler(InputOutputHandler handleInput) {
+		this.handleInput = handleInput;
+	}
 	
 	private void initFactoriesMap () {
 		ApplianceFactory entertainment = new EntertainmentFactory();
@@ -38,9 +43,7 @@ public class MenuConsole {
 		factories.put("Home Cleaning", homeCleaning);
 	}
 	
-	public void displayMenu() {
-//		Scanner scanner = new Scanner(System.in);
-		
+	public String displayMenu() {
 		int input = 0;
 		
 		while (input != 6) {
@@ -57,13 +60,15 @@ public class MenuConsole {
 			System.out.println("[4] Update a product by ID");
 			System.out.println("[5] Delete a product by ID");
 			System.out.println("[6] Exit");
+			System.out.println();
 			
 			input = handleInput.getInputInt();
-			System.out.println(input);
 			
 				switch (input) {
 					case 0:
 						System.out.println("Try again");
+						System.out.println();
+
 						break;
 					case 1:
 						getAllProducts();
@@ -77,24 +82,35 @@ public class MenuConsole {
 						addProduct();
 						break;
 					case 4:
-						System.out.println("Updating");
+						output = handleInput.output("Updating");
+						System.out.println(output);
+						System.out.println();
 						break;
+						
 					case 5:
 //						dao.deleteProduct(input);
-						System.out.println("Deleting");
+						output = handleInput.output("Deleting");
+						System.out.println(output);
+						System.out.println();
 						break;
+						
 					case 6:
-						System.out.println("Exiting");
 						break;
+						
 					default:
 						System.out.println("Not valid, please select again...");
 						break;
 						}
-//				
-//				System.out.println("Press 0 to continue or 6 to exit");
-//				input = handleInput.getInputInt();
 				
-		} 
+				if (input != 6) {
+					System.out.println("Press 6 to exit or any key to continue");
+					input = handleInput.getInputInt();
+				}
+		}
+		
+		output = handleInput.output("Exiting");
+		System.out.println(output);
+		return output;
 		
 	}
 
@@ -113,24 +129,26 @@ public class MenuConsole {
 	}
 	
 	private void getProductById() {
-		int id = 0;
-		
 		try {
 			Appliance appliance = null;
 			AppliancePrinter printer = null;
 			
 			System.out.println("Enter Product ID");
 			
-			id = handleInput.getInputInt();
+			int id = handleInput.getInputInt();
 
 			System.out.println("Searching for product " + id);
+			System.out.println();
+			
 			appliance = applianceDAO.getById(id);
 			
 			printer = new AppliancePrinter(appliance);
 			printer.print();
 			
 		} catch (NullPointerException e) {
-			System.out.println("ID " + id + " does not exist in the database");
+			output = handleInput.output("No item found in the database");
+			System.out.println(output);
+			System.out.println();
 		}
 
 	}
@@ -161,6 +179,8 @@ public class MenuConsole {
 					break;
 				default:
 					System.out.println("Please try again");
+					System.out.println();
+
 			}
 		} while (input == 3);
 		
@@ -170,6 +190,8 @@ public class MenuConsole {
 		
 		do {
 			System.out.println("Please select an appliace to add");
+			System.out.println();
+
 			
 			for (int i =  0; i < countOfTypes; i++) {
 				String type =  applianceTypes.get(i);
@@ -189,11 +211,15 @@ public class MenuConsole {
 			}
 			else {
 				System.out.println("Input invalid"); 
+				System.out.println();
+
 			}
 			
 		} while (input == countOfTypes + 1);
 		
 		System.out.println("You have added - " + appliance.getDetails());
+		System.out.println();
+
 //		applianceDAO.addNew(appliance);
 	}
 	
