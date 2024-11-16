@@ -73,6 +73,8 @@ class ConsoleIOHandler implements InputOutputHandler {
     };
 }
 
+
+
 class MockIOHandler implements InputOutputHandler {
     private int mockIntValue = 0;
     private String mockStringValue = "";
