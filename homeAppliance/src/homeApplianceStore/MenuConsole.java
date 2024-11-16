@@ -44,7 +44,7 @@ public class MenuConsole {
 	public String displayMenu() {
 		int input = 0;
 		
-		while (input != 6) {
+		while (input != 7) {
 		
 			System.out.println("------------------------");
 			System.out.println("Home Appliance Store");
@@ -55,9 +55,10 @@ public class MenuConsole {
 			System.out.println("[1] List all products");
 			System.out.println("[2] Search by the product ID");
 			System.out.println("[3] Add a new product");
-			System.out.println("[4] Update a product by ID");
-			System.out.println("[5] Delete a product by ID");
-			System.out.println("[6] Exit");
+			System.out.println("[4] Update a product price by ID");
+			System.out.println("[5] Update a product price by SKU");
+			System.out.println("[6] Delete a product by ID");
+			System.out.println("[7] Exit");
 			System.out.println();
 			
 			input = handleInput.getInputInt();
@@ -80,18 +81,26 @@ public class MenuConsole {
 						addProduct();
 						break;
 					case 4:
+						updatePriceByID();
+//						output = handleInput.output("Updating");
+//						System.out.println(output);
+//						System.out.println();
+						break;
+						
+					case 5:
+						updatePriceBySKU();
 						output = handleInput.output("Updating");
 						System.out.println(output);
 						System.out.println();
 						break;
 						
-					case 5:
+					case 6:
 						deleteProduct();
 //						Boolean delete = deleteProduct();
 
 						break;
 						
-					case 6:
+					case 7:
 						break;
 						
 					default:
@@ -99,7 +108,7 @@ public class MenuConsole {
 						break;
 						}
 				
-				if (input != 6) {
+				if (input != 7) {
 					System.out.println("Press 6 to exit or any key to continue");
 					input = handleInput.getInputInt();
 				}
@@ -241,10 +250,23 @@ public class MenuConsole {
 		return appliance;
 	}
 	
-	private void updatePrice() {
+	private void updatePriceByID() {
+		System.out.println("Enter ID to update price");
+		int userInputID = handleInput.getInputInt();
+		
+		System.out.println("Enter new price");
+		double userInputPrice = handleInput.getInputDouble();
+		
+		try {
+			applianceDAO.updateById(userInputID, userInputPrice);
+		} catch (NullPointerException ex) {
+			System.out.println("Product not in database");
+		}
+	}
+
+	private void updatePriceBySKU() {
 		
 	}
-	
 	private void deleteProduct() {
 		System.out.println("Please enter ID");
 		System.out.println();
