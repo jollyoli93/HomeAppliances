@@ -41,9 +41,9 @@ public class MenuConsole {
 	public void displayMenu() {
 //		Scanner scanner = new Scanner(System.in);
 		
-		int input;
+		int input = 0;
 		
-		do {
+		while (input != 6) {
 		
 			System.out.println("------------------------");
 			System.out.println("The Home Appliance Store");
@@ -59,8 +59,12 @@ public class MenuConsole {
 			System.out.println("[6] Exit");
 			
 			input = handleInput.getInputInt();
+			System.out.println(input);
 			
 				switch (input) {
+					case 0:
+						System.out.println("Try again");
+						break;
 					case 1:
 						getAllProducts();
 						break;
@@ -86,11 +90,11 @@ public class MenuConsole {
 						System.out.println("Not valid, please select again...");
 						break;
 						}
+//				
+//				System.out.println("Press 0 to continue or 6 to exit");
+//				input = handleInput.getInputInt();
 				
-				System.out.println("Press 0 to continue or 6 to exit");
-				input = handleInput.getInputInt();
-				
-		} while (input != 6);
+		} 
 		
 	}
 
@@ -110,11 +114,13 @@ public class MenuConsole {
 	
 	private void getProductById() {
 		int id = 0;
+		
 		try {
 			Appliance appliance = null;
 			AppliancePrinter printer = null;
 			
 			System.out.println("Enter Product ID");
+			
 			id = handleInput.getInputInt();
 
 			System.out.println("Searching for product " + id);
@@ -122,10 +128,9 @@ public class MenuConsole {
 			
 			printer = new AppliancePrinter(appliance);
 			printer.print();
+			
 		} catch (NullPointerException e) {
 			System.out.println("ID " + id + " does not exist in the database");
-		} catch (InputMismatchException e) {
-			System.out.println("Invalid character please try again");
 		}
 
 	}
