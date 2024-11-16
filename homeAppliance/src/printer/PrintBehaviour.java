@@ -1,6 +1,7 @@
 package printer;
 
-import homeApplianceStore.HomeAppliance;
+import homeApplianceStore.Appliance;
+import homeApplianceStore.HomeApplianceSS;
 
 public interface PrintBehaviour {
 	void print();
@@ -9,10 +10,10 @@ public interface PrintBehaviour {
 
 
 class ApplianceBehaviour implements PrintBehaviour {
-	HomeAppliance obj;
+	Appliance obj;
 	
-	ApplianceBehaviour (HomeAppliance obj){
-		this.obj  = obj;
+	ApplianceBehaviour (Appliance obj2){
+		this.obj  = obj2;
 	}
 	
 	public void print() {

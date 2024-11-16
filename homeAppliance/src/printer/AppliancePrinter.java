@@ -1,10 +1,11 @@
 package printer;
 
-import homeApplianceStore.HomeAppliance;
+import homeApplianceStore.Appliance;
+import homeApplianceStore.HomeApplianceSS;
 
 public class AppliancePrinter extends Printer {
 	
-	public AppliancePrinter(HomeAppliance obj) {
+	public AppliancePrinter(Appliance obj) {
 		printBehaviour = new ApplianceBehaviour(obj);
 	}
 	

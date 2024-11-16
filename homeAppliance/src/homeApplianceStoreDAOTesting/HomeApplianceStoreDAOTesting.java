@@ -7,12 +7,12 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import database.DbConnection;
-import homeApplianceStore.HomeAppliance;
+import homeApplianceStore.HomeApplianceSS;
 
 public class HomeApplianceStoreDAOTesting {
 	String dbPath;
 	String driver;
-	HomeAppliance appliance;
+	HomeApplianceSS appliance;
 	
 	@BeforeEach
 	public void initializeConnection() {

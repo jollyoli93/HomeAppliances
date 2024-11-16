@@ -2,14 +2,14 @@
 
 package homeApplianceStore;
 
-public class HomeAppliance {
+public class HomeApplianceSS {
 	private int id;
 	private String sku;
 	private String description;
 	private String category;
 	private double price;
 	
-	public HomeAppliance (int id, String sku, String description, String category, double price) {
+	public HomeApplianceSS (int id, String sku, String description, String category, double price) {
 		this.id = id;
 		this.sku = sku;
 		this.description = description;

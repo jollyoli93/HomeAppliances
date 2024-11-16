@@ -3,7 +3,9 @@
 package homeApplianceStore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,14 +19,26 @@ public class MenuConsole {
 	String dbPath;
 	ApplianceDao applianceDAO;
 	ConsoleIOHandler handleInput;
-	
+
+	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
+
 	public MenuConsole() {
 		String dbPath = "HomeAppliances.db";
-		this.applianceDAO = new ApplianceDao(dbPath);
+		initFactoriesMap();
+		
+		this.applianceDAO = new ApplianceDao(dbPath, factories);
 		this.handleInput = new ConsoleIOHandler();
 	}	
 	
-	void displayMenu() {
+	private void initFactoriesMap () {
+		ApplianceFactory entertainment = new EntertainmentFactory();
+		ApplianceFactory homeCleaning = new HomeCleaningFactory();
+		
+		factories.put("Entertainment", entertainment);
+		factories.put("Home Cleaning", homeCleaning);
+	}
+	
+	public void displayMenu() {
 //		Scanner scanner = new Scanner(System.in);
 		
 		int input;
@@ -81,16 +95,21 @@ public class MenuConsole {
 	}
 
 	private void getAllProducts() {
-		ArrayList<HomeAppliance> list = applianceDAO.findAll();
-		
-		for (HomeAppliance obj : list) {
-			AppliancePrinter print = new AppliancePrinter(obj);
-			print.print();
+		try {
+			ArrayList<Appliance> list = applianceDAO.findAll();
+			
+			for (Appliance obj : list) {
+				AppliancePrinter print = new AppliancePrinter(obj);
+				print.print();
+			}
+		} catch (NullPointerException e) {
+			System.out.println("No products in the database");
+			System.out.println();
 		}
 	}
 	
 	private void getProductById() {
-		HomeAppliance appliance = null;
+		Appliance appliance = null;
 		AppliancePrinter printer = null;
 		
 		System.out.println("Enter Product ID");
@@ -146,24 +165,23 @@ public class MenuConsole {
 				
 				System.out.println("[" + userInput + "] " + type);
 			}
+			
 			input = handleInput.getInputInt();
 			
-			switch (input) {
-			case 1:
+			if (input == countOfTypes + 1) {
+				System.out.println("Exiting");
+			}
+			else if (input >= 0 & input <= countOfTypes + 1) {
 				appliance = applianceFactory.selectAppliance(applianceTypes.get(input -1), newId);
-				break;
-			case 2:
-				
-				break;
-			case 3:
-				break;
-			default:
-				System.out.println("Please try again");
-		}
+
+			}
+			else {
+				System.out.println("Input invalid"); 
+			}
 			
 		} while (input == countOfTypes + 1);
 		
-		System.out.println("You have selected product" + appliance.getDetails());
+		System.out.println("You have added - " + appliance.getDetails());
 //		applianceDAO.addNew(appliance);
 	}
 	
@@ -174,21 +192,21 @@ public class MenuConsole {
 	private void deleteProduct() {
 		
 	}
-
-	class CheckPattern {
-		Pattern pattern;
-		Matcher matcher;
-		
-		public CheckPattern(String input, String pattern) {
-			this.pattern  = Pattern.compile(pattern);
-			this.matcher = this.pattern.matcher(input);
-		
-		}
-		
-		public boolean matches() {
-			return matcher.matches();
-		}
-	}
+//
+//	class CheckPattern {
+//		Pattern pattern;
+//		Matcher matcher;
+//		
+//		public CheckPattern(String input, String pattern) {
+//			this.pattern  = Pattern.compile(pattern);
+//			this.matcher = this.pattern.matcher(input);
+//		
+//		}
+//		
+//		public boolean matches() {
+//			return matcher.matches();
+//		}
+//	}
 }
 
 

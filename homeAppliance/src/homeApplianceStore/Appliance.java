@@ -11,6 +11,10 @@ public abstract class Appliance {
 		return this.id;
 	}
 	
+	public void setId (int id) {
+		this.id = id;
+	}
+	
 	public String getSku() {
 		return this.sku;
 	}
@@ -28,7 +32,7 @@ public abstract class Appliance {
 	}
 	
 	public String getDetails() {
-		return "ID:" + id + ", SKU: " + sku + ", Description: " + description + ", Category: " + category + ", Price: " + price;
+		return "Description: " + description + ", Category: " + category + ", Price: " + price + " ID:" + id + ", SKU: " + sku;
 	}
 }
 

@@ -8,11 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class HomeApplianceTest {
-	HomeAppliance home;
+	HomeApplianceSS home;
 	
 	@BeforeEach
 	public void isInitialized() {
-		this.home = new HomeAppliance(1, "TV001", "TV", "Entertainment", 200);
+		this.home = new HomeApplianceSS(1, "TV001", "TV", "Entertainment", 200);
 	}
 
 	@Test
