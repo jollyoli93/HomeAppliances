@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import homeApplianceStore.Appliance;
@@ -16,12 +15,9 @@ import homeApplianceStore.ApplianceFactory;
 
 public class ApplianceDao extends DAO<Appliance> {
 	String path;
-	private Map<String, ApplianceFactory> categoryFactories;
-	
-   public ApplianceDao(String path, Map<String, ApplianceFactory> factories) {
+	public ApplianceDao(String path, Map<String, ApplianceFactory> factories) {
         this.path = path;
         connector = new SqlLiteConnection(path);
-        this.categoryFactories = factories;
     }
    
    public void initializeFactories () {
@@ -161,8 +157,19 @@ public class ApplianceDao extends DAO<Appliance> {
     }
 
 	@Override
-	public boolean updateById(int id) {
-		// TODO Auto-generated method stub
+	public boolean updateById(int id, Object update) {
+		String query = "UPDATE appliances SET price = ? WHERE id = ?";
+		Connection connect = connector.initializeDBConnection();
+		
+		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+			preparedStatement.setDouble(1, (Double) update);
+			preparedStatement.setInt(2, id);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
