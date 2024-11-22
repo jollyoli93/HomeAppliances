@@ -10,16 +10,16 @@ public interface Connector {
 
 
 class SqlLiteConnection implements Connector {
-    private String path;
+    private String dbName;
     private String driver = "org.sqlite.JDBC";
     private Connection connect = null;
 
-	public SqlLiteConnection(String path) {
-	    this.path = path;
+	public SqlLiteConnection(String dbName) {
+	    this.dbName = dbName;
 	}
 	
 	public Connection initializeDBConnection() {
-	    String dbURL = "jdbc:sqlite:" + this.path;
+	    String dbURL = "jdbc:sqlite:" + this.dbName + ".db";
 	
 	    try {
 	        Class.forName(driver);
@@ -29,7 +29,7 @@ class SqlLiteConnection implements Connector {
 	
 	    try {
 	        connect = DriverManager.getConnection(dbURL);
-	        System.out.println("Connected to " + dbURL);
+	        System.out.println("Connecting to " + dbURL);
 	    } catch (SQLException e) {
 	        System.out.println("Connection failed: " + e.getMessage());
 	    }
