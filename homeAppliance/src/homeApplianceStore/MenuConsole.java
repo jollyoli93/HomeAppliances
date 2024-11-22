@@ -18,7 +18,7 @@ public class MenuConsole {
 	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
 
 	public MenuConsole() {
-		String dbPath = "HomeAppliances.db";
+		String dbPath = "HomeAppliances";
 		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler(); 
 		
