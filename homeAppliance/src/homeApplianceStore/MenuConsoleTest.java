@@ -10,7 +10,7 @@ class MenuConsoleTest {
 
 	@BeforeEach
 	public void menuConsoleTest () {
-		console = new MenuConsole();
+		console = new MenuConsole("HomeAppliances");
 	}
 	
 	@Test 

@@ -14,11 +14,12 @@ public class MenuConsole {
 	private String output = null;
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
+    private String dbPath = null;
 
 	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
 
-	public MenuConsole() {
-		String dbPath = "HomeAppliances";
+	public MenuConsole(String dbPath) {
+		this.dbPath = dbPath;
 		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler(); 
 		
