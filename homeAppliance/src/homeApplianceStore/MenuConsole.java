@@ -41,7 +41,7 @@ public class MenuConsole {
 	public String displayMenu() {
 		int input = 0;
 		
-		while (input != 7) {
+		while (input != 6) {
 		
 			System.out.println("------------------------");
 			System.out.println("Home Appliance Store");
@@ -52,10 +52,9 @@ public class MenuConsole {
 			System.out.println("[1] List all products");
 			System.out.println("[2] Search by the product ID");
 			System.out.println("[3] Add a new product");
-			System.out.println("[4] Update a product price by ID");
-			System.out.println("[5] Update a product price by SKU");
-			System.out.println("[6] Delete a product by ID");
-			System.out.println("[7] Exit");
+			System.out.println("[4] Update a product");
+			System.out.println("[5] Delete a product by ID");
+			System.out.println("[6] Exit");
 			System.out.println();
 			
 			input = handleInput.getInputInt();
@@ -78,24 +77,18 @@ public class MenuConsole {
 						addProduct();
 						break;
 					case 4:
-						updatePriceByID();
-
-						break;
-						
-					case 5:
-						updatePriceBySKU();
-						output = handleInput.output("Updating");
+						updatePrice();
 						System.out.println(output);
 						System.out.println();
 						break;
 						
-					case 6:
+					case 5:
 						deleteProduct();
 //						Boolean delete = deleteProduct();
 
 						break;
 						
-					case 7:
+					case 6:
 						break;
 						
 					default:
@@ -103,7 +96,7 @@ public class MenuConsole {
 						break;
 						}
 				
-				if (input != 7) {
+				if (input != 6) {
 					System.out.println("Press 6 to exit or any key to continue");
 					input = handleInput.getInputInt();
 				}
@@ -243,6 +236,22 @@ public class MenuConsole {
 		} while (userInput == sizeOfTypesList + 1);
 		
 		return appliance;
+	}
+	
+	private void updatePrice() {
+		System.out.println("Please select an option");
+		System.out.println("[1] Update a product price by ID");
+		System.out.println("[2] Update a product price by SKU");
+		int userInputID = handleInput.getInputInt();
+		
+		switch (userInputID) {
+			case 1: 
+				updatePriceByID();
+				break;
+			case 2:
+				updatePriceBySKU();
+				break;
+		}
 	}
 	
 	private void updatePriceByID() {

@@ -14,6 +14,9 @@ public class HomeApplianceStore {
 //		
 //		System.out.println(list.get(0));
 		ApplianceDao testTable = new ApplianceDao("HomeAppliances", null);
-		testTable.createTable("applianceTest");
+		String table = "Testies";
+		if (!testTable.checkTableExists(table)) {
+			testTable.createTable(table);
+		} 
 	}
 }
