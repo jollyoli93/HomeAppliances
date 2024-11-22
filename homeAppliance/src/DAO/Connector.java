@@ -35,4 +35,5 @@ class SqlLiteConnection implements Connector {
 	    }
 		return connect;
 	}
-	}
+}
+

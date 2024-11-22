@@ -82,3 +82,12 @@ class HomeCleaningFactory extends ApplianceFactory {
         addType("super fast washing machine", () -> new SuperFastWashingMachineAppliance());
     }
 }
+
+//class Robotics extends ApplianceFactory {
+//
+//	@Override
+//	void initializeApplianceTypes() {
+//		
+//	}
+//	
+//}

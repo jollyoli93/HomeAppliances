@@ -73,7 +73,9 @@ public class ApplianceDao extends DAO<Appliance> {
 
 
            } catch (SQLException e) {
+   				System.out.println("Error connecting to the database");
                System.out.println("SQL Exception: " + e.getMessage());
+               
            }
 		
 		return applianceList;
@@ -114,7 +116,8 @@ public class ApplianceDao extends DAO<Appliance> {
         	}
         	
         } catch (SQLException e) {
-			e.printStackTrace();
+				System.out.println("Error connecting to the database");
+	               System.out.println("SQL Exception: " + e.getMessage());
 		}
 		
     	return appliance;
@@ -136,7 +139,8 @@ public class ApplianceDao extends DAO<Appliance> {
 			return executeRows > 0;
 					 
 		} catch (SQLException e) {
-			e.printStackTrace();
+				System.out.println("Error connecting to the database");
+               System.out.println("SQL Exception: " + e.getMessage());
 			return false;
 		}
 
@@ -153,8 +157,8 @@ public class ApplianceDao extends DAO<Appliance> {
             
             return executeRows > 0;
         } catch (SQLException e) {
-        	
-            e.printStackTrace();
+			System.out.println("Error connecting to the database");
+            System.out.println("SQL Exception: " + e.getMessage());
             return false;
         }
     }
@@ -172,9 +176,25 @@ public class ApplianceDao extends DAO<Appliance> {
 	        return updated > 0;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error connecting to the database");
+            System.out.println("SQL Exception: " + e.getMessage());
 			return false;
+		}
+	}
+	
+	protected boolean createDB (String name) {
+		String query = "CREATE TABLE test";
+		Connection connect = connector.initializeDBConnection();
+		
+		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+			
+			int updated = preparedStatement.executeUpdate();
+			
+	        return updated > 0;
+		} catch (SQLException e) {
+			System.out.println("Error connecting to the database");
+            System.out.println("SQL Exception: " + e.getMessage());
+            return false;
 		}
 	}
 

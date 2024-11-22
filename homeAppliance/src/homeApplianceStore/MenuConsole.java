@@ -4,11 +4,7 @@ package homeApplianceStore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import DAO.ApplianceDao;
 import printer.AppliancePrinter;
@@ -82,9 +78,7 @@ public class MenuConsole {
 						break;
 					case 4:
 						updatePriceByID();
-//						output = handleInput.output("Updating");
-//						System.out.println(output);
-//						System.out.println();
+
 						break;
 						
 					case 5:
