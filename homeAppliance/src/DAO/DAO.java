@@ -22,7 +22,7 @@ public abstract class DAO<T> {
 	public abstract boolean addNew(T add);
 	public abstract boolean deleteById(int id);
 	public abstract boolean updateById(int id, Object update);
-	protected abstract boolean createDB(String name);
+	protected abstract boolean createTable(String name);
 
 
 }

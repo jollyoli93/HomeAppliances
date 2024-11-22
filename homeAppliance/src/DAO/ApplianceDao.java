@@ -19,10 +19,7 @@ public class ApplianceDao extends DAO<Appliance> {
         this.path = path;
         connector = new SqlLiteConnection(path);
     }
-   
-   public void initializeFactories () {
-	   
-   };
+
 
 	@Override
 	public ArrayList<Appliance> findAll() {
@@ -57,10 +54,7 @@ public class ApplianceDao extends DAO<Appliance> {
                            product.setPrice(price);
                            
                            applianceList.add(product);
-                           
-                           System.out.println("Created: " + product.getCategory() + " - " + product.getDescription());
-
-                           
+                                           
                        } catch (IllegalArgumentException e) {
 //                    	   e.printStackTrace();
                            System.out.println("Error creating appliance: " + e.getMessage());
@@ -182,13 +176,22 @@ public class ApplianceDao extends DAO<Appliance> {
 		}
 	}
 	
-	protected boolean createDB (String name) {
-		String query = "CREATE TABLE test";
+	public boolean createTable (String name) {
+		String query = "CREATE TABLE " + name
+				+"( id	INTEGER NOT NULL UNIQUE,"
+				+"sku	TEXT NOT NULL,"
+				+"description	TEXT NOT NULL,"
+				+" category	TEXT NOT NULL,"
+				+"price	INTEGER NOT NULL,"
+				+"PRIMARY KEY(id AUTOINCREMENT))";
+		
 		Connection connect = connector.initializeDBConnection();
 		
 		try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 			
 			int updated = preparedStatement.executeUpdate();
+			
+			System.out.println("Table test created");
 			
 	        return updated > 0;
 		} catch (SQLException e) {
