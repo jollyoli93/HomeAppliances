@@ -22,8 +22,13 @@ public class ApplianceDao extends DAO<Appliance> {
 
 
 	@Override
-	public ArrayList<Appliance> findAll() {
+	public ArrayList<Appliance> findAll(String table) {
 		ArrayList<Appliance> applianceList = new ArrayList<>(); 
+		
+		if (!checkTableExists(table)) {
+			createTable(table);
+		}
+		
 		
 		String query = "SELECT * FROM appliances";
 		
@@ -68,7 +73,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public Appliance getById(int id) {
+	public Appliance getById(int id, String table) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
 
 		Appliance appliance = null;
@@ -111,15 +116,15 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public boolean addNew(Appliance newAppliance) {	
-		String query =  "INSERT INTO appliances (id, sku, description, category, price) VALUES (?, ?, ?, ?, ?)";
+	public boolean addNew(Appliance newAppliance, String table) {	
+		String query =  "INSERT INTO "+ table + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
 		
 		try (Connection connect = connector.initializeDBConnection(); 
 			 PreparedStatement preparedStatement = connect.prepareStatement(query)){
-				preparedStatement.setString(2, newAppliance.getSku());
-				preparedStatement.setString(3, newAppliance.getDescription());
-				preparedStatement.setString(4, newAppliance.getCategory());
-				preparedStatement.setDouble(5, newAppliance.getPrice());
+				preparedStatement.setString(1, newAppliance.getSku());
+				preparedStatement.setString(2, newAppliance.getDescription());
+				preparedStatement.setString(3, newAppliance.getCategory());
+				preparedStatement.setDouble(4, newAppliance.getPrice());
 						
 				int executeRows = preparedStatement.executeUpdate();
 				
@@ -134,7 +139,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
     @Override
-    public boolean deleteById(int id) {
+    public boolean deleteById(int id, String table) {
         String query = "DELETE FROM appliances WHERE id = ?";
         
         try (Connection connect = connector.initializeDBConnection();
@@ -151,7 +156,7 @@ public class ApplianceDao extends DAO<Appliance> {
     }
 
 	@Override
-	public boolean updateById(int id, Object update) {
+	public boolean updateById(int id, Object update, String table) {
 		String query = "UPDATE appliances SET price = ? WHERE id = ?";
 		
 		try (Connection connect = connector.initializeDBConnection();

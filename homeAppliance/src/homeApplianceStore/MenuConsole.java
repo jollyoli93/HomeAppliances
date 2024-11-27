@@ -15,11 +15,13 @@ public class MenuConsole {
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
     private String dbPath = null;
+    private String table = null;
 
 	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
 
-	public MenuConsole(String dbPath) {
+	public MenuConsole(String dbPath, String table) {
 		this.dbPath = dbPath;
+		this.table = table;
 		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler(); 
 		
@@ -151,17 +153,25 @@ public class MenuConsole {
 		ApplianceFactory applianceFactory = selectDepartment();
 		Appliance appliance = selectAppliance(applianceFactory);
 		int userInput;
+		boolean added = false;
 		
 		System.out.println("How many would you like to add to your stock?");
 		
 		userInput = handleInput.getInputInt();
+
 		
 		for (int i = 0; i < userInput; i++) {
-			applianceDAO.addNew(appliance);
-		}
+			added = applianceDAO.addNew(appliance, table);
+			
+			if (added == false) {
+				System.out.println("Failed to add");
+				break;
+			}
+		} 
 		
-		System.out.println("You have added " + userInput + " x " + appliance.getDescription());
-		System.out.println();
+		if (added == true) 
+				System.out.println("You have added " + userInput + " x " + appliance.getDescription());
+				System.out.println();
 
 	}
 	

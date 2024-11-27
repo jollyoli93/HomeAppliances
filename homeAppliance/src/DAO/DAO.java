@@ -23,6 +23,8 @@ public abstract class DAO<T> {
 	
 	
 	public boolean createTable (String name) {
+		//check name contains only letters
+		
 		String query = "CREATE TABLE " + name
 				+"( id	INTEGER NOT NULL UNIQUE,"
 				+"sku	TEXT NOT NULL,"
@@ -71,11 +73,11 @@ public abstract class DAO<T> {
 		
 	}
 	
-	public abstract ArrayList<T> findAll();
-	public abstract T getById(int id);
-	public abstract boolean addNew(T add);
-	public abstract boolean deleteById(int id);
-	public abstract boolean updateById(int id, Object update);
+	public abstract ArrayList<T> findAll(String table);
+	public abstract T getById(int id, String table);
+	public abstract boolean addNew(T add, String table);
+	public abstract boolean deleteById(int id, String table);
+	public abstract boolean updateById(int id, Object update, String table);
 
 
 }
