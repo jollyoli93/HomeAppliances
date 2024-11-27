@@ -5,8 +5,10 @@ package homeApplianceStore;
 public class Main {
 
 	public static void main(String[] args) {
+		String database = "HomeAppliances";
+		String table = "appliances";
 		
-		MenuConsole console = new MenuConsole("HomeAppliances", "appliances");
+		MenuConsole console = new MenuConsole(database, table);
 
 		console.displayMenu();		
 	}
