@@ -22,6 +22,7 @@ class SqlLiteConnection implements Connector {
 	    String dbURL = "jdbc:sqlite:" + this.dbName + ".db";
 	
 	    try {
+	    	System.out.println("Inititializing Connection");
 	        Class.forName(driver);
 	    } catch (ClassNotFoundException e) {
 	        System.out.println("SQLite JDBC Driver not found: " + e.getMessage());

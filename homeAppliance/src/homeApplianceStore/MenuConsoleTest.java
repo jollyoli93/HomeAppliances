@@ -15,7 +15,7 @@ class MenuConsoleTest {
 	
 	@Test 
 	void addTVAppliance () {
-		int[] addAppliance = {3, 1, 1};
+		int[] addAppliance = {3, 1, 1, 1};
 		
 		console.setHandler(new MockIOHandler(addAppliance));
 		

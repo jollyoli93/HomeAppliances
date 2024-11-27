@@ -22,26 +22,17 @@ public abstract class DAO<T> {
 	}
 	
 	
-	public boolean createTable (String name) {
-		//check name contains only letters
-		
-		String query = "CREATE TABLE " + name
-				+"( id	INTEGER NOT NULL UNIQUE,"
-				+"sku	TEXT NOT NULL,"
-				+"description	TEXT NOT NULL,"
-				+" category	TEXT NOT NULL,"
-				+"price	INTEGER NOT NULL,"
-				+"PRIMARY KEY(id AUTOINCREMENT))";
-		
+	public boolean createTable (String name, String schema) {
 		try (Connection connect = connector.initializeDBConnection();
-			 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+			 PreparedStatement preparedStatement = connect.prepareStatement(schema)) {
 			
 			int updated = preparedStatement.executeUpdate();
 			
-			System.out.println("Table test created");
+			System.out.println("Table created");
 			
 	        return updated > 0;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("Error connecting to the database");
             System.out.println("SQL Exception: " + e.getMessage());
             return false;
@@ -64,6 +55,7 @@ public abstract class DAO<T> {
 			}
 				
 		} catch (SQLException e) {
+			e.printStackTrace();
 			System.out.println("Error connecting to the database");
             System.out.println("SQL Exception: " + e.getMessage());
             return false;
@@ -73,11 +65,11 @@ public abstract class DAO<T> {
 		
 	}
 	
-	public abstract ArrayList<T> findAll(String table);
-	public abstract T getById(int id, String table);
-	public abstract boolean addNew(T add, String table);
-	public abstract boolean deleteById(int id, String table);
-	public abstract boolean updateById(int id, Object update, String table);
+	public abstract ArrayList<T> findAll();
+	public abstract T getById(int id);
+	public abstract boolean addNew(T add);
+	public abstract boolean deleteById(int id);
+	public abstract boolean updateById(int id, Object updateß);
 
 
 }

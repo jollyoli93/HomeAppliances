@@ -11,13 +11,13 @@ import printer.AppliancePrinter;
 import printer.Printer;
 
 public class MenuConsole {
-	private String output = null;
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
-    private String dbPath = null;
-    private String table = null;
+    private String dbPath;
+    private String table;
+	private String consoleOutput = null;
 
-	Map<String, ApplianceFactory> factories = new HashMap<String, ApplianceFactory>();
+	Map<String, ApplianceFactory> applianceFactories = new HashMap<String, ApplianceFactory>();
 
 	public MenuConsole(String dbPath, String table) {
 		this.dbPath = dbPath;
@@ -25,7 +25,7 @@ public class MenuConsole {
 		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler(); 
 		
-		this.applianceDAO = new ApplianceDao(dbPath, factories);
+		this.applianceDAO = new ApplianceDao(dbPath, applianceFactories, table);
 	}
 	
 	public void setHandler(InputOutputHandler handleInput) {
@@ -36,8 +36,8 @@ public class MenuConsole {
 		ApplianceFactory entertainment = new EntertainmentFactory();
 		ApplianceFactory homeCleaning = new HomeCleaningFactory();
 		
-		factories.put("Entertainment", entertainment);
-		factories.put("Home Cleaning", homeCleaning);
+		applianceFactories.put("Entertainment", entertainment);
+		applianceFactories.put("Home Cleaning", homeCleaning);
 	}
 	
 	public String displayMenu() {
@@ -80,7 +80,7 @@ public class MenuConsole {
 						break;
 					case 4:
 						updatePrice();
-						System.out.println(output);
+						System.out.println(consoleOutput);
 						System.out.println();
 						break;
 						
@@ -104,9 +104,9 @@ public class MenuConsole {
 				}
 		}
 		
-		output = handleInput.output("Exiting");
-		System.out.println(output);
-		return output;
+		consoleOutput = handleInput.output("Exiting");
+		System.out.println(consoleOutput);
+		return consoleOutput;
 		
 	}
 
@@ -142,8 +142,8 @@ public class MenuConsole {
 			printer.print();
 			
 		} catch (NullPointerException e) {
-			output = handleInput.output("No item found in the database");
-			System.out.println(output);
+			consoleOutput = handleInput.output("No item found in the database");
+			System.out.println(consoleOutput);
 			System.out.println();
 		}
 
@@ -161,7 +161,7 @@ public class MenuConsole {
 
 		
 		for (int i = 0; i < userInput; i++) {
-			added = applianceDAO.addNew(appliance, table);
+			added = applianceDAO.addNew(appliance);
 			
 			if (added == false) {
 				System.out.println("Failed to add");

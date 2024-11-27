@@ -14,23 +14,36 @@ import homeApplianceStore.ApplianceFactory;
 
 
 public class ApplianceDao extends DAO<Appliance> {
-	String path;
-	public ApplianceDao(String path, Map<String, ApplianceFactory> factories) {
-        this.path = path;
-        connector = new SqlLiteConnection(path);
+	String tableName;
+	String dbPath;
+	String tableSchema;
+	
+	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories, String table) {
+        this.dbPath = dbPath;
+        this.tableName = table;
+        connector = new SqlLiteConnection(dbPath);
+        
+    	this.tableSchema = 
+    			"CREATE TABLE " + tableName
+    			+"( id	INTEGER NOT NULL UNIQUE,"
+    			+"sku	TEXT NOT NULL,"
+    			+"description	TEXT NOT NULL,"
+    			+" category	TEXT NOT NULL,"
+    			+"price	INTEGER NOT NULL,"
+    			+"PRIMARY KEY(id AUTOINCREMENT))";
     }
 
 
 	@Override
-	public ArrayList<Appliance> findAll(String table) {
+	public ArrayList<Appliance> findAll() {
 		ArrayList<Appliance> applianceList = new ArrayList<>(); 
 		
-		if (!checkTableExists(table)) {
-			createTable(table);
+		if (!checkTableExists(tableName)) {
+			createTable(tableName, tableSchema);
 		}
 		
 		
-		String query = "SELECT * FROM appliances";
+		String query = "SELECT * FROM " + tableName;
 		
         try (Connection connect = connector.initializeDBConnection();
         	 Statement statement = connect.createStatement();
@@ -73,7 +86,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public Appliance getById(int id, String table) {
+	public Appliance getById(int id) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
 
 		Appliance appliance = null;
@@ -116,8 +129,12 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public boolean addNew(Appliance newAppliance, String table) {	
-		String query =  "INSERT INTO "+ table + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
+	public boolean addNew(Appliance newAppliance) {	
+		String query =  "INSERT INTO "+ tableName + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
+		
+		if (!checkTableExists(tableName)) {
+			createTable(tableName, tableSchema);
+		}
 		
 		try (Connection connect = connector.initializeDBConnection(); 
 			 PreparedStatement preparedStatement = connect.prepareStatement(query)){
@@ -131,15 +148,16 @@ public class ApplianceDao extends DAO<Appliance> {
 				return executeRows > 0;
 						 
 		} catch (SQLException e) {
-				System.out.println("Error connecting to the database");
-               System.out.println("SQL Exception: " + e.getMessage());
+			e.printStackTrace();
+			System.out.println("Error connecting to the database");
+            System.out.println("SQL Exception: " + e.getMessage());
 			return false;
 		}
 
 	}
 
     @Override
-    public boolean deleteById(int id, String table) {
+    public boolean deleteById(int id) {
         String query = "DELETE FROM appliances WHERE id = ?";
         
         try (Connection connect = connector.initializeDBConnection();
@@ -156,7 +174,7 @@ public class ApplianceDao extends DAO<Appliance> {
     }
 
 	@Override
-	public boolean updateById(int id, Object update, String table) {
+	public boolean updateById(int id, Object update) {
 		String query = "UPDATE appliances SET price = ? WHERE id = ?";
 		
 		try (Connection connect = connector.initializeDBConnection();
