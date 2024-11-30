@@ -1,15 +1,16 @@
 package users;
 
 public abstract class Address {
-	String customerId;
-	int number;
-	String street;
-	String city;
-	String postCode;
-	boolean mainAddress;
-	String addressType;
+	private int customerId;
+	private int number;
+	private String street;
+	private String city;
+	private String postCode;
+	private boolean mainAddress;
+	private String addressType;
+
 	
-	public void setAddress(int number, String street, String city, String postCode, String customerId) {
+	public void setAddress(int number, String street, String city, String postCode, int customerId) {
 		this.number = number;
 		this.street = street;
 		this.city = city;
@@ -17,9 +18,10 @@ public abstract class Address {
 		this.customerId = customerId;
 	}
 	
-	public String getCustomer(String customerId){
-		return this.customerId;
+	public int getCustomerId() {
+	    return this.customerId;
 	}
+
 	
 	public void setMainAddress(boolean main) {
 		this.mainAddress = main;
@@ -28,18 +30,26 @@ public abstract class Address {
 	public void setAddressType(String type) {
 		this.addressType = type;
 	}
+	
+    public String toString() {
+        return number + " " + street + ", " + city + " " + postCode;
+    }
 }
 
 class ShippingAddress extends Address {
-	public ShippingAddress() {
-		setAddressType("Shipping");
+	public ShippingAddress(int number, String street, String city, String postCode, int customerId) {
+	    setAddress(number, street, city, postCode, customerId);
+	    setAddressType("Shipping");
 	}
+
 }
 
 class BillingAddress extends Address {
-	public BillingAddress () {
-		setAddressType("Billing");
+	public BillingAddress(int number, String street, String city, String postCode, int customerId) {
+	    setAddress(number, street, city, postCode, customerId);
+	    setAddressType("Billing");
 	}
+
 }
 
 //class BuisnessAddress {
