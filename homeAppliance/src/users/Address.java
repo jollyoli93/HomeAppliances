@@ -6,11 +6,12 @@ public abstract class Address {
 	private String street;
 	private String city;
 	private String postCode;
+	private String country;
 	private boolean mainAddress;
 	private String addressType;
 
 	
-	public void setAddress(int number, String street, String city, String postCode, int customerId) {
+	public void setAddress(int number, String street, String city, String country, String postCode, int customerId) {
 		this.number = number;
 		this.street = street;
 		this.city = city;
@@ -37,16 +38,16 @@ public abstract class Address {
 }
 
 class ShippingAddress extends Address {
-	public ShippingAddress(int number, String street, String city, String postCode, int customerId) {
-	    setAddress(number, street, city, postCode, customerId);
+	public ShippingAddress(int number, String street, String city, String country, String postCode, int customerId) {
+	    setAddress(number, street, city, country, postCode, customerId);
 	    setAddressType("Shipping");
 	}
 
 }
 
 class BillingAddress extends Address {
-	public BillingAddress(int number, String street, String city, String postCode, int customerId) {
-	    setAddress(number, street, city, postCode, customerId);
+	public BillingAddress(int number, String street, String city, String country, String postCode, int customerId) {
+	    setAddress(number, street, city, country, postCode, customerId);
 	    setAddressType("Billing");
 	}
 
