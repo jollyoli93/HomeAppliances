@@ -9,18 +9,18 @@ import org.junit.jupiter.api.Test;
 class UserTesting {
     User customer;
     User admin;
+    User business;
     Address billingAddress;
     Address shippingAddress;
 
     @BeforeEach
     public void isInitialized () {
-    	//String firstname, String lastName, String emailAddress, String password, String username, String telephoneNum
-        customer = new CustomerUser("Jimmy", "Grimble", "jimmygrimble@woohoo.com", "ilovefootball", "jimbob98", "07498352989");
-        admin = new AdminUser("Master", "Chief", "echo419@halo.com", "cortanaforlife", "hankychief", "07498352982");
-        
-        Address billingAddress = new ShippingAddress(15, "Oxford Rd", "Manchester", "M1 2BJ", customer.getCustomerId());
-        Address shippingAddress = new BillingAddress(1, "Mancunian Way", "Manchester", "M1 1AA", customer.getCustomerId());
-        
+        customer = new CustomerUser("Jimmy", "Grimble", "jimmygrimble@woohoo.com","jimbob98", "ilovefootball", "07498352989");
+        admin = new AdminUser("Master", "Chief", "echo419@halo.com", "cortanaforlife", "mrchief");
+        business = new BusinessUser("Aladin", "Ababwa", "princeali@magiccarpet.com" , "princeali", "jasmine123", "07438273647", "Alibaba");
+       
+        Address billingAddress = new ShippingAddress(15, "Oxford Rd", "Manchester", "M1 2BJ", "United Kingdom", customer.getCustomerId());
+        Address shippingAddress = new BillingAddress(1, "Mancunian Way", "Manchester", "M1 1AA", "United Kingdom", customer.getCustomerId());
     }
 
     @Test
@@ -64,5 +64,18 @@ class UserTesting {
     public void isAdmin () {
     	assertTrue(admin.getAdminStatus());
     }
+    
+    @Test
+    public void isCustomer () {
+    	assertTrue(customer.getCustomerStatus());
+    	assertTrue(business.getCustomerStatus());
+    }
+    
+    @Test
+    public void businessUserHasCorrectName () {
+    	assertEquals("Alibaba", business.getBusinessName());
+    }
+    
+    
 }
 

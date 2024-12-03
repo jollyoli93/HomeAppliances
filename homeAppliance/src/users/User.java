@@ -1,7 +1,6 @@
 package users;
 
 import java.util.ArrayList;
-import java.util.function.BooleanSupplier;
 
 public abstract class User {
 	private String firstName;
@@ -10,19 +9,40 @@ public abstract class User {
 	private String emailAddress;
 	private String password;
 	private int customerId;
-	protected String buisnessName = null;
+	protected String businessName;
 	private String telephoneNum;
-	private boolean admin;
+	private String role;
 	
 	private ArrayList<Address> addressList;
 	
-	User(String firstname, String lastName, String emailAddress, String password, String username, String telephoneNum){
+	//factory pattern ???
+	
+	User(String firstname, String lastName, String emailAddress, String username, String password){
 		this.firstName = firstname;
 		this.lastName = lastName;
 		this.emailAddress = emailAddress;
 		this.username = username;
-		this.password = password;
-		this.telephoneNum = telephoneNum;
+		this.setPassword(password);
+	}
+
+	User(String firstname, String lastName, String emailAddress, String username, String password, String telephoneNum){
+		this.firstName = firstname;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.username = username;
+		this.setPassword(password);
+		this.setTelephoneNum(telephoneNum);
+		this.addressList = new ArrayList<Address>();
+	}
+	
+	User(String firstname, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessName ){
+		this.firstName = firstname;
+		this.lastName = lastName;
+		this.emailAddress = emailAddress;
+		this.username = username;
+		this.businessName = businessName;
+		this.setPassword(password);
+		this.setTelephoneNum(telephoneNum);
 		this.addressList = new ArrayList<Address>();
 	}
 
@@ -50,16 +70,9 @@ public abstract class User {
 		return this.customerId;
 	}
 	
-	public String getTelephoneNum () {
-		return this.telephoneNum;
-	}
 	
 	public String getBusinessName() {
-		return this.buisnessName;
-	};
-	
-	public boolean getAdminStatus() {
-		return admin;
+		return this.businessName;
 	}
 	
 	public void setCustomerId(int customerId) {
@@ -67,11 +80,8 @@ public abstract class User {
 	}
 	
 	public void setBusinessName (String name) {
-		this.buisnessName = name;
-	};
-	public void setAdmin (boolean isAdmin) {
-		this.admin = isAdmin;
-	};
+		this.businessName = name;
+	}
 
 	public void setUsername(String username) {
 		this.username = username;
@@ -81,6 +91,23 @@ public abstract class User {
 		this.emailAddress = emailAddress;
 	}
 	
+	//handle telephone number
+	public String getTelephoneNum () {
+		return this.telephoneNum;
+	}
+	
+	public void setTelephoneNum (String number) {
+		try {
+			if (number.length() == 11) {
+				this.telephoneNum = number;
+			}
+		} catch (Exception e) {
+			System.out.println("Invalid number");
+		}
+	}
+	
+	
+	//Handle user addresses
 	public void addAddress(Address address) {
 	    if (addressList == null) {
 	        addressList = new ArrayList<>();
@@ -97,26 +124,17 @@ public abstract class User {
 	        addressList.remove(address);
 	    }
 	}
+	
+	//Handle Passwords
+	public String getPassword() {
+		return password;
+	}
 
-
-}
-
-class CustomerUser extends User{
-
-	CustomerUser(String firstname, String lastName, String emailAddress, String username, String password, String telephoneNum) {
-		super(firstname, lastName, emailAddress, username, password, telephoneNum);
-		
+	public void setPassword(String password) {
+		//hashpassword
+		this.password = password;
 	}
 	
-	
-}
-
-
-class AdminUser extends User {
-
-	AdminUser(String firstname, String lastName, String emailAddress, String username,String password, String telephoneNum) {
-		super(firstname, lastName, emailAddress, username, password, telephoneNum);
-		setAdmin(true);
-	}
+	public abstract String getRole ();
 
 }
