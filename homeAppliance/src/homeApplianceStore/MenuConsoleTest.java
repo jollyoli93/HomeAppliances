@@ -27,7 +27,7 @@ class MenuConsoleTest {
 		assertEquals("Exiting", statement);
 	}
 
-	
+	@Test
 	public void testExit () {
 		int[] enterThenExit = {6};
 		
@@ -41,6 +41,7 @@ class MenuConsoleTest {
 		assertEquals("Exiting", statement);
 	}
 	
+	@Test
 	public void listProducts() {
 		int[] listAll = {1, 6};
 		console.setHandler(new MockIOHandler(listAll));
@@ -52,6 +53,7 @@ class MenuConsoleTest {
 		String statement = console.displayMenu();	
 		assertEquals("Exiting", statement);
 	}
+	
 	
 	public void getEmptyProductById() {
 		int[] emptyProduct = {2, 0};
@@ -66,6 +68,7 @@ class MenuConsoleTest {
 		assertEquals("Exiting", statement);
 	}
 	
+	@Test
 	public void deleteProductById () { 
 		int[] delete = {5, 0};
 		
@@ -80,13 +83,14 @@ class MenuConsoleTest {
 		assertEquals("Exiting", statement);
 	}
 	
-	public void getProductById(int id) {
-		int[] emptyProduct = {2, id};
-		console.setHandler(new MockIOHandler(emptyProduct));
+	@Test
+	public void getProductById() {
+		int[] product = {2, 1};
+		console.setHandler(new MockIOHandler(product));
 		
 		System.out.println();
 		System.out.println("***********************************");
-		System.out.println("Mock Test: No product ID");
+		System.out.println("Mock Test: Get product by ID: 1");
 		
 		String statement = console.displayMenu();	
 		

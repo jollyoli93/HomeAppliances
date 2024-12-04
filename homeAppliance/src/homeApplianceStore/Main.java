@@ -8,8 +8,10 @@ public class Main {
 		String database = "HomeAppliances";
 		
 		MenuConsole console = new MenuConsole(database);
+		UserConsole userConsole = new UserConsole(database);
 
-		console.displayMenu();		
+		//console.displayMenu();
+		userConsole.userMenu();
 	}
 
 }
