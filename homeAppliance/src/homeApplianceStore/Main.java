@@ -6,9 +6,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		String database = "HomeAppliances";
-		String table = "appliances";
 		
-		MenuConsole console = new MenuConsole(database, table);
+		MenuConsole console = new MenuConsole(database);
 
 		console.displayMenu();		
 	}

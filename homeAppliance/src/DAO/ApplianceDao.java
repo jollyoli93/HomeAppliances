@@ -18,13 +18,12 @@ public class ApplianceDao extends DAO<Appliance> {
 	String dbPath;
 	String tableSchema;
 	
-	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories, String table) {
+	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories) {
         this.dbPath = dbPath;
-        this.tableName = table;
         connector = new SqlLiteConnection(dbPath);
         
     	this.tableSchema = 
-    			"CREATE TABLE " + tableName
+    			"CREATE TABLE appliances "
     			+"( id	INTEGER NOT NULL UNIQUE,"
     			+"sku	TEXT NOT NULL,"
     			+"description	TEXT NOT NULL,"
@@ -38,12 +37,12 @@ public class ApplianceDao extends DAO<Appliance> {
 	public ArrayList<Appliance> findAll() {
 		ArrayList<Appliance> applianceList = new ArrayList<>(); 
 		
-		if (!checkTableExists(tableName)) {
-			createTable(tableName, tableSchema);
+		if (!checkTableExists("appliances")) {
+			createTable("appliances", tableSchema);
 		}
 		
 		
-		String query = "SELECT * FROM " + tableName;
+		String query = "SELECT * FROM appliances";
 		
         try (Connection connect = connector.initializeDBConnection();
         	 Statement statement = connect.createStatement();
@@ -130,10 +129,10 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	@Override
 	public boolean addNew(Appliance newAppliance) {	
-		String query =  "INSERT INTO "+ tableName + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
+		String query =  "INSERT INTO appliances" + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
 		
-		if (!checkTableExists(tableName)) {
-			createTable(tableName, tableSchema);
+		if (!checkTableExists("appliances")) {
+			createTable("appliances", tableSchema);
 		}
 		
 		try (Connection connect = connector.initializeDBConnection(); 
