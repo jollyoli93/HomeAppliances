@@ -13,7 +13,7 @@ public abstract class User {
 	
 	private ArrayList<Address> addressList;
 
-	User(String firstname, String lastName, String emailAddress, String username, String password){
+	User(String firstname, String lastName, String emailAddress, String username, String password) {
 		this.firstName = firstname;
 		this.lastName = lastName;
 		this.emailAddress = emailAddress;

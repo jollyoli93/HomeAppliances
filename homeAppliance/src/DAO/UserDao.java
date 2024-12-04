@@ -14,88 +14,88 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class UserDao {
+/**
+ * This class provides the user database access functionality
+ * 
+ * @author 24862664
+ */
+public class UserDao extends DAO<User> {
+	String dbPath;
+	String tableSchema;
 	
+	public UserDao(String dbPath) {
+        this.dbPath = dbPath;
+        connector = new SqlLiteConnection(dbPath);
+        
+    	this.tableSchema = 
+    			"CREATE TABLE \"users\" ("
+    			        + "\"first_name\" TEXT NOT NULL, "
+    			        + "\"last_name\" TEXT NOT NULL, "
+    			        + "\"username\" TEXT NOT NULL UNIQUE, "
+    			        + "\"email_address\" TEXT NOT NULL UNIQUE, "
+    			        + "\"telephone_num\" TEXT, "
+    			        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
+    			        + "\"password\" TEXT NOT NULL, "
+    			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
+    			        + ");";
+    }	
 	
-	public User getUserFromDatabase(ResultSet rs) throws SQLException {
-	    String roleName = rs.getString("role_name");
-	    String firstName = rs.getString("first_name");
-	    String lastName = rs.getString("last_name");
-	    String emailAddress = rs.getString("email_address");
-	    String username = rs.getString("username");
-	    String passwordHash = rs.getString("password_hash");
-	    String telephoneNum = rs.getString("telephone_num");
-	    String businessName = rs.getString("business_name");
+//	public User getUserFromDatabase(ResultSet rs) throws SQLException {
+//	    String roleName = rs.getString("role_name");
+//	    String firstName = rs.getString("first_name");
+//	    String lastName = rs.getString("last_name");
+//	    String emailAddress = rs.getString("email_address");
+//	    String username = rs.getString("username");
+//	    String passwordHash = rs.getString("password_hash");
+//	    String telephoneNum = rs.getString("telephone_num");
+//	    String businessName = rs.getString("business_name");
+//
 
-	    switch (roleName) {
-	        case "admin":
-	            return new AdminUser(firstName, lastName, emailAddress, username, password);
-	        case "customer":
-	            return new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
-	        case "business":
-	            return new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
-	        default:
-	            throw new IllegalArgumentException("Unknown role: " + roleName);
-	    }
 
-	
 
-	public class ApplianceDao extends DAO<Appliance> {
-		String tableName;
-		String dbPath;
-		String tableSchema;
-		
-		public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories, String table) {
-	        this.dbPath = dbPath;
-	        this.tableName = table;
-	        connector = new SqlLiteConnection(dbPath);
-	        
-	    	this.tableSchema = 
-	    			"CREATE TABLE " + tableName
-	    			+"( id	INTEGER NOT NULL UNIQUE,"
-	    			+"sku	TEXT NOT NULL,"
-	    			+"description	TEXT NOT NULL,"
-	    			+" category	TEXT NOT NULL,"
-	    			+"price	INTEGER NOT NULL,"
-	    			+"PRIMARY KEY(id AUTOINCREMENT))";
-	    }
 
 
 		@Override
-		public ArrayList<Appliance> findAll() {
-			ArrayList<Appliance> applianceList = new ArrayList<>(); 
+		public ArrayList<User> findAll() {
+			ArrayList<User> userList = new ArrayList<>(); 
 			
-			if (!checkTableExists(tableName)) {
-				createTable(tableName, tableSchema);
+			if (!checkTableExists("users")) {
+				createTable("users", tableSchema);
 			}
 			
 			
-			String query = "SELECT * FROM " + tableName;
+			String query = "SELECT * FROM users ";
 			
 	        try (Connection connect = connector.initializeDBConnection();
 	        	 Statement statement = connect.createStatement();
 	        	 ResultSet result = statement.executeQuery(query)) {
 
 	               while (result.next()) {
-	            	   Appliance product;
-	                	   
-	                   int id = result.getInt("id");
-	                   String desc = result.getString("description");
-	                   String cat = result.getString("category");
-	                   double price = result.getDouble("price");
+	            	   User user;
+	            	   
+	                   String firstName = result.getString("first_name");
+	                   String lastName = result.getString("last_name");
+	                   String emailAddress = result.getString("email_address");
+	                   String username = result.getString("username");
+	                   String password = result.getString("password");
+	                   String role = result.getString("role");
+	                   String telephoneNum = result.getString("telephone_num");
+	                   String businessName = result.getString("business_name");
 	                   
 	                   try {
-	                       // Get the appropriate factory for the category
-	                       ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
-	                       
-	                       // Create the specific appliance using the factory
-	                       product = factory.selectAppliance(desc);
-	                       
-	                       // Set the common properties
-	                       product.setId(id);
-	                       product.setPrice(price);
-	                       
-	                       applianceList.add(product);
+			               	    switch (role) {
+			        	        case "admin":
+			        	            user = new AdminUser(firstName, lastName, emailAddress, username, password);
+			        	            userList.add(user);
+			        	        case "customer":
+			        	        	user = new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
+			        	        	userList.add(user);
+			        	        case "business":
+			        	            user = new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
+			        	            userList.add(user);
+			        	        default:
+			        	            throw new IllegalArgumentException("Unknown role: " + role);
+			        	    }
 	                                       
 	                   } catch (IllegalArgumentException e) {
 	                       System.out.println("Error creating appliance: " + e.getMessage());
@@ -109,66 +109,70 @@ public class UserDao {
 	               
 	           }
 			
-			return applianceList;
+			return userList;
 		}
-
+//
+//		@Override
+//		public Appliance getById(int id) {
+//		    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
+//
+//			Appliance appliance = null;
+//			
+//			try (Connection connect = connector.initializeDBConnection(); 
+//				 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+//			    	preparedStatement.setInt(1, id);
+//			        ResultSet result = preparedStatement.executeQuery();
+//	        	
+//	        	if (result.next()) {     
+//	                String desc = result.getString("description");
+//	                String cat = result.getString("category");
+//	                double price = result.getDouble("price");  
+//	        		
+//	                try {
+//	                    // Get the appropriate factory for the category
+//	                    ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+//	                    
+//	                    // Create the specific appliance using the factory
+//	                    appliance = factory.selectAppliance(desc);
+//	                    
+//	                    // Set the common properties
+//	                    appliance.setId(id);
+//	                    appliance.setPrice(price);
+//	                    
+//	                    System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
+//
+//	                    
+//	                } catch (IllegalArgumentException e) {
+//	                    System.out.println("Error retrieving appliance: " + e.getMessage());
+//	                }
+//	        	}
+//	        	
+//	        } catch (SQLException e) {
+//					System.out.println("Error connecting to the database");
+//		               System.out.println("SQL Exception: " + e.getMessage());
+//			}
+//			
+//	    	return appliance;
+//		}
+//
 		@Override
-		public Appliance getById(int id) {
-		    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
-
-			Appliance appliance = null;
+		public boolean addNew(User newUser) {	
+			String query =  "INSERT INTO users " + " (first_name, last_name, email_address, username, password) VALUES (?, ?, ?, ?, ?)";
 			
-			try (Connection connect = connector.initializeDBConnection(); 
-				 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-			    	preparedStatement.setInt(1, id);
-			        ResultSet result = preparedStatement.executeQuery();
-	        	
-	        	if (result.next()) {     
-	                String desc = result.getString("description");
-	                String cat = result.getString("category");
-	                double price = result.getDouble("price");  
-	        		
-	                try {
-	                    // Get the appropriate factory for the category
-	                    ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
-	                    
-	                    // Create the specific appliance using the factory
-	                    appliance = factory.selectAppliance(desc);
-	                    
-	                    // Set the common properties
-	                    appliance.setId(id);
-	                    appliance.setPrice(price);
-	                    
-	                    System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
-
-	                    
-	                } catch (IllegalArgumentException e) {
-	                    System.out.println("Error retrieving appliance: " + e.getMessage());
-	                }
-	        	}
-	        	
-	        } catch (SQLException e) {
-					System.out.println("Error connecting to the database");
-		               System.out.println("SQL Exception: " + e.getMessage());
-			}
-			
-	    	return appliance;
-		}
-
-		@Override
-		public boolean addNew(Appliance newAppliance) {	
-			String query =  "INSERT INTO "+ tableName + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
-			
-			if (!checkTableExists(tableName)) {
-				createTable(tableName, tableSchema);
+			//generates additional connection comments
+			if (!checkTableExists("users")) {
+				createTable("users", tableSchema);
 			}
 			
 			try (Connection connect = connector.initializeDBConnection(); 
 				 PreparedStatement preparedStatement = connect.prepareStatement(query)){
-					preparedStatement.setString(1, newAppliance.getSku());
-					preparedStatement.setString(2, newAppliance.getDescription());
-					preparedStatement.setString(3, newAppliance.getCategory());
-					preparedStatement.setDouble(4, newAppliance.getPrice());
+					preparedStatement.setString(1, newUser.getFirstName());
+					preparedStatement.setString(2, newUser.getLastName());
+					preparedStatement.setString(3, newUser.getEmailAddress());
+					preparedStatement.setString(4, newUser.getUsername());
+					preparedStatement.setString(5, newUser.getPassword());
+					//preparedStatement.setString(5, newUser.getTelephoneNum());
+					
 							
 					int executeRows = preparedStatement.executeUpdate();
 					
@@ -176,51 +180,68 @@ public class UserDao {
 							 
 			} catch (SQLException e) {
 				e.printStackTrace();
-				System.out.println("Error connecting to the database");
 	            System.out.println("SQL Exception: " + e.getMessage());
 				return false;
 			}
 
 		}
-
-	    @Override
-	    public boolean deleteById(int id) {
-	        String query = "DELETE FROM appliances WHERE id = ?";
-	        
-	        try (Connection connect = connector.initializeDBConnection();
-	        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		            preparedStatement.setInt(1, id);
-		            int executeRows = preparedStatement.executeUpdate();
-		            
-		            return executeRows > 0;
-	        } catch (SQLException e) {
-				System.out.println("Error connecting to the database");
-	            System.out.println("SQL Exception: " + e.getMessage());
-	            return false;
-	        }
-	    }
+//
+//	    @Override
+//	    public boolean deleteById(int id) {
+//	        String query = "DELETE FROM appliances WHERE id = ?";
+//	        
+//	        try (Connection connect = connector.initializeDBConnection();
+//	        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+//		            preparedStatement.setInt(1, id);
+//		            int executeRows = preparedStatement.executeUpdate();
+//		            
+//		            return executeRows > 0;
+//	        } catch (SQLException e) {
+//				System.out.println("Error connecting to the database");
+//	            System.out.println("SQL Exception: " + e.getMessage());
+//	            return false;
+//	        }
+//	    }
+//
+//		@Override
+//		public boolean updateById(int id, Object update) {
+//			String query = "UPDATE appliances SET price = ? WHERE id = ?";
+//			
+//			try (Connection connect = connector.initializeDBConnection();
+//				PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+//					preparedStatement.setDouble(1, (Double) update);
+//					preparedStatement.setInt(2, id);
+//				
+//			        int updated = preparedStatement.executeUpdate();
+//			        return updated > 0;
+//				
+//			} catch (SQLException e) {
+//				System.out.println("Error connecting to the database");
+//	            System.out.println("SQL Exception: " + e.getMessage());
+//				return false;
+//			}
+//		}
+//
+//	}
+//
+//	
 
 		@Override
-		public boolean updateById(int id, Object update) {
-			String query = "UPDATE appliances SET price = ? WHERE id = ?";
-			
-			try (Connection connect = connector.initializeDBConnection();
-				PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-					preparedStatement.setDouble(1, (Double) update);
-					preparedStatement.setInt(2, id);
-				
-			        int updated = preparedStatement.executeUpdate();
-			        return updated > 0;
-				
-			} catch (SQLException e) {
-				System.out.println("Error connecting to the database");
-	            System.out.println("SQL Exception: " + e.getMessage());
-				return false;
-			}
+		public User getById(int id) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
-	}
+		@Override
+		public boolean deleteById(int id) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 
-	
+		@Override
+		public boolean updateById(int id, Object updateß) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	
 }
