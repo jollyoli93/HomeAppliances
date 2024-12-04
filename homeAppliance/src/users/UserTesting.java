@@ -61,21 +61,19 @@ class UserTesting {
     }
     
     @Test
-    public void isAdmin () {
-    	assertTrue(admin.getAdminStatus());
-    }
-    
-    @Test
     public void isCustomer () {
-    	assertTrue(customer.getCustomerStatus());
-    	assertTrue(business.getCustomerStatus());
+    	assertEquals("customer", customer.getRole());
     }
     
     @Test
-    public void businessUserHasCorrectName () {
-    	assertEquals("Alibaba", business.getBusinessName());
+    public void isAdmin () {
+    	assertEquals("admin", admin.getRole());
     }
     
+    @Test
+    public void isBusiness () {
+    	assertEquals("business", business.getRole());
+    }
     
 }
 

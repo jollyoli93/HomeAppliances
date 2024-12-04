@@ -7,6 +7,6 @@ public class AdminUser extends User {
 
 	 @Override
 	 public String getRole() {
-	     return "Admin";
+	     return "admin";
 	 }
 	}

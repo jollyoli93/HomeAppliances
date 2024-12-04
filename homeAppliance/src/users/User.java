@@ -9,41 +9,16 @@ public abstract class User {
 	private String emailAddress;
 	private String password;
 	private int customerId;
-	protected String businessName;
 	private String telephoneNum;
-	private String role;
 	
 	private ArrayList<Address> addressList;
-	
-	//factory pattern ???
-	
+
 	User(String firstname, String lastName, String emailAddress, String username, String password){
 		this.firstName = firstname;
 		this.lastName = lastName;
 		this.emailAddress = emailAddress;
 		this.username = username;
 		this.setPassword(password);
-	}
-
-	User(String firstname, String lastName, String emailAddress, String username, String password, String telephoneNum){
-		this.firstName = firstname;
-		this.lastName = lastName;
-		this.emailAddress = emailAddress;
-		this.username = username;
-		this.setPassword(password);
-		this.setTelephoneNum(telephoneNum);
-		this.addressList = new ArrayList<Address>();
-	}
-	
-	User(String firstname, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessName ){
-		this.firstName = firstname;
-		this.lastName = lastName;
-		this.emailAddress = emailAddress;
-		this.username = username;
-		this.businessName = businessName;
-		this.setPassword(password);
-		this.setTelephoneNum(telephoneNum);
-		this.addressList = new ArrayList<Address>();
 	}
 
 	public String getFirstName() {
@@ -70,19 +45,9 @@ public abstract class User {
 		return this.customerId;
 	}
 	
-	
-	public String getBusinessName() {
-		return this.businessName;
-	}
-	
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
-	
-	public void setBusinessName (String name) {
-		this.businessName = name;
-	}
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -105,7 +70,6 @@ public abstract class User {
 			System.out.println("Invalid number");
 		}
 	}
-	
 	
 	//Handle user addresses
 	public void addAddress(Address address) {
