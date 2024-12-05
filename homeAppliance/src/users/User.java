@@ -67,7 +67,7 @@ public abstract class User {
 				this.telephoneNum = number;
 			}
 		} catch (Exception e) {
-			System.out.println("Invalid number");
+			System.out.println("Invalid telephone number");
 		}
 	}
 	
