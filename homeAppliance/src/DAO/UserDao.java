@@ -87,7 +87,8 @@ public class UserDao extends DAO<User> {
 	        try (Connection connect = connector.initializeDBConnection();
 	        	 Statement statement = connect.createStatement();
 	        	 ResultSet result = statement.executeQuery(query)) {
-
+	        	
+	        		System.out.println("DEBUG: parse results");
 	               while (result.next()) {
 	            	   User user = null;
 	            	   
@@ -101,7 +102,12 @@ public class UserDao extends DAO<User> {
 	                   String businessName = result.getString("business_name");
 	                   String role = getRole(user_id);
 	                   
+	                   System.out.println("DEBUG: results added ");
+	                   
 	                   try {
+	                	   System.out.println("DEBUG: Switch statement");
+	                	   
+	                	   //change to lambda
 			               	    switch (role) {
 			        	        case "admin":
 			        	            user = new AdminUser(firstName, lastName, emailAddress, username, password);
@@ -117,9 +123,10 @@ public class UserDao extends DAO<User> {
 			        	    }
 	                                       
 	                   } catch (IllegalArgumentException e) {
-	                       System.out.println("Error creating appliance: " + e.getMessage());
+	                       System.out.println("Error getting users: " + e.getMessage());
 	                   }
 	                   
+	                   System.out.println("DEBUG: adding users");
 	                   userList.add(user);
 	               } 
 
@@ -129,6 +136,7 @@ public class UserDao extends DAO<User> {
 	               
 	           }
 			
+	        System.out.println("DEBUG: returning users list");
 			return userList;
 		}
 //
