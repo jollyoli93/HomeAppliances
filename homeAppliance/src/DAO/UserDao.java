@@ -21,13 +21,15 @@ import java.util.Map;
  */
 public class UserDao extends DAO<User> {
 	String dbPath;
-	String tableSchema;
+	String userSchema;
+	String rolesSchema;
+	String user_rolesSchema;
 	
 	public UserDao(String dbPath) {
         this.dbPath = dbPath;
         connector = new SqlLiteConnection(dbPath);
         
-    	this.tableSchema = 
+    	this.userSchema = 
     			"CREATE TABLE \"users\" ("
     			        + "\"first_name\" TEXT NOT NULL, "
     			        + "\"last_name\" TEXT NOT NULL, "
@@ -38,29 +40,29 @@ public class UserDao extends DAO<User> {
     			        + "\"password\" TEXT NOT NULL, "
     			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
     			        + ");";
+    	this.rolesSchema = 
+    			"CREATE TABLE roles ("
+    				    +"role_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    				    +"role_name TEXT NOT NULL UNIQUE );";
+    	
+    	this.user_rolesSchema =
+    			"CREATE TABLE user_roles ("
+    				    +"user_id INTEGER NOT NULL,"
+    				    +"role_id INTEGER NOT NULL,"
+    				    +"FOREIGN KEY (user_id) REFERENCES users(user_id),"
+    				    +"FOREIGN KEY (role_id) REFERENCES roles(role_id),"
+    				    +"PRIMARY KEY (user_id, role_id));";
+
+
+    	
     }	
 	
-//	public User getUserFromDatabase(ResultSet rs) throws SQLException {
-//	    String roleName = rs.getString("role_name");
-//	    String firstName = rs.getString("first_name");
-//	    String lastName = rs.getString("last_name");
-//	    String emailAddress = rs.getString("email_address");
-//	    String username = rs.getString("username");
-//	    String passwordHash = rs.getString("password_hash");
-//	    String telephoneNum = rs.getString("telephone_num");
-//	    String businessName = rs.getString("business_name");
-//
-
-
-
-
-
 		@Override
 		public ArrayList<User> findAll() {
 			ArrayList<User> userList = new ArrayList<>(); 
 			
 			if (!checkTableExists("users")) {
-				createTable("users", tableSchema);
+				createTable("users", userSchema);
 			}
 			
 			
@@ -71,7 +73,7 @@ public class UserDao extends DAO<User> {
 	        	 ResultSet result = statement.executeQuery(query)) {
 
 	               while (result.next()) {
-	            	   User user;
+	            	   User user = null;
 	            	   
 	                   String firstName = result.getString("first_name");
 	                   String lastName = result.getString("last_name");
@@ -86,13 +88,13 @@ public class UserDao extends DAO<User> {
 			               	    switch (role) {
 			        	        case "admin":
 			        	            user = new AdminUser(firstName, lastName, emailAddress, username, password);
-			        	            userList.add(user);
+			        	            break;
 			        	        case "customer":
 			        	        	user = new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
-			        	        	userList.add(user);
+			        	        	break;
 			        	        case "business":
 			        	            user = new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
-			        	            userList.add(user);
+			        	            break;
 			        	        default:
 			        	            throw new IllegalArgumentException("Unknown role: " + role);
 			        	    }
@@ -100,7 +102,8 @@ public class UserDao extends DAO<User> {
 	                   } catch (IllegalArgumentException e) {
 	                       System.out.println("Error creating appliance: " + e.getMessage());
 	                   }
-	  
+	                   
+	                   userList.add(user);
 	               } 
 
 	           } catch (SQLException e) {
@@ -161,7 +164,7 @@ public class UserDao extends DAO<User> {
 			
 			//generates additional connection comments
 			if (!checkTableExists("users")) {
-				createTable("users", tableSchema);
+				createTable("users", userSchema);
 			}
 			
 			try (Connection connect = connector.initializeDBConnection(); 
