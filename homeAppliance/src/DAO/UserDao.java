@@ -24,6 +24,7 @@ public class UserDao extends DAO<User> {
 	String userSchema;
 	String rolesSchema;
 	String user_rolesSchema;
+	String addressesSchema;
 	
 	public UserDao(String dbPath) {
         this.dbPath = dbPath;
@@ -38,6 +39,8 @@ public class UserDao extends DAO<User> {
     			        + "\"telephone_num\" TEXT, "
     			        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
     			        + "\"password\" TEXT NOT NULL, "
+    			        +"\n"
+    			        + "	\"business_name\"	TEXT,"
     			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
     			        + ");";
     	this.rolesSchema = 
@@ -53,6 +56,19 @@ public class UserDao extends DAO<User> {
     				    +"FOREIGN KEY (role_id) REFERENCES roles(role_id),"
     				    +"PRIMARY KEY (user_id, role_id));";
 
+    	this.addressesSchema = 
+    			 "CREATE TABLE addresses ("
+    					    + "building_number INTEGER NOT NULL, "
+    					    + "street TEXT NOT NULL, "
+    					    + "city TEXT NOT NULL, "
+    					    + "post_code TEXT NOT NULL, "
+    					    + "country TEXT NOT NULL, "
+    					    + "isPrimary TEXT NOT NULL, "
+    					    + "address_type TEXT NOT NULL, "
+    					    + "customer_id INTEGER NOT NULL, "
+    					    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+    					    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    					    + ");";
 
     	
     }	
@@ -75,14 +91,15 @@ public class UserDao extends DAO<User> {
 	               while (result.next()) {
 	            	   User user = null;
 	            	   
+	            	   int user_id = result.getInt("user_id");
 	                   String firstName = result.getString("first_name");
 	                   String lastName = result.getString("last_name");
 	                   String emailAddress = result.getString("email_address");
 	                   String username = result.getString("username");
 	                   String password = result.getString("password");
-	                   String role = result.getString("role");
 	                   String telephoneNum = result.getString("telephone_num");
 	                   String businessName = result.getString("business_name");
+	                   String role = getRole(user_id);
 	                   
 	                   try {
 			               	    switch (role) {
@@ -246,5 +263,35 @@ public class UserDao extends DAO<User> {
 			// TODO Auto-generated method stub
 			return false;
 		}
+		
+		private String getRole (int id) {
+			System.out.println(id);
+			
+			String getRoleQuery = 
+				    "SELECT roles.role_desc " +
+				    "FROM users " +
+				    "LEFT OUTER JOIN user_roles " +
+				    "ON users.user_id = user_roles.user_id " +
+				    "LEFT OUTER JOIN roles " +
+				    "ON user_roles.role_id = roles.role_id " +
+				    "WHERE users.user_id = ?;";
+
+			
+			try (Connection connect = connector.initializeDBConnection(); 
+				 PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
+				 	preparedStatement.setInt(1, id);
+				 	ResultSet result = preparedStatement.executeQuery();
+
+				 	while (result.next()) {
+						return result.getString("role_desc");
+					}
+				
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} 
+			
+			return null;
+				
+			}
 	
 }
