@@ -7,13 +7,12 @@ public class Main {
 	public static void main(String[] args) {
 		String database = "HomeAppliances";
 		
-		MenuConsole console = new MenuConsole(database);
-		UserConsole userConsole = new UserConsole(database);
-
-		//console.displayMenu();
-		userConsole.userMenu();
+		//Could change to be hierachi of the other consoles
+		InputOutputHandler handleInput = new ConsoleIOHandler();
+	    
+	    mainConsole(database, handleInput);
+	    
 	}
-
 }
 
 //private void createDatabase() {

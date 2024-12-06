@@ -27,10 +27,10 @@ public class UserConsole {
 	
 	public void userMenu () {
 		int input = 0;
+		
 		while (input != 6) {
 			
 			System.out.println("------------------------");
-			System.out.println("Home Appliance Store");
 			System.out.println("Choose from these options");
 			System.out.println("------------------------");
 			
@@ -50,7 +50,19 @@ public class UserConsole {
 					getAllUsers();
 					break;
 				case 2:
+					System.out.println("Search for user");
+					break;
+				case 3:
 					addUser();
+					break;
+				case 4:
+					System.out.println();
+					break;
+				case 5:
+					System.out.println();
+					break;
+				case 6:
+					System.out.println();
 					break;
 				default:
 					System.out.println("Try again");

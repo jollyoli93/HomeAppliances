@@ -42,9 +42,7 @@ public class MenuConsole {
 		int input = 0;
 		
 		while (input != 6) {
-		
 			System.out.println("------------------------");
-			System.out.println("Home Appliance Store");
 			System.out.println("Choose from these options");
 			System.out.println("------------------------");
 			
