@@ -1,5 +1,7 @@
 package homeApplianceStore;
 
+import java.util.ArrayList;
+
 import DAO.UserDao;
 import users.CustomerUser;
 import users.User;
@@ -58,7 +60,25 @@ public class UserConsole {
 	}
 	
 	public void getAllUsers () {
-		userDAO.findAll();
+		ArrayList<User> userList = userDAO.findAll();
+		String full_name;
+		String username;
+		String email_address;
+		
+		for (User user : userList) {
+			
+			full_name = user.getFullName();
+			username = user.getUsername();
+			email_address = user.getEmailAddress();
+			
+			
+			System.out.println();
+			System.out.println(full_name);
+			System.out.println(username);
+			System.out.println(email_address);
+
+			
+		}
 	}
 	
 	public void addUser () {
