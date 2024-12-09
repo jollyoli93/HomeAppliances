@@ -6,11 +6,11 @@ public class Main {
 
 	public static void main(String[] args) {
 		String database = "HomeAppliances";
-		
-		//Could change to be hierachi of the other consoles
 		InputOutputHandler handleInput = new ConsoleIOHandler();
-	    
-	    mainConsole(database, handleInput);
+		
+		MainConsole mainConsole = new MainConsole(database);
+		
+		mainConsole.displayMainMenu();
 	    
 	}
 }

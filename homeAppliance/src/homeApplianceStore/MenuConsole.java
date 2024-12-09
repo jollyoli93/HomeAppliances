@@ -21,7 +21,7 @@ public class MenuConsole {
 	public MenuConsole(String dbPath) {
 		this.dbPath = dbPath;
 		initFactoriesMap();
-		this.handleInput = new ConsoleIOHandler(); 
+		this.handleInput = new ConsoleIOHandler();
 		
 		this.applianceDAO = new ApplianceDao(dbPath, applianceFactories);
 	}

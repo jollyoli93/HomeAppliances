@@ -16,7 +16,7 @@ public class UserConsole {
 	
 	public UserConsole (String dbPath) {
 		this.dbPath = dbPath;
-		this.handleInput = new ConsoleIOHandler(); 
+		this.handleInput = new ConsoleIOHandler();
 		
 		this.userDAO = new UserDao(dbPath);
 	}
