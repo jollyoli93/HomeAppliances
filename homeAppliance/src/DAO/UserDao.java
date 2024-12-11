@@ -63,84 +63,18 @@ public class UserDao extends DAO<User> {
 		    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
 		    + ");";
 	
-	HashMap<String, String> tables = new HashMap<>();
-	
 	public UserDao(String dbPath) {
         this.dbPath = dbPath;
+        this.tables =  new HashMap<>();
         connector = new SqlLiteConnection(dbPath);
-        addTable("user", userSchema);
-        addTable("roles", rolesSchema);
-        addTable("user_roles", userRolesSchema);
-        addTable("addresses", addressesSchema);
+        addTableMap("users", userSchema);
+        addTableMap("roles", rolesSchema);
+        addTableMap("user_roles", userRolesSchema);
+        addTableMap("addresses", addressesSchema);
         
-        initAllTables();
-        
-//    	this.userSchema = 
-//    			"CREATE TABLE \"users\" ("
-//    			        + "\"first_name\" TEXT NOT NULL, "
-//    			        + "\"last_name\" TEXT NOT NULL, "
-//    			        + "\"username\" TEXT NOT NULL UNIQUE, "
-//    			        + "\"email_address\" TEXT NOT NULL UNIQUE, "
-//    			        + "\"telephone_num\" TEXT, "
-//    			        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
-//    			        + "\"password\" TEXT NOT NULL, "
-//    			        +"\n"
-//    			        + "	\"business_name\"	TEXT,"
-//    			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
-//    			        + ");";
-//    	this.rolesSchema = 
-//    			"CREATE TABLE roles ("
-//    				    +"role_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-//    				    +"role_name TEXT NOT NULL UNIQUE );";
-    	
-//    	this.userRolesSchema =
-//    			"CREATE TABLE user_roles ("
-//    				    +"user_id INTEGER NOT NULL,"
-//    				    +"role_id INTEGER NOT NULL,"
-//    				    +"FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,"
-//    				    +"FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE,"
-//    				    +"PRIMARY KEY(\"user_id\" AUTOINCREMENT);";
+        initAllTables(tables);
 
-//    	this.addressesSchema = 
-//    			 "CREATE TABLE addresses ("
-//    					    + "building_number INTEGER NOT NULL, "
-//    					    + "street TEXT NOT NULL, "
-//    					    + "city TEXT NOT NULL, "
-//    					    + "post_code TEXT NOT NULL, "
-//    					    + "country TEXT NOT NULL, "
-//    					    + "isPrimary TEXT NOT NULL, "
-//    					    + "address_type TEXT NOT NULL, "
-//    					    + "customer_id INTEGER NOT NULL, "
-//    					    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
-//    					    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
-//    					    + ");";
-	    // Check and create table if it doesn't exist
-//	    if (!checkTableExists("users")) {
-//	        createTable("users", userSchema);
-//	    }
-//	    
-//		if (!checkTableExists("roles")) {
-//	        createTable("roles", rolesSchema);
-//	    }
-//		
-//		if (!checkTableExists("user_role")) {
-//	        createTable("user_role", userRolesSchema);
-//	    }
     }	
-	
-		private void addTable (String tableName, String schema) {
-			tables.put(tableName, schema);
-		}
-	
-		private void initAllTables() {
-		    tables.forEach((tableName, schema) -> {
-		        if (!checkTableExists(tableName)) {
-		            createTable(tableName, schema);
-		        } else {
-		            System.out.println("DEBUG: Table " + tableName + " already exists.");
-		        }
-		    });
-		}
 
 		@Override
 		public ArrayList<User> findAll() {

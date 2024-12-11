@@ -4,10 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class DAO<T> {
 	Connector connector;
+	HashMap<String, String> tables;
 	
 	public DAO(){
 		
@@ -24,6 +26,11 @@ public abstract class DAO<T> {
 	
 	
 	public boolean createTable (String name, String schema) {
+	    if (checkTableExists(name)) {
+	        System.out.println("DEBUG: Table " + name + " already exists.");
+	        return false; // Exit early if the table exists
+	    }
+	    
 		try (Connection connect = connector.initializeDBConnection();
 			 PreparedStatement preparedStatement = connect.prepareStatement(schema)) {
 			
@@ -62,6 +69,25 @@ public abstract class DAO<T> {
 		}
 
 		return false;
+	}
+	
+	protected void addTableMap(String tableName, String schema) {
+	    if (tables.containsKey(tableName)) {
+	        System.out.println("DEBUG: Table " + tableName + " already exists in the map.");
+	        return;
+	    }
+	    tables.put(tableName, schema);
+	}
+
+
+	protected void initAllTables(HashMap<String, String> tables) {
+	    tables.forEach((tableName, schema) -> {
+	        if (!checkTableExists(tableName)) {
+	            createTable(tableName, schema);
+	        } else {
+	            System.out.println("DEBUG: Table " + tableName + " already exists.");
+	        }
+	    });
 	}
 	
 	public abstract ArrayList<T> findAll();
