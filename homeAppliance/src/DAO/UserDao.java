@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -105,7 +106,7 @@ public class UserDao extends DAO<User> {
 	                   System.out.println("DEBUG: results added ");
 	                   
 	                   try {
-	                	   System.out.println("DEBUG: Switch statement");
+	                	   System.out.println("DEBUG: DAO Switch statement");
 	                	   
 	                	   //change to lambda
 			               	    switch (role) {
@@ -183,36 +184,73 @@ public class UserDao extends DAO<User> {
 //	    	return appliance;
 //		}
 //
-		@Override
-		public boolean addNew(User newUser) {	
-			String query =  "INSERT INTO users " + " (first_name, last_name, email_address, username, password) VALUES (?, ?, ?, ?, ?)";
-			
-			//generates additional connection comments
-			if (!checkTableExists("users")) {
-				createTable("users", userSchema);
-			}
-			
-			try (Connection connect = connector.initializeDBConnection(); 
-				 PreparedStatement preparedStatement = connect.prepareStatement(query)){
-					preparedStatement.setString(1, newUser.getFirstName());
-					preparedStatement.setString(2, newUser.getLastName());
-					preparedStatement.setString(3, newUser.getEmailAddress());
-					preparedStatement.setString(4, newUser.getUsername());
-					preparedStatement.setString(5, newUser.getPassword());
-					//preparedStatement.setString(5, newUser.getTelephoneNum());
-					
-							
-					int executeRows = preparedStatement.executeUpdate();
-					
-					return executeRows > 0;
-							 
-			} catch (SQLException e) {
-				e.printStackTrace();
-	            System.out.println("SQL Exception: " + e.getMessage());
-				return false;
-			}
 
+		public boolean addUser(User user, Map<String, String> additionalFields) {
+			//stringbuilder not thread safe! use stringBuffer
+		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO users (first_name, last_name, email_address, username, password");
+		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (?, ?, ?, ?, ?");		    
+		    
+		    // Add additional fields dynamically
+		    if (additionalFields != null) {
+		        for (String field : additionalFields.keySet()) {
+		            queryBuilder.append(", ").append(field);
+		            valuesBuilder.append(", ?");
+		        }
+		    }
+		    queryBuilder.append(")").append(valuesBuilder).append(")");
+		    
+		    String query = queryBuilder.toString();
+
+		    // Check and create table if it doesn't exist
+		    if (!checkTableExists("users")) {
+		        createTable("users", userSchema);
+		    }
+		    
+		    try (Connection connect = connector.initializeDBConnection(); 
+		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		        
+		        // Set common fields
+		        preparedStatement.setString(1, user.getFirstName());
+		        preparedStatement.setString(2, user.getLastName());
+		        preparedStatement.setString(3, user.getEmailAddress());
+		        preparedStatement.setString(4, user.getUsername());
+		        preparedStatement.setString(5, user.getPassword());
+		        
+		        // Set additional fields dynamically
+		        int index = 6; // Start after common fields
+		        if (additionalFields != null) {
+		            for (String fieldValue : additionalFields.values()) {
+		                preparedStatement.setString(index++, fieldValue);
+		            }
+		        }
+		        
+		        int executeRows = preparedStatement.executeUpdate();
+		        return executeRows > 0;
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        System.out.println("SQL Exception: " + e.getMessage());
+		        return false;
+		    }
 		}
+
+		public boolean addNewAdmin(User newAdmin) {
+		    return addUser(newAdmin, null);
+		}
+
+		public boolean addNewCustomer(User newCustomer) {
+		    Map<String, String> additionalFields = new HashMap<>();
+		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
+		    return addUser(newCustomer, additionalFields);
+		}
+
+		public boolean addNewBusiness(User newBusiness) {
+		    Map<String, String> additionalFields = new HashMap<>();
+		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
+		    additionalFields.put("business_name", newBusiness.getBusinessName());
+		    return addUser(newBusiness, additionalFields);
+		}
+
 //
 //	    @Override
 //	    public boolean deleteById(int id) {
@@ -301,5 +339,12 @@ public class UserDao extends DAO<User> {
 			return null;
 				
 			}
+
+
+		@Override
+		public boolean addNew(User add, Map<String, String> additionalFields) {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	
 }

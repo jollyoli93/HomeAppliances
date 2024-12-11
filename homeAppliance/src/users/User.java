@@ -10,6 +10,7 @@ public abstract class User {
 	private String password;
 	private int customerId;
 	private String telephoneNum;
+	private String businessName;
 	
 	private ArrayList<Address> addressList;
 
@@ -100,5 +101,13 @@ public abstract class User {
 	}
 	
 	public abstract String getRole ();
+
+	public String getBusinessName() {
+		return businessName;
+	}
+
+	public void setBusinessName(String businessName) {
+		this.businessName = businessName;
+	}
 
 }

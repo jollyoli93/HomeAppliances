@@ -128,7 +128,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public boolean addNew(Appliance newAppliance) {	
+	public boolean addNew(Appliance newAppliance, Map<String, String> additionalFields) {	
 		String query =  "INSERT INTO appliances" + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
 		
 		if (!checkTableExists("appliances")) {

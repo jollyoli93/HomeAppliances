@@ -3,6 +3,8 @@ package homeApplianceStore;
 import java.util.ArrayList;
 
 import DAO.UserDao;
+import users.AdminUser;
+import users.BusinessUser;
 import users.CustomerUser;
 import users.User;
 import users.UserFactory;
@@ -87,35 +89,99 @@ public class UserConsole {
 			System.out.println();
 			System.out.println(full_name);
 			System.out.println(username);
-			System.out.println(email_address);
-
-			
+			System.out.println(email_address);	
 		}
 	}
 	
 	public void addUser () {
-		System.out.println("Would you like to add a user?");
+		System.out.println("Would you like to add a user? Y/N ");
 		String input = handleInput.getInputString();
+		
+		//DEBUG
 		System.out.println(input);
 		
-		if (input.equalsIgnoreCase("yes")) {
-			Boolean success = null;
-			customer = new CustomerUser("Jimmy", "Grimble", "jimmygrimble3@woohoo.com","jimbob98-3", "ilovefootball", "07498352989");
-			
-			try {
-				success = userDAO.addNew(customer);
+		Boolean success = false;
+		
+		if (input.equalsIgnoreCase("Y")) {			
+			while (success == false) {
+				System.out.println("Please enter user role or type quit to exit");
+				System.out.println("admin, customer, business");
+				//get roles dynamically;?
+				String role = handleInput.getInputString();
 				
-				if (success == true) {
-					System.out.println("Succesfully added to the database");
-					userDAO.findAll();
+				try {
+					success = userSelection(role.toLowerCase());
+	
+					if (success == true) {
+						System.out.println();
+						System.out.println("Succesfully added to the database");
+					}
+					else {
+						System.out.println();
+						System.out.println("Error adding user - try again");
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("CATCH: Error adding user - try again");
+					e.printStackTrace();
 				}
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		} else {
-			System.out.println("Empty");
 		}
+	}
+
+	private boolean userSelection(String role) {
+		String first_name = null;
+		String last_name = null;
+		String email = null;
+		String username = null;
+		String password = null;
+		String telephoneNum = null;
+		String businessName = null;
+		User user;
+		
+		System.out.println("First Name: ");
+		first_name = handleInput.getInputString();
+		
+		System.out.println("Last Name: ");
+		last_name = handleInput.getInputString();
+
+		System.out.println("Email: ");
+		email = handleInput.getInputString();
+		
+		System.out.println("username: ");
+		username = handleInput.getInputString();
+		
+		System.out.println("password: ");
+		password = handleInput.getInputString();
+		
+		
+		switch (role) {
+			case "customer":
+				System.out.println("Telephone Number: ");
+				telephoneNum = handleInput.getInputString();
+
+				user = new CustomerUser(first_name, last_name, email, username, password, telephoneNum);
+				return userDAO.addNewCustomer(user);
+				
+			case "admin":
+				user = new AdminUser(first_name, last_name, email, username, password);
+				return userDAO.addNewAdmin(user);
+				
+			case "business":
+				System.out.println("Telephone Number: ");
+				telephoneNum = handleInput.getInputString();
+				
+				System.out.println("Business Name: ");
+				businessName = handleInput.getInputString();
+				
+				user = new BusinessUser(first_name, last_name, email, username, password, telephoneNum, businessName);
+				return userDAO.addNewBusiness(user);
+			case "quit":
+				return true;
+			default:
+				return false;
+		}
+
 	}
 }

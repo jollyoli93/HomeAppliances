@@ -157,7 +157,7 @@ public class MenuConsole {
 
 		
 		for (int i = 0; i < userInput; i++) {
-			added = applianceDAO.addNew(appliance);
+			added = applianceDAO.addNew(appliance, null);
 			
 			if (added == false) {
 				System.out.println("Failed to add");

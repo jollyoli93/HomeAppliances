@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public abstract class DAO<T> {
 	Connector connector;
@@ -67,7 +68,8 @@ public abstract class DAO<T> {
 	
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
-	public abstract boolean addNew(T add);
+//	public abstract boolean addNew(T add);
+	public abstract boolean addNew(T add, Map<String, String> additionalFields);
 	public abstract boolean deleteById(int id);
 	public abstract boolean updateById(int id, Object updateß);
 
