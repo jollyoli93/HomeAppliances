@@ -55,7 +55,7 @@ public class UserConsole {
 					System.out.println("Search for user");
 					break;
 				case 3:
-					addUser();
+					addUserInterface();
 					break;
 				case 4:
 					System.out.println();
@@ -93,7 +93,7 @@ public class UserConsole {
 		}
 	}
 	
-	public void addUser () {
+	public void addUserInterface () {
 		System.out.println("Would you like to add a user? Y/N ");
 		String input = handleInput.getInputString();
 		
@@ -110,7 +110,7 @@ public class UserConsole {
 				String role = handleInput.getInputString();
 				
 				try {
-					success = userSelection(role.toLowerCase());
+					success = addUserByRole(role.toLowerCase());
 	
 					if (success == true) {
 						System.out.println();
@@ -130,7 +130,7 @@ public class UserConsole {
 		}
 	}
 
-	private boolean userSelection(String role) {
+	private boolean addUserByRole(String role) {
 		String first_name = null;
 		String last_name = null;
 		String email = null;

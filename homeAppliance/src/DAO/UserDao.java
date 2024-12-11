@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.management.relation.Role;
+
 /**
  * This class provides the user database access functionality
  * 
@@ -22,66 +24,127 @@ import java.util.Map;
  */
 public class UserDao extends DAO<User> {
 	String dbPath;
-	String userSchema;
-	String rolesSchema;
-	String user_rolesSchema;
-	String addressesSchema;
+	
+	String userSchema = "CREATE TABLE \"users\" ("
+	        + "\"first_name\" TEXT NOT NULL, "
+	        + "\"last_name\" TEXT NOT NULL, "
+	        + "\"username\" TEXT NOT NULL UNIQUE, "
+	        + "\"email_address\" TEXT NOT NULL UNIQUE, "
+	        + "\"telephone_num\" TEXT, "
+	        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
+	        + "\"password\" TEXT NOT NULL, "
+	        +"\n"
+	        + "	\"business_name\"	TEXT,"
+	        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
+	        + ");";
+	
+	String rolesSchema = "CREATE TABLE roles ("
+		    +"role_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+		    +"role_name TEXT NOT NULL UNIQUE );";
+	
+	String userRolesSchema = "CREATE TABLE user_roles ("
+		    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+		    + "user_id INTEGER NOT NULL,"
+		    + "role_id INTEGER NOT NULL,"
+		    + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,"
+		    + "FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE"
+		    + ");";
+	
+	String addressesSchema =  "CREATE TABLE addresses ("
+		    + "building_number INTEGER NOT NULL, "
+		    + "street TEXT NOT NULL, "
+		    + "city TEXT NOT NULL, "
+		    + "post_code TEXT NOT NULL, "
+		    + "country TEXT NOT NULL, "
+		    + "isPrimary TEXT NOT NULL, "
+		    + "address_type TEXT NOT NULL, "
+		    + "customer_id INTEGER NOT NULL, "
+		    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+		    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
+		    + ");";
+	
+	HashMap<String, String> tables = new HashMap<>();
 	
 	public UserDao(String dbPath) {
         this.dbPath = dbPath;
         connector = new SqlLiteConnection(dbPath);
+        addTable("user", userSchema);
+        addTable("roles", rolesSchema);
+        addTable("user_roles", userRolesSchema);
+        addTable("addresses", addressesSchema);
         
-    	this.userSchema = 
-    			"CREATE TABLE \"users\" ("
-    			        + "\"first_name\" TEXT NOT NULL, "
-    			        + "\"last_name\" TEXT NOT NULL, "
-    			        + "\"username\" TEXT NOT NULL UNIQUE, "
-    			        + "\"email_address\" TEXT NOT NULL UNIQUE, "
-    			        + "\"telephone_num\" TEXT, "
-    			        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
-    			        + "\"password\" TEXT NOT NULL, "
-    			        +"\n"
-    			        + "	\"business_name\"	TEXT,"
-    			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
-    			        + ");";
-    	this.rolesSchema = 
-    			"CREATE TABLE roles ("
-    				    +"role_id INTEGER PRIMARY KEY AUTOINCREMENT,"
-    				    +"role_name TEXT NOT NULL UNIQUE );";
+        initAllTables();
+        
+//    	this.userSchema = 
+//    			"CREATE TABLE \"users\" ("
+//    			        + "\"first_name\" TEXT NOT NULL, "
+//    			        + "\"last_name\" TEXT NOT NULL, "
+//    			        + "\"username\" TEXT NOT NULL UNIQUE, "
+//    			        + "\"email_address\" TEXT NOT NULL UNIQUE, "
+//    			        + "\"telephone_num\" TEXT, "
+//    			        + "\"user_id\" INTEGER NOT NULL UNIQUE, "
+//    			        + "\"password\" TEXT NOT NULL, "
+//    			        +"\n"
+//    			        + "	\"business_name\"	TEXT,"
+//    			        + "PRIMARY KEY(\"user_id\" AUTOINCREMENT)"
+//    			        + ");";
+//    	this.rolesSchema = 
+//    			"CREATE TABLE roles ("
+//    				    +"role_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+//    				    +"role_name TEXT NOT NULL UNIQUE );";
     	
-    	this.user_rolesSchema =
-    			"CREATE TABLE user_roles ("
-    				    +"user_id INTEGER NOT NULL,"
-    				    +"role_id INTEGER NOT NULL,"
-    				    +"FOREIGN KEY (user_id) REFERENCES users(user_id),"
-    				    +"FOREIGN KEY (role_id) REFERENCES roles(role_id),"
-    				    +"PRIMARY KEY (user_id, role_id));";
+//    	this.userRolesSchema =
+//    			"CREATE TABLE user_roles ("
+//    				    +"user_id INTEGER NOT NULL,"
+//    				    +"role_id INTEGER NOT NULL,"
+//    				    +"FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,"
+//    				    +"FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE,"
+//    				    +"PRIMARY KEY(\"user_id\" AUTOINCREMENT);";
 
-    	this.addressesSchema = 
-    			 "CREATE TABLE addresses ("
-    					    + "building_number INTEGER NOT NULL, "
-    					    + "street TEXT NOT NULL, "
-    					    + "city TEXT NOT NULL, "
-    					    + "post_code TEXT NOT NULL, "
-    					    + "country TEXT NOT NULL, "
-    					    + "isPrimary TEXT NOT NULL, "
-    					    + "address_type TEXT NOT NULL, "
-    					    + "customer_id INTEGER NOT NULL, "
-    					    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
-    					    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
-    					    + ");";
-
-    	
+//    	this.addressesSchema = 
+//    			 "CREATE TABLE addresses ("
+//    					    + "building_number INTEGER NOT NULL, "
+//    					    + "street TEXT NOT NULL, "
+//    					    + "city TEXT NOT NULL, "
+//    					    + "post_code TEXT NOT NULL, "
+//    					    + "country TEXT NOT NULL, "
+//    					    + "isPrimary TEXT NOT NULL, "
+//    					    + "address_type TEXT NOT NULL, "
+//    					    + "customer_id INTEGER NOT NULL, "
+//    					    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+//    					    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
+//    					    + ");";
+	    // Check and create table if it doesn't exist
+//	    if (!checkTableExists("users")) {
+//	        createTable("users", userSchema);
+//	    }
+//	    
+//		if (!checkTableExists("roles")) {
+//	        createTable("roles", rolesSchema);
+//	    }
+//		
+//		if (!checkTableExists("user_role")) {
+//	        createTable("user_role", userRolesSchema);
+//	    }
     }	
 	
+		private void addTable (String tableName, String schema) {
+			tables.put(tableName, schema);
+		}
+	
+		private void initAllTables() {
+		    tables.forEach((tableName, schema) -> {
+		        if (!checkTableExists(tableName)) {
+		            createTable(tableName, schema);
+		        } else {
+		            System.out.println("DEBUG: Table " + tableName + " already exists.");
+		        }
+		    });
+		}
+
 		@Override
 		public ArrayList<User> findAll() {
-			ArrayList<User> userList = new ArrayList<>(); 
-			
-			if (!checkTableExists("users")) {
-				createTable("users", userSchema);
-			}
-			
+			ArrayList<User> userList = new ArrayList<>(); 			
 			
 			String query = "SELECT * FROM users ";
 			
@@ -90,6 +153,7 @@ public class UserDao extends DAO<User> {
 	        	 ResultSet result = statement.executeQuery(query)) {
 	        	
 	        		System.out.println("DEBUG: parse results");
+	        		
 	               while (result.next()) {
 	            	   User user = null;
 	            	   
@@ -101,9 +165,11 @@ public class UserDao extends DAO<User> {
 	                   String password = result.getString("password");
 	                   String telephoneNum = result.getString("telephone_num");
 	                   String businessName = result.getString("business_name");
-	                   String role = getRole(user_id);
+	                   String role = getRoleDesc(user_id);
 	                   
 	                   System.out.println("DEBUG: results added ");
+	                   System.out.println("Debug user id: "  + user_id);
+	                   System.out.println("Debug user role: "  + role);
 	                   
 	                   try {
 	                	   System.out.println("DEBUG: DAO Switch statement");
@@ -132,7 +198,7 @@ public class UserDao extends DAO<User> {
 	               } 
 
 	           } catch (SQLException e) {
-	   				System.out.println("Error connecting to the database");
+	   				System.out.println("Error connecting");
 	               System.out.println("SQL Exception: " + e.getMessage());
 	               
 	           }
@@ -183,9 +249,9 @@ public class UserDao extends DAO<User> {
 //			
 //	    	return appliance;
 //		}
-//
 
-		public boolean addUser(User user, Map<String, String> additionalFields) {
+		@Override
+		public boolean addNew(User user, Map<String, String> additionalFields) {
 			//stringbuilder not thread safe! use stringBuffer
 		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO users (first_name, last_name, email_address, username, password");
 		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (?, ?, ?, ?, ?");		    
@@ -200,11 +266,6 @@ public class UserDao extends DAO<User> {
 		    queryBuilder.append(")").append(valuesBuilder).append(")");
 		    
 		    String query = queryBuilder.toString();
-
-		    // Check and create table if it doesn't exist
-		    if (!checkTableExists("users")) {
-		        createTable("users", userSchema);
-		    }
 		    
 		    try (Connection connect = connector.initializeDBConnection(); 
 		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
@@ -224,7 +285,16 @@ public class UserDao extends DAO<User> {
 		            }
 		        }
 		        
+		        //update database
 		        int executeRows = preparedStatement.executeUpdate();
+
+		        //add user role to user_roles table if correctly added
+		        if (executeRows > 0) {
+			        int last_id = getLastIdEntry();
+			        String user_role = user.getRole();
+			        addUserRole(last_id, user_role);
+		        }
+		        
 		        return executeRows > 0;
 		        
 		    } catch (SQLException e) {
@@ -235,20 +305,20 @@ public class UserDao extends DAO<User> {
 		}
 
 		public boolean addNewAdmin(User newAdmin) {
-		    return addUser(newAdmin, null);
+		    return addNew(newAdmin, null);
 		}
 
 		public boolean addNewCustomer(User newCustomer) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
-		    return addUser(newCustomer, additionalFields);
+		    return addNew(newCustomer, additionalFields);
 		}
 
 		public boolean addNewBusiness(User newBusiness) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
 		    additionalFields.put("business_name", newBusiness.getBusinessName());
-		    return addUser(newBusiness, additionalFields);
+		    return addNew(newBusiness, additionalFields);
 		}
 
 //
@@ -310,8 +380,12 @@ public class UserDao extends DAO<User> {
 			return false;
 		}
 		
-		private String getRole (int id) {
+		private String getRoleDesc (int id) {
 			System.out.println(id);
+			
+			if (!checkTableExists("roles")) {
+		        createTable("roles", rolesSchema);
+		    }
 			
 			String getRoleQuery = 
 				    "SELECT roles.role_desc " +
@@ -339,12 +413,83 @@ public class UserDao extends DAO<User> {
 			return null;
 				
 			}
+		
+		private int getRoleId (String role) {
+			System.out.println(role);
+			
+			if (!checkTableExists("roles")) {
+		        createTable("roles", rolesSchema);
+		    }
+			
+			String getRoleQuery = 
+				    "SELECT role_id " +
+				    "FROM roles " +
+				    "WHERE role_desc = ?";
+			
+			try (Connection connect = connector.initializeDBConnection(); 
+				 PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
+				 	preparedStatement.setString(1, role);
+				 	ResultSet result = preparedStatement.executeQuery();
 
-
-		@Override
-		public boolean addNew(User add, Map<String, String> additionalFields) {
-			// TODO Auto-generated method stub
-			return false;
+				 	while (result.next()) {
+						return result.getInt("role_id");
+					}
+				
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			return 0; 
 		}
+		
+		private boolean addUserRole(int id, String role) {			
+			String query = "INSERT INTO user_roles (user_id, role_id)\n"
+							+ "VALUES (?, ?);";
+			
+			if (!checkTableExists("roles")) {
+		        createTable("roles", rolesSchema);
+		    }
+			
+			if (!checkTableExists("user_role")) {
+		        createTable("user_role", userRolesSchema);
+		    }
+		    
+		    try (Connection connect = connector.initializeDBConnection(); 
+		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		        
+				int role_id = getRoleId(role);
+				System.out.println("DEBUG: role id is: " + role_id);
+				
+		        preparedStatement.setInt(1, id);
+		        preparedStatement.setInt(2, role_id);
+		        
+		        int executeRows = preparedStatement.executeUpdate();
+		        return executeRows > 0;
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        System.out.println("SQL Exception: " + e.getMessage());
+		        return false;
+		    }
+		    
+		}
+		
+		private int getLastIdEntry () {
+			String query = "SELECT seq\n"
+							+ "FROM sqlite_sequence\n"
+							+ "WHERE name = 'users';";
+				
+				try (Connection connect = connector.initializeDBConnection(); 
+					 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+					 	ResultSet result = preparedStatement.executeQuery();
+
+					 	while (result.next()) {
+							return result.getInt("seq");
+						}
+					
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				return 0; 
+			}
 	
 }

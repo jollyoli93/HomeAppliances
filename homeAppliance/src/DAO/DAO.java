@@ -42,28 +42,26 @@ public abstract class DAO<T> {
 
 
 	public boolean checkTableExists(String name) {
-		String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "' COLLATE NOCASE";
-
-		
+		String query = "SELECT name FROM sqlite_master WHERE type='table' AND name=? COLLATE NOCASE";
 		try (Connection connect = connector.initializeDBConnection();
-			 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-			
-			ResultSet result = preparedStatement.executeQuery();
-			
-			if (result.next()) {
-				System.out.println("table exists.");
-				return true;
-			}
-				
+		     PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		     
+		    preparedStatement.setString(1, name); // Set the table name dynamically
+		    ResultSet result = preparedStatement.executeQuery();
+		    
+		    if (result.next()) {
+		        System.out.println("Table " + name + " exists.");
+		        return true;
+		    }
+		    
 		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Error connecting to the database");
-            System.out.println("SQL Exception: " + e.getMessage());
-            return false;
+		    e.printStackTrace();
+		    System.out.println("Error checking table existence for: " + name);
+		    System.out.println("SQL Exception: " + e.getMessage());
+		    return false;
 		}
-		
+
 		return false;
-		
 	}
 	
 	public abstract ArrayList<T> findAll();
