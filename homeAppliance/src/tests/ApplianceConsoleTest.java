@@ -1,9 +1,12 @@
-package homeApplianceStore;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import IOHandlers.MockIOHandler;
+import homeApplianceStore.ApplianceConsole;
 
 class ApplianceConsoleTest {
 	ApplianceConsole console;

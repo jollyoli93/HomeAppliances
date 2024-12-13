@@ -2,6 +2,9 @@
 
 package homeApplianceStore;
 
+import IOHandlers.ConsoleIOHandler;
+import IOHandlers.InputOutputHandler;
+
 public class Main {
 
 	public static void main(String[] args) {

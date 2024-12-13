@@ -1,5 +1,8 @@
 package homeApplianceStore;
 
+import IOHandlers.ConsoleIOHandler;
+import IOHandlers.InputOutputHandler;
+
 public class MainConsole {
     private String database;
     private InputOutputHandler handleInput;

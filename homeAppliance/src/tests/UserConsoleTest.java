@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import DAO.DAO;
 import DAO.UserDao;
+import IOHandlers.InputOutputHandler;
+import IOHandlers.MockIOHandler;
 import homeApplianceStore.UserConsole;
 import users.AdminUser;
 
@@ -14,9 +16,12 @@ class UserConsoleTest {
 			
 	@Test
 	public void addUserToDatabase () {
+		int[] addUser = {1};
 		UserConsole console = new UserConsole(dbpath);
-		AdminUser man = new AdminUser("Man", "Human", "Manhuma@yahoo.com", "ManHuman", "Useruserman");
+		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
 		
+		
+		console.setHandler(new MockIOHandler(addUser));
 		
 //		System.out.println("Full Name: " + man.getFullName());
 	}

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import DAO.ApplianceDao;
+import IOHandlers.ConsoleIOHandler;
+import IOHandlers.InputOutputHandler;
 import printer.AppliancePrinter;
 import printer.Printer;
 
