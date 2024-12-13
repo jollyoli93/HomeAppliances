@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import DAO.DAO;
-import DAO.UserDao;
-import IOHandlers.InputOutputHandler;
 import IOHandlers.MockIOHandler;
 import homeApplianceStore.UserConsole;
 import users.AdminUser;
@@ -16,7 +13,7 @@ class UserConsoleTest {
 			
 	@Test
 	public void addUserToDatabase () {
-		int[] addUser = {1};
+		int[] addUser = {3};
 		UserConsole console = new UserConsole(dbpath);
 		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
 		

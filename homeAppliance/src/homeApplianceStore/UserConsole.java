@@ -110,15 +110,7 @@ public class UserConsole {
 
 	
 	public void addUserInterface () {
-		System.out.println("Would you like to add a user? Y/N ");
-		String input = handleInput.getInputString();
-		
-		//DEBUG
-		System.out.println(input);
-		
-		Boolean success = false;
-		
-		if (input.equalsIgnoreCase("Y")) {			
+		Boolean success = false;		
 			while (success == false) {
 				System.out.println("Please enter user role or type quit to exit");
 				System.out.println("admin, customer, business");
@@ -144,7 +136,6 @@ public class UserConsole {
 					e.printStackTrace();
 				}
 			}
-		}
 	}
 
 	private boolean addUserByRole(String role) {

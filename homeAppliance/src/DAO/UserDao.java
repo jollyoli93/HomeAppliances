@@ -73,6 +73,7 @@ public class UserDao extends DAO<User> {
         addTableMap("addresses", addressesSchema);
         
         initAllTables(tables);
+        populateRoles();
 
     }	
 
@@ -316,12 +317,9 @@ public class UserDao extends DAO<User> {
 		private String getRoleDesc (int id) {
 			System.out.println(id);
 			
-			if (!checkTableExists("roles")) {
-		        createTable("roles", rolesSchema);
-		    }
 			
 			String getRoleQuery = 
-				    "SELECT roles.role_desc " +
+				    "SELECT roles.role_name " +
 				    "FROM users " +
 				    "LEFT OUTER JOIN user_roles " +
 				    "ON users.user_id = user_roles.user_id " +
@@ -336,7 +334,7 @@ public class UserDao extends DAO<User> {
 				 	ResultSet result = preparedStatement.executeQuery();
 
 				 	while (result.next()) {
-						return result.getString("role_desc");
+						return result.getString("role_name");
 					}
 				
 				} catch (SQLException e) {
@@ -350,14 +348,10 @@ public class UserDao extends DAO<User> {
 		private int getRoleId (String role) {
 			System.out.println(role);
 			
-			if (!checkTableExists("roles")) {
-		        createTable("roles", rolesSchema);
-		    }
-			
 			String getRoleQuery = 
 				    "SELECT role_id " +
 				    "FROM roles " +
-				    "WHERE role_desc = ?";
+				    "WHERE role_name = ?";
 			
 			try (Connection connect = connector.initializeDBConnection(); 
 				 PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
@@ -378,14 +372,6 @@ public class UserDao extends DAO<User> {
 			String query = "INSERT INTO user_roles (user_id, role_id)\n"
 							+ "VALUES (?, ?);";
 			
-			if (!checkTableExists("roles")) {
-		        createTable("roles", rolesSchema);
-		    }
-			
-			if (!checkTableExists("user_role")) {
-		        createTable("user_role", userRolesSchema);
-		    }
-		    
 		    try (Connection connect = connector.initializeDBConnection(); 
 		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 		        
@@ -424,5 +410,36 @@ public class UserDao extends DAO<User> {
 					}
 				return 0; 
 			}
+		
+		private boolean populateRoles() {
+		    String query = "INSERT INTO roles (role_name) VALUES ('Customer'),\n"
+		            + "('Admin'),\n"
+		            + "('Business');";
+		    
+		    try (Connection conn = connector.initializeDBConnection()) {
+		        Statement stmt = conn.createStatement();
+		        ResultSet rs = stmt.executeQuery("SELECT * FROM roles LIMIT 1");
+		        
+		        if (!rs.next()) {
+
+				    try (Connection connect = connector.initializeDBConnection();
+				         Statement statement = connect.createStatement()) {
+				    	
+				        // Execute the SQL query
+				        statement.executeUpdate(query);
+
+				        return true;
+				    } catch (SQLException e) {
+				        e.printStackTrace();
+				        System.out.println("SQL Exception: " + e.getMessage());
+				        return false;
+				    }
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("SQL Exception: " + e.getMessage());
+		    }
+			return false;
+		   
+		}
 	
 }
