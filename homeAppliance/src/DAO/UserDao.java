@@ -345,27 +345,29 @@ public class UserDao extends DAO<User> {
 				
 			}
 		
-		private int getRoleId (String role) {
-			System.out.println(role);
-			
-			String getRoleQuery = 
-				    "SELECT role_id " +
-				    "FROM roles " +
-				    "WHERE role_name = ?";
-			
-			try (Connection connect = connector.initializeDBConnection(); 
-				 PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
-				 	preparedStatement.setString(1, role);
-				 	ResultSet result = preparedStatement.executeQuery();
+		private int getRoleId(String role) {
+		    System.out.println(role);
 
-				 	while (result.next()) {
-						return result.getInt("role_id");
-					}
-				
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			return 0; 
+		    String getRoleQuery = "SELECT role_id FROM roles WHERE role_name = ?";
+
+		    try (Connection connect = connector.initializeDBConnection();
+		         PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
+		    	
+		    	System.out.println(role);
+		        preparedStatement.setString(1, role);
+		        ResultSet result = preparedStatement.executeQuery();
+
+		        while (result.next()) {
+		            int role_id = result.getInt("role_id");
+		            System.out.println(role_id);
+		            return role_id;
+		        }
+
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    System.out.println("Failed to get role_id");
+		    return 0;
 		}
 		
 		private boolean addUserRole(int id, String role) {			
@@ -412,9 +414,9 @@ public class UserDao extends DAO<User> {
 			}
 		
 		private boolean populateRoles() {
-		    String query = "INSERT INTO roles (role_name) VALUES ('Customer'),\n"
-		            + "('Admin'),\n"
-		            + "('Business');";
+		    String query = "INSERT INTO roles (role_name) VALUES ('customer'),\n"
+		            + "('admin'),\n"
+		            + "('business');";
 		    
 		    try (Connection conn = connector.initializeDBConnection()) {
 		        Statement stmt = conn.createStatement();
