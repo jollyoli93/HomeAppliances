@@ -3,6 +3,10 @@ package homeApplianceStore;
 import java.util.ArrayList;
 
 import DAO.UserDao;
+import printer.AdminPrinter;
+import printer.AppliancePrinter;
+import printer.BusinessPrinter;
+import printer.CustomerPrinter;
 import users.AdminUser;
 import users.BusinessUser;
 import users.CustomerUser;
@@ -42,7 +46,7 @@ public class UserConsole {
 			System.out.println("[3] Add a new user");
 			System.out.println("[4] Update a user");
 			System.out.println("[5] Delete a user by ID");
-			System.out.println("[6] Exit");
+			System.out.println("[6] Back");
 			System.out.println();
 			
 			input = handleInput.getInputInt();
@@ -74,24 +78,34 @@ public class UserConsole {
 	}
 	
 	public void getAllUsers () {
-		ArrayList<User> userList = userDAO.findAll();
-		String full_name;
-		String username;
-		String email_address;
-		
-		for (User user : userList) {
+		try {
+			ArrayList<User> userList = userDAO.findAll();
+			System.err.println("Loop through user list");
 			
-			full_name = user.getFullName();
-			username = user.getUsername();
-			email_address = user.getEmailAddress();
-			
-			
+			for (User user : userList) {
+				switch (user.getRole()) {
+				case "admin":
+					AdminPrinter printAdmin = new AdminPrinter(user);
+					printAdmin.print();
+					break;
+				case "business":
+					BusinessPrinter printBusiness = new BusinessPrinter(user);
+					printBusiness.print();
+					break;
+				case "customer":
+					CustomerPrinter printCustomer = new CustomerPrinter(user);
+					printCustomer.print();
+					break;
+				
+				}
+			}
+		} catch (NullPointerException e) {
+			System.out.println("No products in the database");
 			System.out.println();
-			System.out.println(full_name);
-			System.out.println(username);
-			System.out.println(email_address);	
+			e.printStackTrace();
 		}
 	}
+
 	
 	public void addUserInterface () {
 		System.out.println("Would you like to add a user? Y/N ");
@@ -106,6 +120,7 @@ public class UserConsole {
 			while (success == false) {
 				System.out.println("Please enter user role or type quit to exit");
 				System.out.println("admin, customer, business");
+				
 				//get roles dynamically;?
 				String role = handleInput.getInputString();
 				

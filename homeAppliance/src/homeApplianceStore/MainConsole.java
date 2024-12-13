@@ -24,7 +24,7 @@ public class MainConsole {
 
             switch (input) {
                 case 1:
-                    MenuConsole menuConsole = new MenuConsole(database);
+                    ApplianceConsole menuConsole = new ApplianceConsole(database);
                     menuConsole.displayMenu();
                     break;
                 case 2:

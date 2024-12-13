@@ -5,12 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class MenuConsoleTest {
-	MenuConsole console;
+class ApplianceConsoleTest {
+	ApplianceConsole console;
 
 	@BeforeEach
 	public void menuConsoleTest () {
-		console = new MenuConsole("HomeApplianceTest");
+		console = new ApplianceConsole("HomeApplianceTest");
 	}
 	
 	@Test 

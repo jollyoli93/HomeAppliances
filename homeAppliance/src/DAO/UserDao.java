@@ -88,7 +88,7 @@ public class UserDao extends DAO<User> {
 	        	
 	        		System.out.println("DEBUG: parse results");
 	        		
-	               while (result.next()) {
+	        		while (result.next()) {
 	            	   User user = null;
 	            	   
 	            	   int user_id = result.getInt("user_id");
@@ -137,7 +137,7 @@ public class UserDao extends DAO<User> {
 	               
 	           }
 			
-	        System.out.println("DEBUG: returning users list");
+	        System.out.println("DEBUG: userList empty");
 			return userList;
 		}
 //
@@ -186,7 +186,6 @@ public class UserDao extends DAO<User> {
 
 		@Override
 		public boolean addNew(User user, Map<String, String> additionalFields) {
-			//stringbuilder not thread safe! use stringBuffer
 		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO users (first_name, last_name, email_address, username, password");
 		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (?, ?, ?, ?, ?");		    
 		    

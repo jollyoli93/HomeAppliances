@@ -10,7 +10,7 @@ import DAO.ApplianceDao;
 import printer.AppliancePrinter;
 import printer.Printer;
 
-public class MenuConsole {
+public class ApplianceConsole {
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
     private String dbPath;
@@ -18,7 +18,7 @@ public class MenuConsole {
 
 	Map<String, ApplianceFactory> applianceFactories = new HashMap<String, ApplianceFactory>();
 
-	public MenuConsole(String dbPath) {
+	public ApplianceConsole(String dbPath) {
 		this.dbPath = dbPath;
 		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler();
@@ -52,7 +52,7 @@ public class MenuConsole {
 			System.out.println("[3] Add a new product");
 			System.out.println("[4] Update a product");
 			System.out.println("[5] Delete a product by ID");
-			System.out.println("[6] Exit");
+			System.out.println("[6] Back");
 			System.out.println();
 			
 			input = handleInput.getInputInt();
