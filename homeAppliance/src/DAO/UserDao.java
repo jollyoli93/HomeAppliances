@@ -255,23 +255,23 @@ public class UserDao extends DAO<User> {
 		    return addNew(newBusiness, additionalFields);
 		}
 
-//
-//	    @Override
-//	    public boolean deleteById(int id) {
-//	        String query = "DELETE FROM appliances WHERE id = ?";
-//	        
-//	        try (Connection connect = connector.initializeDBConnection();
-//	        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-//		            preparedStatement.setInt(1, id);
-//		            int executeRows = preparedStatement.executeUpdate();
-//		            
-//		            return executeRows > 0;
-//	        } catch (SQLException e) {
-//				System.out.println("Error connecting to the database");
-//	            System.out.println("SQL Exception: " + e.getMessage());
-//	            return false;
-//	        }
-//	    }
+
+	    @Override
+	    public boolean deleteById(int id) {
+	        String query = "DELETE FROM users WHERE user_id = ?";
+	        
+	        try (Connection connect = connector.initializeDBConnection();
+	        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+		            preparedStatement.setInt(1, id);
+		            int executeRows = preparedStatement.executeUpdate();
+		            
+		            return executeRows > 0;
+	        } catch (SQLException e) {
+				System.out.println("Error connecting to the database");
+	            System.out.println("SQL Exception: " + e.getMessage());
+	            return false;
+	        }
+	    }
 //
 //		@Override
 //		public boolean updateById(int id, Object update) {
@@ -300,12 +300,6 @@ public class UserDao extends DAO<User> {
 		public User getById(int id) {
 			// TODO Auto-generated method stub
 			return null;
-		}
-
-		@Override
-		public boolean deleteById(int id) {
-			// TODO Auto-generated method stub
-			return false;
 		}
 
 		@Override

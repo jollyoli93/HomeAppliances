@@ -6,7 +6,6 @@ import DAO.UserDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
 import printer.AdminPrinter;
-import printer.AppliancePrinter;
 import printer.BusinessPrinter;
 import printer.CustomerPrinter;
 import users.AdminUser;
@@ -67,6 +66,7 @@ public class UserConsole {
 					System.out.println();
 					break;
 				case 5:
+					deleteByUserID();
 					System.out.println();
 					break;
 				case 6:
@@ -190,6 +190,25 @@ public class UserConsole {
 			default:
 				return false;
 		}
-
+	}
+	
+	private boolean deleteByUserID () {
+		System.out.println("Please enter the user id number you wish to delete");
+		int id = handleInput.getInputInt();
+		boolean deleted = false;
+		
+		try {
+			deleted = userDAO.deleteById(id);
+			if (deleted) {
+				return true;
+			} else {
+				System.out.println("failed to delete");
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
