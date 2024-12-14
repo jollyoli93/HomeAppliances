@@ -31,7 +31,7 @@ public abstract class User {
 	}
 	
 	public String getFullName() {
-		return this.firstName + this.lastName;
+		return this.firstName + " " + this.lastName;
 	}
 	
 	public String getUsername() {
