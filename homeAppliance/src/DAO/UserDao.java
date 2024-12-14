@@ -106,39 +106,41 @@ public class UserDao extends DAO<User> {
 	                   System.out.println("Debug user id: "  + user_id);
 	                   System.out.println("Debug user role: "  + role);
 	                   
-	                   try {
-	                	   System.out.println("DEBUG: DAO Switch statement");
-	                	   
-	                	   //change to lambda
-			               	    switch (role) {
-			        	        case "admin":
-			        	            user = new AdminUser(firstName, lastName, emailAddress, username, password);
-			        	            break;
-			        	        case "customer":
-			        	        	user = new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
-			        	        	break;
-			        	        case "business":
-			        	            user = new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
-			        	            break;
-			        	        default:
-			        	            throw new IllegalArgumentException("Unknown role: " + role);
-			        	    }
-	                                       
-	                   } catch (IllegalArgumentException e) {
-	                       System.out.println("Error getting users: " + e.getMessage());
-	                   }
+                	   if (!(user_id == 0)) {
+							//change to lambda
+							switch (role) {
+							case "admin":
+								user = new AdminUser(firstName, lastName, emailAddress, username, password);
+								break;
+							case "customer":
+								user = new CustomerUser(firstName, lastName, emailAddress, username, password,
+										telephoneNum);
+								break;
+							case "business":
+								user = new BusinessUser(firstName, lastName, emailAddress, username, password,
+										telephoneNum, businessName);
+								break;
+							default:
+								throw new IllegalArgumentException("Unknown role: " + role);
+							}
+						} else {
+							throw new IllegalArgumentException("No role found");
+						}                 
 	                   
-	                   System.out.println("DEBUG: adding users");
+	                   System.out.println("DEBUG: adding users to list");
 	                   userList.add(user);
 	               } 
 
-	           } catch (SQLException e) {
-	   				System.out.println("Error connecting");
-	               System.out.println("SQL Exception: " + e.getMessage());
-	               
-	           }
+			} catch (SQLException e) {
+					System.out.println("Error connecting to database");
+			   System.out.println("SQL Exception: " + e.getMessage());
+			               
+			}
 			
-	        System.out.println("DEBUG: userList empty");
+			if (userList.isEmpty()) {
+				System.out.println("No users found");
+			} 
+			
 			return userList;
 		}
 //

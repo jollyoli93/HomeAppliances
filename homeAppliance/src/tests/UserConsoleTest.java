@@ -12,8 +12,8 @@ class UserConsoleTest {
 	String dbpath = "HomeApplianceTest";
 			
 	@Test
-	public void addUserToDatabase () {
-		int[] addUser = {3};
+	public void findAllUsers () {
+		int[] addUser = {1};
 		UserConsole console = new UserConsole(dbpath);
 		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
 		

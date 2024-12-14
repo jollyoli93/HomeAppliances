@@ -79,33 +79,31 @@ public class UserConsole {
 		
 	}
 	
-	public void getAllUsers () {
-		try {
-			ArrayList<User> userList = userDAO.findAll();
-			System.err.println("Loop through user list");
-			
-			for (User user : userList) {
-				switch (user.getRole()) {
-				case "admin":
-					AdminPrinter printAdmin = new AdminPrinter(user);
-					printAdmin.print();
-					break;
-				case "business":
-					BusinessPrinter printBusiness = new BusinessPrinter(user);
-					printBusiness.print();
-					break;
-				case "customer":
-					CustomerPrinter printCustomer = new CustomerPrinter(user);
-					printCustomer.print();
-					break;
-				
-				}
-			}
-		} catch (NullPointerException e) {
-			System.out.println("No products in the database");
-			System.out.println();
-			e.printStackTrace();
-		}
+	public void getAllUsers() {
+	    ArrayList<User> userList = userDAO.findAll();
+
+	    if (userList.isEmpty()) {
+	        return;
+	    }
+
+	    System.out.println("Looping through user list...");
+
+	    for (User user : userList) {
+	        switch (user.getRole()) {
+	            case "admin":
+	                new AdminPrinter(user).print();
+	                break;
+	            case "business":
+	                new BusinessPrinter(user).print();
+	                break;
+	            case "customer":
+	                new CustomerPrinter(user).print();
+	                break;
+	            default:
+	                System.out.println("Unknown role: " + user.getRole());
+	                break;
+	        }
+	    }
 	}
 
 	
