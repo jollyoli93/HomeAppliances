@@ -47,7 +47,10 @@ public class MockIOHandler implements InputOutputHandler {
 
     @Override
     public String getInputString() {
-        return null;
+        if (mockStringValue.isEmpty()) {
+        	return "6";
+        }
+		return mockStringValue.poll();
     }
 
     @Override

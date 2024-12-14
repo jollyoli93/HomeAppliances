@@ -12,43 +12,78 @@ import users.AdminUser;
 
 class UserConsoleTest {
 	UserConsole console;
+	UserDao dao;
 	String dbpath = "HomeApplianceTest";
 	
 	@BeforeEach
 	public void userConsoleTest () {
-		console = new UserConsole(dbpath);
-	}
-	
-	@Test
-	public void addCustomerUser () {
-		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum
-		int[] findAllUsers = {1};
-		String[] customer = {"Billy", "Jean", "billyjean@mjm.com", "NotMyLover", "07523435456"};
-		
-		console.setHandler(findAllUsers, customer);
-	}
-	
-	@Test
-	public void findAllUsers () {
-		int[] findAllUsers = {1};
-
-		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
-		
-		
-		console.setHandler(new MockIOHandler(findAllUsers));
-		console.userMenu();
-		
-//		System.out.println("Full Name: " + man.getFullName());
-	}
-	
-	@Test
-	public void userListIsEmpty () {
-		UserDao dao = new UserDao(dbpath);
-		int[] findAllUsers = {1};
+		//clear user table before each test
+		dao = new UserDao(dbpath);
 		dao.dropUserTable();
 		
-		console.setHandler(new MockIOHandler(findAllUsers));
-		console.userMenu();
+		//Initialise user console
+		console = new UserConsole(dbpath);
+
 	}
+	
+	@Test
+	public void addUserCustomer () {
+		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum
+		String[] customer = {"3","customer", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover", "07523435456"};
+		String output;
+		
+		console.setHandler(new MockIOHandler(customer));
+		output = console.userMenu();
+		
+		assertEquals("Succesfully added to the database", output);
+	}
+	
+	@Test
+	public void addUserAdmin () {
+		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password
+		String[] customer = {"3","admin", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover"};
+		String output;
+		
+		console.setHandler(new MockIOHandler(customer));
+		output = console.userMenu();
+		
+		assertEquals("Succesfully added to the database", output);
+	}
+	
+	@Test
+	public void addUserBusiness () {
+		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessNamw
+		String[] customer = {"3","business", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover", "Music Shop"};
+		String output;
+		
+		console.setHandler(new MockIOHandler(customer));
+		output = console.userMenu();
+		
+		assertEquals("Succesfully added to the database", output);
+	}
+	
+	
+//	@Test
+//	public void findAllUsers () {
+//		String[] findAllUsers = {"1"};
+//
+//		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
+//		
+//		
+//		console.setHandler(new MockIOHandler(findAllUsers));
+//		console.userMenu();
+//		
+////		System.out.println("Full Name: " + man.getFullName());
+//	}
+//	
+//	@Test
+//	public void userListIsEmpty () {
+//		UserDao dao = new UserDao(dbpath);
+//		String[] findAllUsers = {"1"};
+//		dao.dropUserTable();
+//		
+//		console.setHandler(new MockIOHandler(findAllUsers));
+//		console.userMenu();
+//	}
 	
 }

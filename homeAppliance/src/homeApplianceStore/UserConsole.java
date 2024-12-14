@@ -33,8 +33,8 @@ public class UserConsole {
 	}
 
 	
-	public void userMenu () {
-		String input = null;
+	public String userMenu () {
+		String input = "0";
 		
 		while (input != "6") {
 			
@@ -51,32 +51,33 @@ public class UserConsole {
 			System.out.println("[6] Back");
 			System.out.println();
 			
-			input = handleInput.getInputInt();
+			input = handleInput.getInputString();
 			
 			switch (input) {
-				case 1: 
+				case "1": 
 					getAllUsers();
 					break;
-				case 2:
+				case "2":
 					System.out.println("Search for user");
 					break;
-				case 3:
+				case "3":
 					addUserInterface();
 					break;
-				case 4:
+				case "4":
 					System.out.println();
 					break;
-				case 5:
+				case "5":
 					deleteByUserID();
 					System.out.println();
 					break;
-				case 6:
+				case "6":
 					System.out.println();
 					break;
 				default:
 					System.out.println("Try again");
 			}
 		}
+		return consoleOutput;
 		
 	}
 	
@@ -108,7 +109,7 @@ public class UserConsole {
 	}
 
 	
-	public void addUserInterface () {
+	public String addUserInterface () {
 		Boolean success = false;		
 			while (success == false) {
 				System.out.println("Please enter user role or type quit to exit");
@@ -123,10 +124,14 @@ public class UserConsole {
 					if (success == true) {
 						System.out.println();
 						System.out.println("Succesfully added to the database");
+						consoleOutput = "Succesfully added to the database";
+						return consoleOutput;
 					}
 					else {
 						System.out.println();
 						System.out.println("Error adding user - try again");
+						consoleOutput = "Error adding user - try again";
+						return consoleOutput;
 					}
 					
 				} catch (Exception e) {
@@ -135,6 +140,7 @@ public class UserConsole {
 					e.printStackTrace();
 				}
 			}
+			return consoleOutput;
 	}
 
 	private boolean addUserByRole(String role) {
