@@ -41,7 +41,7 @@ class UserConsoleTest {
 	@Test
 	public void addUserAdmin () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password
-		String[] customer = {"3","admin", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover"};
+		String[] customer = {"3","admin", "Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman"};
 		String output;
 		
 		console.setHandler(new MockIOHandler(customer));
@@ -53,7 +53,7 @@ class UserConsoleTest {
 	@Test
 	public void addUserBusiness () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessNamw
-		String[] customer = {"3","business", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover", "Music Shop"};
+		String[] customer = {"3","business", "Jimmy", "Jean", "jimmyjean@mjm.com", "BillyJeansLover", "Music Shop"};
 		String output;
 		
 		console.setHandler(new MockIOHandler(customer));
@@ -63,18 +63,18 @@ class UserConsoleTest {
 	}
 	
 	
-//	@Test
-//	public void findAllUsers () {
-//		String[] findAllUsers = {"1"};
-//
-//		AdminUser man = new AdminUser("Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman");
-//		
-//		
-//		console.setHandler(new MockIOHandler(findAllUsers));
-//		console.userMenu();
-//		
-////		System.out.println("Full Name: " + man.getFullName());
-//	}
+	@Test
+	public void findAllUsers () {
+		String[] findAllUsers = {"1"};
+
+		addUserCustomer();
+		addUserBusiness();
+		addUserAdmin();
+		console.setHandler(new MockIOHandler(findAllUsers));
+		console.userMenu();
+		
+//		System.out.println("Full Name: " + man.getFullName());
+	}
 //	
 //	@Test
 //	public void userListIsEmpty () {

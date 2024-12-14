@@ -89,6 +89,7 @@ public class UserConsole {
 	    }
 
 	    System.out.println("Looping through user list...");
+	    System.out.println();
 
 	    for (User user : userList) {
 	        switch (user.getRole()) {
