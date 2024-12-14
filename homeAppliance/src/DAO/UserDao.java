@@ -439,5 +439,33 @@ public class UserDao extends DAO<User> {
 			return false;
 		   
 		}
+		
+		public boolean dropUserTable () {
+		    String query = "DROP TABLE Users";
+		    
+		    try (Connection conn = connector.initializeDBConnection()) {
+		        Statement stmt = conn.createStatement();
+		        ResultSet rs = stmt.executeQuery(query);
+		        
+		        if (!rs.next()) {
+
+				    try (Connection connect = connector.initializeDBConnection();
+				         Statement statement = connect.createStatement()) {
+				    	
+				        // Execute the SQL query
+				        statement.executeUpdate(query);
+
+				        return true;
+				    } catch (SQLException e) {
+				        e.printStackTrace();
+				        System.out.println("SQL Exception: " + e.getMessage());
+				        return false;
+				    }
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("SQL Exception: " + e.getMessage());
+		    }
+			return false;
+		}
 	
 }

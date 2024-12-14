@@ -1,4 +1,4 @@
-package homeApplianceStore;
+package appliances;
 
 public abstract class Appliance {
 	protected int id = 0;

@@ -29,13 +29,14 @@ public class UserConsole {
 	}
 	
 	public void setHandler(InputOutputHandler handleInput) {
-		this.handleInput = handleInput;
+	    this.handleInput = handleInput;
 	}
+
 	
 	public void userMenu () {
-		int input = 0;
+		String input = null;
 		
-		while (input != 6) {
+		while (input != "6") {
 			
 			System.out.println("------------------------");
 			System.out.println("Choose from these options");
@@ -209,4 +210,6 @@ public class UserConsole {
 		}
 		return false;
 	}
+
+
 }

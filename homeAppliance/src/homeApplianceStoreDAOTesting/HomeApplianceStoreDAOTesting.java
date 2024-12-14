@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import appliances.Appliance;
 import database.DbConnection;
-import homeApplianceStore.Appliance;
 
 public class HomeApplianceStoreDAOTesting {
 	String dbPath;

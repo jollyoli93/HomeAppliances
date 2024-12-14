@@ -1,6 +1,6 @@
 package printer;
 
-import homeApplianceStore.Appliance;
+import appliances.Appliance;
 import users.User;
 
 public interface PrintBehaviour {
