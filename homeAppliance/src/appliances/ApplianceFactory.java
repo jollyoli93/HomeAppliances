@@ -1,4 +1,4 @@
-package homeApplianceStore;
+package appliances;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,31 +57,6 @@ public abstract class ApplianceFactory {
     abstract void initializeApplianceTypes();
 }
 
-class EntertainmentFactory extends ApplianceFactory {
-    public EntertainmentFactory() {
-        initializeApplianceTypes();
-        applianceFactoryMap.put("Entertainment", () -> new EntertainmentFactory());
-    }
-    
-    @Override
-    void initializeApplianceTypes() {
-        addType("basic television", () -> new BasicTVAppliance());
-        addType("lcd television", () -> new LCDTVAppliance());
-    }
-}
-
-class HomeCleaningFactory extends ApplianceFactory {
-    public HomeCleaningFactory() {
-        initializeApplianceTypes();
-        applianceFactoryMap.put("Home Cleaning", () -> new HomeCleaningFactory());
-    }
-    
-    @Override
-    void initializeApplianceTypes() {
-        addType("basic washing machine", () -> new BasicWashingMachineAppliance());
-        addType("super fast washing machine", () -> new SuperFastWashingMachineAppliance());
-    }
-}
 
 //class Robotics extends ApplianceFactory {
 //

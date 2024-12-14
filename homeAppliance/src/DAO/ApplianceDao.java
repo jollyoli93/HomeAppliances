@@ -9,8 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
-import homeApplianceStore.Appliance;
-import homeApplianceStore.ApplianceFactory;
+import appliances.Appliance;
+import appliances.ApplianceFactory;
 
 
 public class ApplianceDao extends DAO<Appliance> {

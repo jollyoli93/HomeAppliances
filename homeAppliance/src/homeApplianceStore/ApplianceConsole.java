@@ -9,6 +9,10 @@ import java.util.Map;
 import DAO.ApplianceDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
+import appliances.Appliance;
+import appliances.ApplianceFactory;
+import appliances.EntertainmentFactory;
+import appliances.HomeCleaningFactory;
 import printer.AppliancePrinter;
 import printer.Printer;
 
