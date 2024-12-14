@@ -67,6 +67,7 @@ class UserConsoleTest {
 		addUserCustomer();
 		addUserBusiness();
 		addUserAdmin();
+		
 		console.setHandler(new MockIOHandler(findAllUsers));
 		console.userMenu();
 		
@@ -77,13 +78,43 @@ class UserConsoleTest {
 		String[] findAllUsers = {"1"};
 		
 		System.out.println("________________________");
-		System.out.println("User list is Empty TEST");
+		System.out.println("TEST - User list is Empty");
 		System.out.println("________________________");
 		
 		console.setHandler(new MockIOHandler(findAllUsers));
 		console.userMenu();
 		
 		assertEquals(null, output);
+	}
+	
+	@Test
+	public void deleteUserByID () {
+		String[] deleteUserOne = {"5", "1"};
+		
+		System.out.println("________________________");
+		System.out.println("TEST - Delete user 1");
+		System.out.println("________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(deleteUserOne));
+		output = console.userMenu();
+		
+		assertEquals("User deleted successfully.", output);
+	}
+	
+	@Test
+	public void FailedTodeleteUserByID () {
+		String[] deleteUserOne = {"5"};
+		
+		System.out.println("________________________");
+		System.out.println("TEST - Delete user failed");
+		System.out.println("________________________");
+		
+		console.setHandler(new MockIOHandler(deleteUserOne));
+		output = console.userMenu();
+		
+		assertEquals("Failed to delete user.", output);
 	}
 	
 }

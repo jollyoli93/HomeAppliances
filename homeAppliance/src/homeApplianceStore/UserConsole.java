@@ -1,5 +1,6 @@
 package homeApplianceStore;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import DAO.UserDao;
@@ -198,25 +199,32 @@ public class UserConsole {
 		}
 	}
 	
-	private boolean deleteByUserID () {
-		System.out.println("Please enter the user id number you wish to delete");
-		int id = handleInput.getInputInt();
-		boolean deleted = false;
-		
-		try {
-			deleted = userDAO.deleteById(id);
-			if (deleted) {
-				return true;
-			} else {
-				System.out.println("failed to delete");
-				return false;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
+	private String deleteByUserID() {
+	    System.out.println("Please enter the user ID number you wish to delete:");
+	    String id = handleInput.getInputString();
+	    System.out.println("DEBUG: " + id);
+	    boolean deleted = false;
+
+	    try {
+	        int userId = Integer.parseInt(id); // Parse String to int
+		    System.out.println("DEBUG: " + userId);
+		    
+	        deleted = userDAO.deleteById(userId); // Attempt to delete user
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid user ID. Please enter a valid number.");
+	    } 
+	    
+	    if (deleted) {
+	        System.out.println("User deleted successfully.");
+	        consoleOutput = "User deleted successfully.";
+	        return consoleOutput;
+	    } else {
+	        System.out.println("Failed to delete user.");
+	        consoleOutput = "Failed to delete user.";
+	        return consoleOutput;
+	    }
 	}
+
 
 
 }
