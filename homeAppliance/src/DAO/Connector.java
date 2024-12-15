@@ -22,6 +22,8 @@ class SqlLiteConnection implements Connector {
 	    String dbURL = "jdbc:sqlite:" + this.dbName + ".db";
 	
 	    try {
+			System.out.println();
+
 	    	System.out.println("Inititializing Connection");
 	        Class.forName(driver);
 	    } catch (ClassNotFoundException e) {
@@ -34,6 +36,8 @@ class SqlLiteConnection implements Connector {
 	    } catch (SQLException e) {
 	        System.out.println("Connection failed: " + e.getMessage());
 	    }
+	    System.out.println("Successfully connected.");
+	    System.out.println();
 		return connect;
 	}
 }

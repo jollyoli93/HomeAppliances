@@ -17,10 +17,15 @@ class UserConsoleTest {
 	
 	@BeforeEach
 	public void userConsoleTest () {
+		System.out.println("DEBUG: Console - Connect to DAO");
 		//clear user table before each test
 		dao = new UserDao(dbpath);
+		
+		System.out.println("DEBUG: Console - dropping tables");
+
 		dao.dropUserTable();
 		
+		System.out.println("DEBUG: Console - Initialise console");
 		//Initialise user console
 		console = new UserConsole(dbpath);
 
@@ -77,9 +82,9 @@ class UserConsoleTest {
 	public void userListIsEmpty () {
 		String[] findAllUsers = {"1"};
 		
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - User list is Empty");
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		
 		console.setHandler(new MockIOHandler(findAllUsers));
 		console.userMenu();
@@ -91,9 +96,9 @@ class UserConsoleTest {
 	public void deleteUserByID () {
 		String[] deleteUserOne = {"5", "1"};
 		
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Delete user 1");
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		
 		addUserCustomer();
 		
@@ -107,14 +112,46 @@ class UserConsoleTest {
 	public void FailedTodeleteUserByID () {
 		String[] deleteUserOne = {"5"};
 		
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Delete user failed");
-		System.out.println("________________________");
+		System.out.println("_________________________________________________________________________________");
 		
 		console.setHandler(new MockIOHandler(deleteUserOne));
 		output = console.userMenu();
 		
 		assertEquals("Failed to delete user.", output);
+	}
+	
+	@Test
+	public void CorrectUpdateFirstUsersFirstname () {
+		String[] UpdateFirstUser = {"4", "1", "Bobby"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User First Name");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
+	
+	@Test
+	public void UpdateInvalidUsersIDFirstname () {
+		String[] UpdateFirstUser = {"4", "2", "Bobby"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User First Name");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("Failed to update user.", output);
 	}
 	
 }
