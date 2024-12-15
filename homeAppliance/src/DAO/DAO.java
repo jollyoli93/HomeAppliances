@@ -9,7 +9,8 @@ import java.util.Map;
 
 public abstract class DAO<T> {
 	Connector connector;
-	HashMap<String, String> tables;
+	protected HashMap<String, String> tables;
+	protected ArrayList<String> allowedTablesList;
 	
 	public DAO(){
 		
@@ -22,6 +23,10 @@ public abstract class DAO<T> {
 	public void initializeDBConnection() {
 		connector.initializeDBConnection();
 		
+	}
+	
+	public void setAllowedTables(String table) {
+		allowedTablesList.add(table);
 	}
 	
 	
@@ -92,10 +97,8 @@ public abstract class DAO<T> {
 	
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
-//	public abstract boolean addNew(T add);
 	public abstract boolean addNew(T add, Map<String, String> additionalFields);
 	public abstract boolean deleteById(int id);
-	public abstract boolean updateById(int id, Object updateß);
-
+	public abstract boolean updateById(int id, String table, Map<String, String> updateFields);
 
 }

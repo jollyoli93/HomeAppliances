@@ -65,6 +65,7 @@ public class UserConsole {
 					addUserInterface();
 					break;
 				case "4":
+					updateUserInformation();
 					System.out.println();
 					break;
 				case "5":
@@ -82,6 +83,37 @@ public class UserConsole {
 		
 	}
 	
+	private String updateUserInformation() {
+		String input_user_id;
+		String input;
+		boolean updated = false;
+		
+		System.out.println("Enter user ID");
+		input_user_id = handleInput.getInputString();
+		
+		System.out.println("Update first name");
+		input = handleInput.getInputString();
+		
+	    try {
+	        int userId = Integer.parseInt(input_user_id); // Parse String to int
+		    System.out.println("DEBUG: " + userId);
+		    
+	        updated = userDAO.updateFirstNameById(userId, input);
+	    } catch (NumberFormatException e) {
+	        System.out.println("Invalid user ID. Please enter a valid number.");
+	    } 
+	    if (updated) {
+	        System.out.println("User updated successfully.");
+	        consoleOutput = "User updated successfully.";
+	        return consoleOutput;
+	    } else {
+	        System.out.println("Failed to update user.");
+	        consoleOutput = "Failed to update user.";
+	        return consoleOutput;
+	    }
+
+	}
+
 	public void getAllUsers() {
 	    ArrayList<User> userList = userDAO.findAll();
 

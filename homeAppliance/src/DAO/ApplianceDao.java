@@ -17,6 +17,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
 	String tableSchema;
+	ArrayList<String> allowedTablesList;
 	
 	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories) {
         this.dbPath = dbPath;
@@ -171,24 +172,42 @@ public class ApplianceDao extends DAO<Appliance> {
             return false;
         }
     }
-
 	@Override
-	public boolean updateById(int id, Object update) {
-		String query = "UPDATE appliances SET price = ? WHERE id = ?";
-		
-		try (Connection connect = connector.initializeDBConnection();
-			PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-				preparedStatement.setDouble(1, (Double) update);
-				preparedStatement.setInt(2, id);
-			
-		        int updated = preparedStatement.executeUpdate();
-		        return updated > 0;
-			
-		} catch (SQLException e) {
-			System.out.println("Error connecting to the database");
-            System.out.println("SQL Exception: " + e.getMessage());
+	public boolean updateById(int id, String table, Map<String, String> updateFields) {
+		if (!allowedTablesList.contains(table)) {
+			System.out.println("Table not valid.");
 			return false;
 		}
+	    // Build the SQL query dynamically
+	    StringBuilder queryBuilder = new StringBuilder("UPDATE " + table + " SET ");
+	    updateFields.forEach((key, value) -> queryBuilder.append(key).append(" = ?, "));
+	    
+	    // Remove the trailing comma and space
+	    queryBuilder.setLength(queryBuilder.length() - 2);
+	    queryBuilder.append(" WHERE user_id = ?");
+	    
+	    String query = queryBuilder.toString();
+
+	    try (Connection connect = connector.initializeDBConnection();
+	         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+
+	        // Set the values for the dynamic fields
+	        int index = 1;
+	        for (String value : updateFields.values()) {
+	            preparedStatement.setString(index++, value);
+	        }
+	        // Set the ID parameter
+	        preparedStatement.setInt(index, id);
+
+	        // Execute the update
+	        int updated = preparedStatement.executeUpdate();
+	        return updated > 0;
+
+	    } catch (SQLException e) {
+	        System.out.println("Error connecting to the database");
+	        System.out.println("SQL Exception: " + e.getMessage());
+	        return false;
+	    }
 	}
 
 }
