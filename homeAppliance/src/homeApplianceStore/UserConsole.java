@@ -36,26 +36,23 @@ public class UserConsole {
 	
 	public String userMenu () {
 		String input = "0";
+		boolean flag = true;
 		
-		while (input != "6") {
-			
-			System.out.println("------------------------");
-			System.out.println("Choose from these options");
-			System.out.println("------------------------");
-			
-			
-			System.out.println("[1] List all users");
-			System.out.println("[2] Search by the user ID");
-			System.out.println("[3] Add a new user");
-			System.out.println("[4] Update a user");
-			System.out.println("[5] Delete a user by ID");
-			System.out.println("[6] Back");
-			System.out.println();
-			
-			input = handleInput.getInputString();
-			
-			switch (input) {
-				case "1": 
+			do {
+				System.out.println("------------------------");
+				System.out.println("Choose from these options");
+				System.out.println("------------------------");
+				System.out.println("[1] List all users");
+				System.out.println("[2] Search by the user ID");
+				System.out.println("[3] Add a new user");
+				System.out.println("[4] Update a user");
+				System.out.println("[5] Delete a user by ID");
+				System.out.println("[6] Back");
+				System.out.println();
+				input = handleInput.getInputString();
+				
+				switch (input) {
+				case "1":
 					getAllUsers();
 					break;
 				case "2":
@@ -73,12 +70,13 @@ public class UserConsole {
 					System.out.println();
 					break;
 				case "6":
-					System.out.println();
+					flag = false;
+					System.out.println("Returning");
 					break;
 				default:
 					System.out.println("Try again");
-			}
-		}
+				}
+			} while (flag);
 		return consoleOutput;
 		
 	}
@@ -91,14 +89,11 @@ public class UserConsole {
 		System.out.println("Enter user ID");
 		input_user_id = handleInput.getInputString();
 		
-		System.out.println("Update first name");
-		input = handleInput.getInputString();
-		
 	    try {
 	        int userId = Integer.parseInt(input_user_id); // Parse String to int
 		    System.out.println("DEBUG: " + userId);
 		    
-	        updated = userDAO.updateFirstNameById(userId, input);
+	        updated = selectUpdateMethod(userId);
 	    } catch (NumberFormatException e) {
 	        System.out.println("Invalid user ID. Please enter a valid number.");
 	    } 
@@ -111,8 +106,61 @@ public class UserConsole {
 	        consoleOutput = "Failed to update user.";
 	        return consoleOutput;
 	    }
-
 	}
+	
+	private boolean selectUpdateMethod (int userId) {
+		System.out.println("Please select update method");
+		String selectUpdate = "0";
+		
+		while (selectUpdate != "7") {
+				System.out.println("------------------------");
+				System.out.println("Choose from these options");
+				System.out.println("------------------------");
+				
+				
+				System.out.println("[1] Update first name");
+				System.out.println("[2] Update last name");
+				System.out.println("[3] Update email");
+				System.out.println("[4] Update password");
+				System.out.println("[5] Update address");
+				System.out.println("[6] Update telephone number");
+
+				System.out.println("[7] Back");
+				System.out.println();
+				
+				selectUpdate = handleInput.getInputString();
+				String userInput= null;
+				
+				switch (selectUpdate) {
+					case "1": 
+						System.out.println("Enter first name");
+						userInput = handleInput.getInputString();
+						return userDAO.updateFirstNameById(userId, userInput);
+					case "2":
+						System.out.println("Enter second name");
+						userInput = handleInput.getInputString();
+						return userDAO.updateLastNameById(userId, userInput);
+					case "3":
+						break;
+					case "4":
+						System.out.println();
+						break;
+					case "5":
+						System.out.println();
+						break;
+					case "6":
+						System.out.println();
+						break;
+					case "7":
+						System.out.println();
+						return false;
+					default:
+						System.out.println("Try again");
+				}
+		}
+		return false; 
+	}
+	
 
 	public void getAllUsers() {
 	    ArrayList<User> userList = userDAO.findAll();

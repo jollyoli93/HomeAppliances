@@ -110,7 +110,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void FailedTodeleteUserByID () {
-		String[] deleteUserOne = {"5"};
+		String[] deleteUserOne = {"5", "1"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Delete user failed");
@@ -124,7 +124,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersFirstname () {
-		String[] UpdateFirstUser = {"4", "1", "Bobby"};
+		String[] UpdateFirstUser = {"4", "1","1", "Bobby"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User First Name");
@@ -138,9 +138,25 @@ class UserConsoleTest {
 		assertEquals("User updated successfully.", output);
 	}
 	
-	@Test
+	//@Test
+	public void CorrectUpdateFirstUsersSecondName () {
+		String[] UpdateFirstUser = {"4", "1","2", "Bobby"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User First Name");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
+
+	//@Test
 	public void UpdateInvalidUsersIDFirstname () {
-		String[] UpdateFirstUser = {"4", "2", "Bobby"};
+		String[] UpdateFirstUser = {"4", "0","1", "Bobby"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User First Name");

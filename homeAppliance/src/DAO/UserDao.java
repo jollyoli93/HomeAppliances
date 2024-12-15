@@ -335,9 +335,9 @@ public class UserDao extends DAO<User> {
 			return updateById(id, "users", update );
 		}
 		
-		public boolean updateSecondNameById (int id, String value) {
+		public boolean updateLastNameById (int id, String value) {
 			Map<String, String> update = new HashMap<>();
-			update.put("second_name", value);
+			update.put("last_name", value);
 			
 			return updateById(id, "users", update );
 		}
