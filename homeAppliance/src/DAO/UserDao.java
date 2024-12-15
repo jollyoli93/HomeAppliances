@@ -286,10 +286,13 @@ public class UserDao extends DAO<User> {
 
 		@Override
 		public boolean updateById(int id, String table, Map<String, String> updateFields) {
+			System.out.println("DEBUG: update by ID method");
 			if (!allowedTablesList.contains(table)) {
 				System.out.println("Table not valid.");
 				return false;
 			}
+			
+			System.out.println("DEBUG: updating");
 		    // Build the SQL query dynamically
 		    StringBuilder queryBuilder = new StringBuilder("UPDATE " + table + " SET ");
 		    
@@ -463,48 +466,41 @@ public class UserDao extends DAO<User> {
 				         Statement statement = connect.createStatement()) {
 				    	
 				        // Execute the SQL query
-				        statement.executeUpdate(query);
+						System.out.println("DEBUG: Populating roles");
+				    	statement.executeUpdate(query);
 
 				        return true;
 				    } catch (SQLException e) {
 				        e.printStackTrace();
+						System.out.println("DEBUG: Error inserting roles into table");
 				        System.out.println("SQL Exception: " + e.getMessage());
 				        return false;
 				    }
 		        }
 		    } catch (SQLException e) {
+				System.out.println("DEBUG: Error populating roles during SELECT Statement");
+				e.printStackTrace();
 		        System.out.println("SQL Exception: " + e.getMessage());
 		    }
 			return false;
 		   
 		}
 		
-		public boolean dropUserTable () {
+		public boolean dropUserTable() {
 		    String query = "DROP TABLE Users";
-		    
-		    try (Connection conn = connector.initializeDBConnection()) {
-		        Statement stmt = conn.createStatement();
-		        ResultSet rs = stmt.executeQuery(query);
-		        
-		        if (!rs.next()) {
 
-				    try (Connection connect = connector.initializeDBConnection();
-				         Statement statement = connect.createStatement()) {
-				    	
-				        // Execute the SQL query
-				        statement.executeUpdate(query);
+		    try (Connection conn = connector.initializeDBConnection();
+		         Statement stmt = conn.createStatement()) {
 
-				        return true;
-				    } catch (SQLException e) {
-				        e.printStackTrace();
-				        System.out.println("SQL Exception: " + e.getMessage());
-				        return false;
-				    }
-		        }
+		        // Execute the SQL query
+		        stmt.executeUpdate(query);
+		        return true;
+
 		    } catch (SQLException e) {
+		        e.printStackTrace();
 		        System.out.println("SQL Exception: " + e.getMessage());
+		        return false;
 		    }
-			return false;
 		}
 
 }
