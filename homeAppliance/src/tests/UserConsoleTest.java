@@ -124,7 +124,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersFirstname () {
-		String[] UpdateFirstUser = {"4", "1","1", "Bobby"};
+		String[] UpdateFirstUser = {"4", "1","1", "Bobby", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User First Name");
@@ -140,7 +140,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersSecondName () {
-		String[] UpdateFirstUser = {"4", "1","2", "Bobby"};
+		String[] UpdateFirstUser = {"4", "1","2", "Bobby", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User First Name");
@@ -156,7 +156,7 @@ class UserConsoleTest {
 
 	@Test
 	public void FailedToUpdateUsersFirstname () {
-		String[] UpdateFirstUser = {"4", "0","1", "Bobby"};
+		String[] UpdateFirstUser = {"4", "0","1", "Bobby", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Failed to Update User First Name");
@@ -172,7 +172,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersEmail () {
-		String[] UpdateFirstEmail = {"4", "1","3", "newemail@email.co.uk", "6"};
+		String[] UpdateFirstEmail = {"4", "1","3", "newemail@email.co.uk", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Email");
@@ -188,7 +188,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersPassword() {
-		String[] UpdateFirstUser = {"4", "1","4", "new password", "6"};
+		String[] UpdateFirstUser = {"4", "1","4", "new password", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Password");
@@ -204,10 +204,26 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersBusinessName() {
-		String[] UpdateFirstUser = {"4", "1","5", "Best Biz", "6"};
+		String[] UpdateFirstUser = {"4", "1","5", "Best Biz", "9"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Business Name");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserBusiness();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
+	
+	@Test
+	public void CorrectUpdateFirstUsersTelephoneNum() {
+		String[] UpdateFirstUser = {"4", "1","6", "01514353521", "9"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User Telephone Num");
 		System.out.println("_________________________________________________________________________________");
 		
 		addUserBusiness();

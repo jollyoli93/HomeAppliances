@@ -135,27 +135,28 @@ public class UserConsole {
 					case "1": 
 						System.out.println("Enter new first name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFirstNameById(userId, userInput);
+						return userDAO.updateFieldById(userId, "first_name", userInput);
 					case "2":
 						System.out.println("Enter new last name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateLastNameById(userId, userInput);
+						return userDAO.updateFieldById(userId, "last_name", userInput);
+
 					case "3":
 						System.out.println("Enter new email");
 						userInput = handleInput.getInputString();
-						return userDAO.updateEmailById(userId, userInput);
+						return userDAO.updateFieldById(userId, "email_address", userInput);
 					case "4":
 						System.out.println("Enter new password");
 						userInput = handleInput.getInputString();
-						return userDAO.updatePasswordById(userId, userInput);
+						return userDAO.updateFieldById(userId, "password", userInput);
 					case "5":
 						System.out.println("Enter new business name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateBusinessNameById(userId, userInput);
+						return userDAO.updateFieldById(userId, "business_name", userInput);
 					case "6":
-						System.out.println("Enter new business name");
+						System.out.println("Enter new telephone number");
 						userInput = handleInput.getInputString();
-						return userDAO.updateBusinessNameById(userId, userInput);
+						return userDAO.updateFieldById(userId, "telephone_num", userInput);
 					case "7":
 						System.out.println("update address");
 						//need to select address ID to update
