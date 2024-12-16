@@ -164,6 +164,8 @@ public class UserConsole {
 						//return userDAO.updateBusinessNameById(userId, userInput);
 					case "8":
 						System.out.println("update user role");
+						//need to select role
+						
 						//userInput = handleInput.getInputString();
 						//return userDAO.updateBusinessNameById(userId, userInput);
 					case "9":
