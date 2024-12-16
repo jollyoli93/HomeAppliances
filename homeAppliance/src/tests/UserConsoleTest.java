@@ -138,7 +138,7 @@ class UserConsoleTest {
 		assertEquals("User updated successfully.", output);
 	}
 	
-	//@Test
+	@Test
 	public void CorrectUpdateFirstUsersSecondName () {
 		String[] UpdateFirstUser = {"4", "1","2", "Bobby"};
 		
@@ -154,12 +154,12 @@ class UserConsoleTest {
 		assertEquals("User updated successfully.", output);
 	}
 
-	//@Test
-	public void UpdateInvalidUsersIDFirstname () {
+	@Test
+	public void FailedToUpdateUsersFirstname () {
 		String[] UpdateFirstUser = {"4", "0","1", "Bobby"};
 		
 		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User First Name");
+		System.out.println("TEST - Failed to Update User First Name");
 		System.out.println("_________________________________________________________________________________");
 		
 		addUserCustomer();
@@ -170,4 +170,19 @@ class UserConsoleTest {
 		assertEquals("Failed to update user.", output);
 	}
 	
+	@Test
+	public void CorrectUpdateFirstUsersEmail () {
+		String[] UpdateFirstUser = {"4", "1","3", "newemail@email.co.uk"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User Email");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
 }

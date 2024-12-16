@@ -133,15 +133,17 @@ public class UserConsole {
 				
 				switch (selectUpdate) {
 					case "1": 
-						System.out.println("Enter first name");
+						System.out.println("Enter new first name");
 						userInput = handleInput.getInputString();
 						return userDAO.updateFirstNameById(userId, userInput);
 					case "2":
-						System.out.println("Enter second name");
+						System.out.println("Enter new last name");
 						userInput = handleInput.getInputString();
 						return userDAO.updateLastNameById(userId, userInput);
 					case "3":
-						break;
+						System.out.println("Enter new email");
+						userInput = handleInput.getInputString();
+						return userDAO.updateLastNameById(userId, userInput);
 					case "4":
 						System.out.println();
 						break;

@@ -342,7 +342,19 @@ public class UserDao extends DAO<User> {
 			return updateById(id, "users", update );
 		}
 		
+		//password
+		public boolean updateEmailById (int id, String value) {
+			Map<String, String> update = new HashMap<>();
+			update.put("email_address", value);
+			
+			return updateById(id, "users", update);
+		}
 		
+		//email
+		
+		//businessName
+		
+		//address
 
 	
 
