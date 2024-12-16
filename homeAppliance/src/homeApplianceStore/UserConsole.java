@@ -143,17 +143,30 @@ public class UserConsole {
 					case "3":
 						System.out.println("Enter new email");
 						userInput = handleInput.getInputString();
-						return userDAO.updateLastNameById(userId, userInput);
+						return userDAO.updateEmailById(userId, userInput);
 					case "4":
-						System.out.println();
-						break;
+						System.out.println("Enter new password");
+						userInput = handleInput.getInputString();
+						return userDAO.updatePasswordById(userId, userInput);
 					case "5":
-						System.out.println();
-						break;
+						System.out.println("Enter new business name");
+						userInput = handleInput.getInputString();
+						return userDAO.updateBusinessNameById(userId, userInput);
 					case "6":
-						System.out.println();
-						break;
+						System.out.println("Enter new business name");
+						userInput = handleInput.getInputString();
+						return userDAO.updateBusinessNameById(userId, userInput);
 					case "7":
+						System.out.println("update address");
+						//need to select address ID to update
+						
+						//userInput = handleInput.getInputString();
+						//return userDAO.updateBusinessNameById(userId, userInput);
+					case "8":
+						System.out.println("update user role");
+						//userInput = handleInput.getInputString();
+						//return userDAO.updateBusinessNameById(userId, userInput);
+					case "9":
 						System.out.println();
 						return false;
 					default:

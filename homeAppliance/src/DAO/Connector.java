@@ -24,7 +24,7 @@ class SqlLiteConnection implements Connector {
 	    try {
 			System.out.println();
 
-	    	System.out.println("Inititializing Connection");
+	    	//System.out.println("Inititializing Connection");
 	        Class.forName(driver);
 	    } catch (ClassNotFoundException e) {
 	        System.out.println("SQLite JDBC Driver not found: " + e.getMessage());
@@ -32,7 +32,7 @@ class SqlLiteConnection implements Connector {
 	
 	    try {
 	        connect = DriverManager.getConnection(dbURL);
-	        System.out.println("Connecting to " + dbURL);
+	        //System.out.println("Connecting to " + dbURL);
 	    } catch (SQLException e) {
 	        System.out.println("Connection failed: " + e.getMessage());
 	    }

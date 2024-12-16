@@ -342,7 +342,6 @@ public class UserDao extends DAO<User> {
 			return updateById(id, "users", update );
 		}
 		
-		//password
 		public boolean updateEmailById (int id, String value) {
 			Map<String, String> update = new HashMap<>();
 			update.put("email_address", value);
@@ -350,12 +349,24 @@ public class UserDao extends DAO<User> {
 			return updateById(id, "users", update);
 		}
 		
-		//email
-		
-		//businessName
+		public boolean updatePasswordById (int id, String value) {
+			Map<String, String> update = new HashMap<>();
+			update.put("password", value);
+			
+			return updateById(id, "users", update);
+		}
+
+		public boolean updateBusinessNameById (int id, String value) {
+			Map<String, String> update = new HashMap<>();
+			update.put("business_name", value);
+			
+			return updateById(id, "users", update);
+		}
 		
 		//address
-
+		
+		//update user role
+		//need to check for count  1
 	
 
 		@Override

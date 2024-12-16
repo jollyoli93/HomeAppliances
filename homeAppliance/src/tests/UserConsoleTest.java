@@ -41,7 +41,7 @@ class UserConsoleTest {
 		
 		assertEquals("Succesfully added to the database", output);
 	}
-	
+
 	@Test
 	public void addUserAdmin () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password
@@ -172,13 +172,45 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersEmail () {
-		String[] UpdateFirstUser = {"4", "1","3", "newemail@email.co.uk"};
+		String[] UpdateFirstEmail = {"4", "1","3", "newemail@email.co.uk", "6"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Email");
 		System.out.println("_________________________________________________________________________________");
 		
 		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstEmail));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
+	
+	@Test
+	public void CorrectUpdateFirstUsersPassword() {
+		String[] UpdateFirstUser = {"4", "1","4", "new password", "6"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User Password");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+		console.setHandler(new MockIOHandler(UpdateFirstUser));
+		output = console.userMenu();
+		
+		assertEquals("User updated successfully.", output);
+	}
+	
+	@Test
+	public void CorrectUpdateFirstUsersBusinessName() {
+		String[] UpdateFirstUser = {"4", "1","5", "Best Biz", "6"};
+		
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User Business Name");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserBusiness();
 		
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
