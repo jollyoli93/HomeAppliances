@@ -326,14 +326,6 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
-
-		
-//		public boolean updateFirstNameById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("first_name", value);
-//			
-//			return updateById(id, "users", update );
-//		}
 		
 		public boolean updateFieldById(int id, String field, String value) {
 		    Map<String, String> update = new HashMap<>();
@@ -341,42 +333,6 @@ public class UserDao extends DAO<User> {
 		    return updateById(id, "users", update);
 		}
 
-		
-//		public boolean updateLastNameById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("last_name", value);
-//			
-//			return updateById(id, "users", update );
-//		}
-//		
-//		public boolean updateEmailById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("email_address", value);
-//			
-//			return updateById(id, "users", update);
-//		}
-//		
-//		public boolean updatePasswordById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("password", value);
-//			
-//			return updateById(id, "users", update);
-//		}
-//
-//		public boolean updateBusinessNameById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("business_name", value);
-//			
-//			return updateById(id, "users", update);
-//		}
-//		
-//		public boolean updateTelehoneNumById (int id, String value) {
-//			Map<String, String> update = new HashMap<>();
-//			update.put("telephone_num", value);
-//			
-//			return updateById(id, "users", update);
-//		}
-		
 		//address
 		
 		//update user role
