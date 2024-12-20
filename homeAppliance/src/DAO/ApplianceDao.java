@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import appliances.Appliance;
@@ -17,7 +18,6 @@ public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
 	String tableSchema;
-	ArrayList<String> allowedTablesList;
 	
 	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories) {
         this.dbPath = dbPath;
@@ -31,6 +31,8 @@ public class ApplianceDao extends DAO<Appliance> {
     			+" category	TEXT NOT NULL,"
     			+"price	INTEGER NOT NULL,"
     			+"PRIMARY KEY(id AUTOINCREMENT))";
+    	
+    	allowedTablesList.add("appliances");
     }
 
 
@@ -127,7 +129,8 @@ public class ApplianceDao extends DAO<Appliance> {
 		
     	return appliance;
 	}
-
+	
+	
 	@Override
 	public boolean addNew(Appliance newAppliance, Map<String, String> additionalFields) {	
 		String query =  "INSERT INTO appliances" + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
@@ -157,57 +160,73 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
     @Override
-    public boolean deleteById(int id) {
+    public int deleteById(int id) {
         String query = "DELETE FROM appliances WHERE id = ?";
         
         try (Connection connect = connector.initializeDBConnection();
         	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 	            preparedStatement.setInt(1, id);
-	            int executeRows = preparedStatement.executeUpdate();
+	            int executedRows = preparedStatement.executeUpdate();
 	            
-	            return executeRows > 0;
+	            return executedRows;
         } catch (SQLException e) {
 			System.out.println("Error connecting to the database");
             System.out.println("SQL Exception: " + e.getMessage());
-            return false;
+            return 0;
         }
     }
-	@Override
-	public boolean updateById(int id, String table, Map<String, String> updateFields) {
-		if (!allowedTablesList.contains(table)) {
-			System.out.println("Table not valid.");
-			return false;
-		}
-	    // Build the SQL query dynamically
-	    StringBuilder queryBuilder = new StringBuilder("UPDATE " + table + " SET ");
-	    updateFields.forEach((key, value) -> queryBuilder.append(key).append(" = ?, "));
-	    
-	    // Remove the trailing comma and space
-	    queryBuilder.setLength(queryBuilder.length() - 2);
-	    queryBuilder.append(" WHERE user_id = ?");
-	    
-	    String query = queryBuilder.toString();
+    
+    @Override
+    public int updateById(int id, String table, Map<String, Object> updateFields) {
+        if (!allowedTablesList.contains(table)) {
+            System.out.println("Table not valid.");
+            return 0;
+        }
 
-	    try (Connection connect = connector.initializeDBConnection();
-	         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+        // Build the SQL query dynamically
+        StringBuilder queryBuilder = new StringBuilder("UPDATE ").append(table).append(" SET ");
+        updateFields.forEach((key, value) -> queryBuilder.append(key).append(" = ?, "));
+        
+        // Remove the trailing comma and space
+        queryBuilder.setLength(queryBuilder.length() - 2);
+        queryBuilder.append(" WHERE id = ?");
+        
+        String query = queryBuilder.toString();
 
-	        // Set the values for the dynamic fields
-	        int index = 1;
-	        for (String value : updateFields.values()) {
-	            preparedStatement.setString(index++, value);
-	        }
-	        // Set the ID parameter
-	        preparedStatement.setInt(index, id);
+        try (Connection connect = connector.initializeDBConnection();
+             PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 
-	        // Execute the update
-	        int updated = preparedStatement.executeUpdate();
-	        return updated > 0;
+            // Set the values for the dynamic fields
+            int index = 1;
+            for (Object value : updateFields.values()) {
+                if (value instanceof String) {
+                    preparedStatement.setString(index++, (String) value);
+                } else if (value instanceof Integer) {
+                    preparedStatement.setInt(index++, (Integer) value);
+                } else if (value instanceof Double) {
+                    preparedStatement.setDouble(index++, (Double) value);
+                } else {
+                    throw new IllegalArgumentException("Unsupported data type: " + value.getClass().getSimpleName());
+                }
+            }
+            // Set the ID parameter
+            preparedStatement.setInt(index, id);
 
-	    } catch (SQLException e) {
-	        System.out.println("Error connecting to the database");
-	        System.out.println("SQL Exception: " + e.getMessage());
-	        return false;
-	    }
+            // Execute the update
+            int numRows = preparedStatement.executeUpdate();
+            return numRows;
+
+        } catch (SQLException e) {
+            System.out.println("Error connecting to the database");
+            System.out.println("SQL Exception: " + e.getMessage());
+            return 0;
+        }
+    }
+	
+	public String updateFieldById(int id, String table, String field, Object value) {
+	    Map<String, Object> update = new HashMap<>();
+	    update.put(field, value);
+	    int updatedRows = updateById(id, table, update);
+	    return "Rows updated: " + updatedRows;
 	}
-
 }

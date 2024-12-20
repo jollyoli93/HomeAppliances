@@ -253,7 +253,7 @@ public class ApplianceConsole {
 	private void updatePrice() {
 		System.out.println("Please select an option");
 		System.out.println("[1] Update a product price by ID");
-		System.out.println("[2] Update a product price by SKU");
+		System.out.println("[2] Update related product price using SKU");
 		int userInputID = handleInput.getInputInt();
 		
 		switch (userInputID) {
@@ -266,7 +266,7 @@ public class ApplianceConsole {
 		}
 	}
 	
-	private void updatePriceByID() {
+	private String updatePriceByID() {
 		System.out.println("Enter ID to update price");
 		int userInputID = handleInput.getInputInt();
 		
@@ -274,10 +274,12 @@ public class ApplianceConsole {
 		double userInputPrice = handleInput.getInputDouble();
 		
 		try {
-			applianceDAO.updateById(userInputID, userInputPrice);
+			consoleOutput = applianceDAO.updateFieldById(userInputID,"appliances", "price", userInputPrice);
+			
 		} catch (NullPointerException ex) {
 			System.out.println("Product not in database");
 		}
+		return consoleOutput;
 	}
 
 	private void updatePriceBySKU() {
@@ -289,21 +291,20 @@ public class ApplianceConsole {
 		
 		int input = handleInput.getInputInt();
 		
-		Boolean deleted = applianceDAO.deleteById(input);
+		int deleted = applianceDAO.deleteById(input);
 		
-		if (deleted) {
+		if (deleted > 0) {
+			consoleOutput = "ID: " + input + " Deleted";
 			System.out.println("ID: " + input + " Deleted");
 			System.out.println();
 
 		} else {
+			consoleOutput = "Failed to delete item.";
 			System.out.println("Failed");
 			System.out.println();
 
 		}
-
-		
 	}
-//
 
 }
 

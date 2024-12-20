@@ -9,8 +9,8 @@ import java.util.Map;
 
 public abstract class DAO<T> {
 	Connector connector;
-	protected HashMap<String, String> tables;
-	protected ArrayList<String> allowedTablesList;
+	protected HashMap<String, String> tables = new HashMap<String, String>();
+	protected ArrayList<String> allowedTablesList = new  ArrayList<String>();
 	
 	public DAO(){
 		
@@ -98,7 +98,7 @@ public abstract class DAO<T> {
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
 	public abstract boolean addNew(T add, Map<String, String> additionalFields);
-	public abstract boolean deleteById(int id);
-	public abstract boolean updateById(int id, String table, Map<String, String> updateFields);
+	public abstract int deleteById(int id);
+	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 
 }
