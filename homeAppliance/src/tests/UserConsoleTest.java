@@ -135,7 +135,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 	
 	@Test
@@ -151,7 +151,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("Failed to update user.", output);
+		assertEquals("Number of rows updated: 0", output);
 	}
 	
 	@Test
@@ -183,7 +183,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstEmail));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 	
 	@Test
@@ -215,7 +215,7 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 	
 	@Test
@@ -231,6 +231,6 @@ class UserConsoleTest {
 		console.setHandler(new MockIOHandler(UpdateFirstUser));
 		output = console.userMenu();
 		
-		assertEquals("User updated successfully.", output);
+		assertEquals("Number of rows updated: 1", output);
 	}
 }

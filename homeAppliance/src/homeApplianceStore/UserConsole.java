@@ -54,6 +54,8 @@ public class UserConsole {
 				switch (input) {
 				case "1":
 					getAllUsers();
+					//System.out.println(consoleOutput);
+					System.out.println();
 					break;
 				case "2":
 					System.out.println("Search for user");
@@ -62,7 +64,9 @@ public class UserConsole {
 					addUserInterface();
 					break;
 				case "4":
-					updateUserInformation();
+					consoleOutput = selectUpdateMethod();
+					
+					System.out.println(consoleOutput);
 					System.out.println();
 					break;
 				case "5":
@@ -77,38 +81,21 @@ public class UserConsole {
 					System.out.println("Try again");
 				}
 			} while (flag);
+			
+			System.out.println("End of loop");
+			System.out.println();
 		return consoleOutput;
 		
 	}
 	
-	private String updateUserInformation() {
-		String input_user_id;
-		String input;
-		boolean updated = false;
+	
+	private String selectUpdateMethod () {
+		String inputIdString, input;
+		int userId, updatedRows = 0;
 		
 		System.out.println("Enter user ID");
-		input_user_id = handleInput.getInputString();
-		
-	    try {
-	        int userId = Integer.parseInt(input_user_id); // Parse String to int
-		    System.out.println("DEBUG: " + userId);
-		    
-	        updated = selectUpdateMethod(userId);
-	    } catch (NumberFormatException e) {
-	        System.out.println("Invalid user ID. Please enter a valid number.");
-	    } 
-	    if (updated) {
-	        System.out.println("User updated successfully.");
-	        consoleOutput = "User updated successfully.";
-	        return consoleOutput;
-	    } else {
-	        System.out.println("Failed to update user.");
-	        consoleOutput = "Failed to update user.";
-	        return consoleOutput;
-	    }
-	}
+		inputIdString = handleInput.getInputString();
 	
-	private boolean selectUpdateMethod (int userId) {
 		System.out.println("Please select update method");
 		String selectUpdate = "0";
 		
@@ -125,58 +112,83 @@ public class UserConsole {
 				System.out.println("[5] Update address");
 				System.out.println("[6] Update telephone number");
 
-				System.out.println("[7] Back");
+				System.out.println("[9] Back");
 				System.out.println();
 				
 				selectUpdate = handleInput.getInputString();
 				String userInput= null;
 				
+				userId = Integer.parseInt(inputIdString); 
+				
 				switch (selectUpdate) {
 					case "1": 
 						System.out.println("Enter new first name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "first_name", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "first_name", userInput);
+						break;
 					case "2":
 						System.out.println("Enter new last name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "last_name", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "last_name", userInput);
+						break;
 
 					case "3":
 						System.out.println("Enter new email");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "email_address", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "email_address", userInput);
+						break;
 					case "4":
 						System.out.println("Enter new password");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "password", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "password", userInput);
+						break;
 					case "5":
 						System.out.println("Enter new business name");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "business_name", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "business_name", userInput);
+						break;
+						
 					case "6":
 						System.out.println("Enter new telephone number");
 						userInput = handleInput.getInputString();
-						return userDAO.updateFieldById(userId, "telephone_num", userInput);
+						updatedRows = userDAO.updateFieldById(userId, "telephone_num", userInput);
+						break;
 					case "7":
 						System.out.println("update address");
 						//need to select address ID to update
 						
 						//userInput = handleInput.getInputString();
 						//return userDAO.updateBusinessNameById(userId, userInput);
+						break;
 					case "8":
 						System.out.println("update user role");
 						//need to select role
 						
 						//userInput = handleInput.getInputString();
 						//return userDAO.updateBusinessNameById(userId, userInput);
+						break;
 					case "9":
+						System.out.println("user not updated");
 						System.out.println();
-						return false;
+						break;
 					default:
 						System.out.println("Try again");
 				}
+				
+			    if (updatedRows > 0) {
+			        System.out.println("DEBUG: updated user.");
+
+			        consoleOutput = "Number of rows updated: " + updatedRows;
+			        return consoleOutput;
+			    } else {
+			        System.out.println("DEBUG: Failed to update user.");
+			        consoleOutput = "Number of rows updated: " + updatedRows;
+			        return consoleOutput;
+			    }
 		}
-		return false; 
+		
+		System.out.println("DEBUG: Updated end of loop");
+		return "returning"; 
 	}
 	
 
@@ -301,7 +313,7 @@ public class UserConsole {
 	    System.out.println("Please enter the user ID number you wish to delete:");
 	    String id = handleInput.getInputString();
 	    System.out.println("DEBUG: " + id);
-	    boolean deleted = false;
+	    int deleted = 0;
 
 	    try {
 	        int userId = Integer.parseInt(id); // Parse String to int
@@ -312,7 +324,7 @@ public class UserConsole {
 	        System.out.println("Invalid user ID. Please enter a valid number.");
 	    } 
 	    
-	    if (deleted) {
+	    if (deleted > 0) {
 	        System.out.println("User deleted successfully.");
 	        consoleOutput = "User deleted successfully.";
 	        return consoleOutput;
