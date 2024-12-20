@@ -2,6 +2,7 @@ package homeApplianceStore;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import DAO.UserDao;
 import IOHandlers.ConsoleIOHandler;
@@ -9,9 +10,12 @@ import IOHandlers.InputOutputHandler;
 import printer.AdminPrinter;
 import printer.BusinessPrinter;
 import printer.CustomerPrinter;
+import users.Address;
 import users.AdminUser;
+import users.BillingAddress;
 import users.BusinessUser;
 import users.CustomerUser;
+import users.ShippingAddress;
 import users.User;
 import users.UserFactory;
 
@@ -47,7 +51,8 @@ public class UserConsole {
 				System.out.println("[3] Add a new user");
 				System.out.println("[4] Update a user");
 				System.out.println("[5] Delete a user by ID");
-				System.out.println("[6] Back");
+				System.out.println("[6] Add a user address");
+				System.out.println("[7] Back");
 				System.out.println();
 				input = handleInput.getInputString();
 				
@@ -62,6 +67,7 @@ public class UserConsole {
 					break;
 				case "3":
 					addUserInterface();
+					
 					break;
 				case "4":
 					consoleOutput = selectUpdateMethod();
@@ -74,6 +80,10 @@ public class UserConsole {
 					System.out.println();
 					break;
 				case "6":
+					consoleOutput = addAddressInterface();
+					System.out.println();
+					break;
+				case "7":
 					flag = false;
 					System.out.println("Returning");
 					break;
@@ -222,7 +232,8 @@ public class UserConsole {
 
 	
 	public String addUserInterface () {
-		Boolean success = false;		
+		Boolean success = false;
+		
 			while (success == false) {
 				System.out.println("Please enter user role or type quit to exit");
 				System.out.println("admin, customer, business");
@@ -236,6 +247,8 @@ public class UserConsole {
 					if (success == true) {
 						System.out.println();
 						System.out.println("Succesfully added to the database");
+						
+						
 						consoleOutput = "Succesfully added to the database";
 						return consoleOutput;
 					}
@@ -333,6 +346,111 @@ public class UserConsole {
 	        consoleOutput = "Failed to delete user.";
 	        return consoleOutput;
 	    }
+	}
+	
+	public String addAddressInterface () {
+		Boolean success = false;
+		
+			while (success == false) {				
+				try {
+					System.out.println("Enter user ID.");
+					String userIdString = handleInput.getInputString();
+					
+					int userId = Integer.parseInt(userIdString);
+					
+					success = addAddressHandler(userId);
+	
+					if (success == true) {
+						System.out.println();
+						System.out.println("Succesfully added to the database");
+						
+						
+						consoleOutput = "Succesfully added to the database";
+						return consoleOutput;
+					}
+					else {
+						System.out.println();
+						System.out.println("Error adding user - try again");
+						consoleOutput = "Error adding user - try again";
+						return consoleOutput;
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("CATCH: Error adding user - try again");
+					e.printStackTrace();
+				}
+			}
+			return consoleOutput;
+	}
+	
+	private boolean addAddressHandler (int user_id) {
+        String number;
+        String street;
+        String city;
+        String country;
+        String postCode;
+        boolean isPrimary;
+        Address address;
+        String addressType;
+        
+		System.out.println("Enter Building Number: ");
+		number = handleInput.getInputString();
+		
+		System.out.println("Enter Street: ");
+		street = handleInput.getInputString();
+
+		System.out.println("Enter City: ");
+		city = handleInput.getInputString();
+		
+		System.out.println("Enter Country: ");
+		country = handleInput.getInputString();
+		
+		System.out.println("Enter Postcode: ");
+		postCode = handleInput.getInputString();
+		
+		System.out.println("Is it the primary address? true or false: ");
+		String isPrimaryInput = handleInput.getInputString();
+		
+		isPrimary = isPrimaryAddress(isPrimaryInput);
+		
+		System.out.println("Enter address type: ");
+		addressType = handleInput.getInputString();
+		
+		address = selectAddressType(addressType, number, street, city, country, postCode, user_id, isPrimary);
+		
+		return userDAO.addAddress(address);
+	}
+	
+	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {
+		if (addressType.equalsIgnoreCase("shipping")) {
+			return new ShippingAddress(number, street, city, country, postCode, customerId, isPrimary);
+		}
+		
+		if (addressType.equalsIgnoreCase("shipping")) {
+			return new BillingAddress(number, street, city, country, postCode, customerId, isPrimary);
+		}
+		
+		System.out.println("No such address type");
+		return null;
+	}
+	
+	private boolean isPrimaryAddress (String isPrimaryInput) {
+		boolean flag = false;
+		
+		do {
+			if (isPrimaryInput.equalsIgnoreCase("true")) {
+				flag = true;
+				return true;
+			} else if (isPrimaryInput.equalsIgnoreCase("false")) {
+				flag = true;
+				return false;
+			} else {
+				System.out.println("Incorrect input");
+			}
+		} while (flag = false);
+		
+		return false;
 	}
 
 

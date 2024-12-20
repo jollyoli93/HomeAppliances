@@ -19,8 +19,8 @@ class UserTesting {
         admin = new AdminUser("Master", "Chief", "echo419@halo.com", "cortanaforlife", "mrchief");
         business = new BusinessUser("Aladin", "Ababwa", "princeali@magiccarpet.com" , "princeali", "jasmine123", "07438273647", "Alibaba");
        
-        Address billingAddress = new ShippingAddress(15, "Oxford Rd", "Manchester", "M1 2BJ", "United Kingdom", customer.getCustomerId());
-        Address shippingAddress = new BillingAddress(1, "Mancunian Way", "Manchester", "M1 1AA", "United Kingdom", customer.getCustomerId());
+        Address billingAddress = new ShippingAddress("15", "Oxford Rd", "Manchester", "M1 2BJ", "United Kingdom", customer.getCustomerId(), false);
+        Address shippingAddress = new BillingAddress("1", "Mancunian Way", "Manchester", "M1 1AA", "United Kingdom", customer.getCustomerId(), true);
     }
 
     @Test
@@ -30,7 +30,7 @@ class UserTesting {
 
     @Test
     public void fullNameIsCorrect () {
-        assertEquals("JimmyGrimble", customer.getFullName());
+        assertEquals("Jimmy Grimble", customer.getFullName());
     }
 
     @Test
