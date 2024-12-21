@@ -88,14 +88,6 @@ public class ApplianceDao extends DAO<Appliance> {
 		return applianceList;
 	}
 
-	@Override
-	protected ResultSet getById(String query, int id) throws SQLException {
-	    Connection connection = connector.initializeDBConnection();
-	    PreparedStatement statement = connection.prepareStatement(query);
-	    statement.setInt(1, id);
-	    return statement.executeQuery();
-	}
-
 	public Appliance getAppliance(int id) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
 	    Appliance appliance = null;

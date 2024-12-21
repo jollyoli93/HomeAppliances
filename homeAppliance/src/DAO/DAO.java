@@ -135,8 +135,14 @@ public abstract class DAO<T> {
 	    }
 	}
 	
+	protected ResultSet getById(String query, int id) throws SQLException {
+	    Connection connection = connector.initializeDBConnection();
+	    PreparedStatement statement = connection.prepareStatement(query);
+	    statement.setInt(1, id);
+	    return statement.executeQuery();
+	}
+	
 	public abstract ArrayList<T> findAll();
-	protected abstract ResultSet getById(String query, int id) throws SQLException;
 	public abstract int deleteById(int id);
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 

@@ -157,14 +157,6 @@ public class UserDao extends DAO<User> {
 			return userList;
 		}
 
-		@Override
-		protected ResultSet getById(String query, int id) throws SQLException {
-		    Connection connection = connector.initializeDBConnection();
-		    PreparedStatement statement = connection.prepareStatement(query);
-		    statement.setInt(1, id);
-		    return statement.executeQuery();
-		}
-
 		public User getUser(int userId) {
 		    String userQuery = "SELECT user_id, first_name, last_name, username, email_address, telephone_num, password, business_name " +
 		                       "FROM users WHERE user_id = ?";
