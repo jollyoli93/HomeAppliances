@@ -197,50 +197,37 @@ public class UserDao extends DAO<User> {
 //	    	return appliance;
 //		}
 
-		@Override
-		public boolean addNew(User user, Map<String, String> additionalFields) {
-		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO users (first_name, last_name, email_address, username, password");
-		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (?, ?, ?, ?, ?");		    
+		public boolean addEntity(String tableName, Map<String, Object> fields) {
+		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
+		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (");
 		    
-		    // Add additional fields dynamically
-		    if (additionalFields != null) {
-		        for (String field : additionalFields.keySet()) {
-		            queryBuilder.append(", ").append(field);
-		            valuesBuilder.append(", ?");
+		    // Dynamically construct column names and placeholders
+		    int fieldCount = fields.size();
+		    int i = 0;
+		    for (String field : fields.keySet()) {
+		        queryBuilder.append(field);
+		        valuesBuilder.append("?");
+		        if (i < fieldCount - 1) {
+		            queryBuilder.append(", ");
+		            valuesBuilder.append(", ");
 		        }
+		        i++;
 		    }
 		    queryBuilder.append(")").append(valuesBuilder).append(")");
 		    
 		    String query = queryBuilder.toString();
 		    
-		    try (Connection connect = connector.initializeDBConnection(); 
+		    try (Connection connect = connector.initializeDBConnection();
 		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		        
-		        // Set common fields
-		        preparedStatement.setString(1, user.getFirstName());
-		        preparedStatement.setString(2, user.getLastName());
-		        preparedStatement.setString(3, user.getEmailAddress());
-		        preparedStatement.setString(4, user.getUsername());
-		        preparedStatement.setString(5, user.getPassword());
-		        
-		        // Set additional fields dynamically
-		        int index = 6; // Start after common fields
-		        if (additionalFields != null) {
-		            for (String fieldValue : additionalFields.values()) {
-		                preparedStatement.setString(index++, fieldValue);
-		            }
+		         
+		        // Set the values dynamically
+		        int index = 1;
+		        for (Object value : fields.values()) {
+		            preparedStatement.setObject(index++, value);
 		        }
 		        
-		        //update database
+		        // Execute the query
 		        int executeRows = preparedStatement.executeUpdate();
-
-		        //add user role to user_roles table if correctly added
-		        if (executeRows > 0) {
-			        int last_id = getLastIdEntry();
-			        String user_role = user.getRole();
-			        addUserRole(last_id, user_role);
-		        }
-		        
 		        return executeRows > 0;
 		        
 		    } catch (SQLException e) {
@@ -249,75 +236,65 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
+		
+		
+		public boolean addNew(User user, Map<String, String> additionalFields) {
+		    Map<String, Object> fields = new HashMap<>();
+		    fields.put("first_name", user.getFirstName());
+		    fields.put("last_name", user.getLastName());
+		    fields.put("email_address", user.getEmailAddress());
+		    fields.put("username", user.getUsername());
+		    fields.put("password", user.getPassword());
+		    
+		    if (additionalFields != null) {
+		        fields.putAll(additionalFields);
+		    }
+		    
+		    boolean result = addEntity("users", fields);
 
-		public boolean addNewAdmin (User newAdmin) {
+		    // Add user role if the user is successfully added
+		    if (result) {
+		        int lastId = getLastIdEntry();
+		        addUserRole(lastId, user.getRole());
+		    }
+		    return result;
+		}
+
+		public boolean addNewAdmin(User newAdmin) {
 		    return addNew(newAdmin, null);
 		}
 
-		public boolean addNewCustomer (User newCustomer) {
+		public boolean addNewCustomer(User newCustomer) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
 		    return addNew(newCustomer, additionalFields);
 		}
 
-		public boolean addNewBusiness (User newBusiness) {
+		public boolean addNewBusiness(User newBusiness) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
 		    additionalFields.put("business_name", newBusiness.getBusinessName());
 		    return addNew(newBusiness, additionalFields);
 		}
-		
-		private boolean addNewAddress (Address address, Map<String, String> additionalFields) {
-		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO addresses (building_number, street, city, country, post_code, customer_id, address_type, isPrimary");
-		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (?, ?, ?, ?, ?, ?, ?, ?");		    
+
+		public boolean addAddress(Address address, Map<String, String> additionalFields) {
+		    Map<String, Object> fields = new HashMap<>();
+		    fields.put("building_number", address.getNumber());
+		    fields.put("street", address.getStreet());
+		    fields.put("city", address.getCity());
+		    fields.put("country", address.getCountry());
+		    fields.put("post_code", address.getPostCode());
+		    fields.put("customer_id", address.getCustomerId());
+		    fields.put("address_type", address.getAddressType());
+		    fields.put("isPrimary", address.isPrimary());
 		    
-		    // Add additional fields dynamically
 		    if (additionalFields != null) {
-		        for (String field : additionalFields.keySet()) {
-		            queryBuilder.append(", ").append(field);
-		            valuesBuilder.append(", ?");
-		        }
+		        fields.putAll(additionalFields);
 		    }
-		    queryBuilder.append(")").append(valuesBuilder).append(")");
 		    
-		    String query = queryBuilder.toString();
-		    
-		    try (Connection connect = connector.initializeDBConnection(); 
-		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		        
-		        // Set common fields
-		        preparedStatement.setString(1, address.getNumber());
-		        preparedStatement.setString(2, address.getStreet());
-		        preparedStatement.setString(3, address.getCity());
-		        preparedStatement.setString(4, address.getCountry());
-		        preparedStatement.setString(5, address.getPostCode());
-		        preparedStatement.setInt(6, address.getCustomerId());
-		        preparedStatement.setString(7, address.getAddressType());
-		        preparedStatement.setBoolean(8, address.isPrimary());
-		        
-		        // Set additional fields dynamically
-		        int index = 6; // Start after common fields
-		        if (additionalFields != null) {
-		            for (String fieldValue : additionalFields.values()) {
-		                preparedStatement.setString(index++, fieldValue);
-		            }
-		        }
-		        
-		        //update database
-		        int executeRows = preparedStatement.executeUpdate();
-		        
-		        return executeRows > 0;
-		        
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		        System.out.println("SQL Exception: " + e.getMessage());
-		        return false;
-		    }
+		    return addEntity("addresses", fields);
 		}
-		
-		public boolean addAddress (Address address) {
-				return addNewAddress(address, null);
-			};
+
 
 
 	    @Override
