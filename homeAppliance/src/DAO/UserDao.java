@@ -196,49 +196,9 @@ public class UserDao extends DAO<User> {
 //			
 //	    	return appliance;
 //		}
-
-		public boolean addEntity(String tableName, Map<String, Object> fields) {
-		    StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
-		    StringBuilder valuesBuilder = new StringBuilder(" VALUES (");
-		    
-		    // Dynamically construct column names and placeholders
-		    int fieldCount = fields.size();
-		    int i = 0;
-		    for (String field : fields.keySet()) {
-		        queryBuilder.append(field);
-		        valuesBuilder.append("?");
-		        if (i < fieldCount - 1) {
-		            queryBuilder.append(", ");
-		            valuesBuilder.append(", ");
-		        }
-		        i++;
-		    }
-		    queryBuilder.append(")").append(valuesBuilder).append(")");
-		    
-		    String query = queryBuilder.toString();
-		    
-		    try (Connection connect = connector.initializeDBConnection();
-		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		         
-		        // Set the values dynamically
-		        int index = 1;
-		        for (Object value : fields.values()) {
-		            preparedStatement.setObject(index++, value);
-		        }
-		        
-		        // Execute the query
-		        int executeRows = preparedStatement.executeUpdate();
-		        return executeRows > 0;
-		        
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		        System.out.println("SQL Exception: " + e.getMessage());
-		        return false;
-		    }
-		}
 		
 		
-		public boolean addNew(User user, Map<String, String> additionalFields) {
+		public boolean addNewUser(User user, Map<String, String> additionalFields) {
 		    Map<String, Object> fields = new HashMap<>();
 		    fields.put("first_name", user.getFirstName());
 		    fields.put("last_name", user.getLastName());
@@ -250,7 +210,7 @@ public class UserDao extends DAO<User> {
 		        fields.putAll(additionalFields);
 		    }
 		    
-		    boolean result = addEntity("users", fields);
+		    boolean result = addNew("users", fields);
 
 		    // Add user role if the user is successfully added
 		    if (result) {
@@ -261,20 +221,20 @@ public class UserDao extends DAO<User> {
 		}
 
 		public boolean addNewAdmin(User newAdmin) {
-		    return addNew(newAdmin, null);
+		    return addNewUser(newAdmin, null);
 		}
 
 		public boolean addNewCustomer(User newCustomer) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
-		    return addNew(newCustomer, additionalFields);
+		    return addNewUser(newCustomer, additionalFields);
 		}
 
 		public boolean addNewBusiness(User newBusiness) {
 		    Map<String, String> additionalFields = new HashMap<>();
 		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
 		    additionalFields.put("business_name", newBusiness.getBusinessName());
-		    return addNew(newBusiness, additionalFields);
+		    return addNewUser(newBusiness, additionalFields);
 		}
 
 		public boolean addAddress(Address address, Map<String, String> additionalFields) {
@@ -292,7 +252,7 @@ public class UserDao extends DAO<User> {
 		        fields.putAll(additionalFields);
 		    }
 		    
-		    return addEntity("addresses", fields);
+		    return addNew("addresses", fields);
 		}
 
 

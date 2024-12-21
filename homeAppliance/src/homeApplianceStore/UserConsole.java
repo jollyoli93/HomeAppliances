@@ -419,7 +419,7 @@ public class UserConsole {
 		
 		address = selectAddressType(addressType, number, street, city, country, postCode, user_id, isPrimary);
 		
-		return userDAO.addAddress(address);
+		return userDAO.addAddress(address, null);
 	}
 	
 	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {

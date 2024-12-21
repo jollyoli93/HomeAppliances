@@ -95,9 +95,48 @@ public abstract class DAO<T> {
 	    });
 	}
 	
+	public boolean addNew(String tableName, Map<String, Object> fields) {
+	    StringBuilder queryBuilder = new StringBuilder("INSERT INTO ").append(tableName).append(" (");
+	    StringBuilder valuesBuilder = new StringBuilder(" VALUES (");
+	    
+	    // Dynamically construct column names and placeholders
+	    int fieldCount = fields.size();
+	    int i = 0;
+	    for (String field : fields.keySet()) {
+	        queryBuilder.append(field);
+	        valuesBuilder.append("?");
+	        if (i < fieldCount - 1) {
+	            queryBuilder.append(", ");
+	            valuesBuilder.append(", ");
+	        }
+	        i++;
+	    }
+	    queryBuilder.append(")").append(valuesBuilder).append(")");
+	    
+	    String query = queryBuilder.toString();
+	    
+	    try (Connection connect = connector.initializeDBConnection();
+	         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	         
+	        // Set the values dynamically
+	        int index = 1;
+	        for (Object value : fields.values()) {
+	            preparedStatement.setObject(index++, value);
+	        }
+	        
+	        // Execute the query
+	        int executeRows = preparedStatement.executeUpdate();
+	        return executeRows > 0;
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        System.out.println("SQL Exception: " + e.getMessage());
+	        return false;
+	    }
+	}
+	
 	public abstract ArrayList<T> findAll();
 	public abstract T getById(int id);
-	public abstract boolean addNew(T add, Map<String, String> additionalFields);
 	public abstract int deleteById(int id);
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 
