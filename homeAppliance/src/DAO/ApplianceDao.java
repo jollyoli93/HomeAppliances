@@ -89,47 +89,47 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
 	@Override
-	public Appliance getById(int id) {
-	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
-
-		Appliance appliance = null;
-		
-		try (Connection connect = connector.initializeDBConnection(); 
-			 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		    	preparedStatement.setInt(1, id);
-		        ResultSet result = preparedStatement.executeQuery();
-        	
-        	if (result.next()) {     
-                String desc = result.getString("description");
-                String cat = result.getString("category");
-                double price = result.getDouble("price");  
-        		
-                try {
-                    // Get the appropriate factory for the category
-                    ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
-                    
-                    // Create the specific appliance using the factory
-                    appliance = factory.selectAppliance(desc);
-                    
-                    // Set the common properties
-                    appliance.setId(id);
-                    appliance.setPrice(price);
-                    
-                    System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
-
-                    
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error retrieving appliance: " + e.getMessage());
-                }
-        	}
-        	
-        } catch (SQLException e) {
-				System.out.println("Error connecting to the database");
-	               System.out.println("SQL Exception: " + e.getMessage());
-		}
-		
-    	return appliance;
+	protected ResultSet getById(String query, int id) throws SQLException {
+	    Connection connection = connector.initializeDBConnection();
+	    PreparedStatement statement = connection.prepareStatement(query);
+	    statement.setInt(1, id);
+	    return statement.executeQuery();
 	}
+
+	public Appliance getAppliance(int id) {
+	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
+	    Appliance appliance = null;
+
+	    try (ResultSet result = getById(query, id)) {
+	        if (result.next()) {
+	            String desc = result.getString("description");
+	            String cat = result.getString("category");
+	            double price = result.getDouble("price");
+
+	            try {
+	                // Get the appropriate factory for the category
+	                ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+
+	                // Create the specific appliance using the factory
+	                appliance = factory.selectAppliance(desc);
+
+	                // Set the common properties
+	                appliance.setId(id);
+	                appliance.setPrice(price);
+
+	                System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Error retrieving appliance: " + e.getMessage());
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error connecting to the database");
+	        System.out.println("SQL Exception: " + e.getMessage());
+	    }
+
+	    return appliance;
+	}
+
 	
 	public boolean addNewAppliance(Appliance appliance, Map<String, String> additionalFields) {
 	    Map<String, Object> fields = new HashMap<>();

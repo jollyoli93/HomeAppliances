@@ -3,8 +3,10 @@ package DAO;
 
 import users.Address;
 import users.AdminUser;
+import users.BillingAddress;
 import users.BusinessUser;
 import users.CustomerUser;
+import users.ShippingAddress;
 import users.User;
 
 import java.sql.Connection;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.management.relation.Role;
@@ -153,50 +156,108 @@ public class UserDao extends DAO<User> {
 			
 			return userList;
 		}
-//
-//		@Override
-//		public Appliance getById(int id) {
-//		    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
-//
-//			Appliance appliance = null;
-//			
-//			try (Connection connect = connector.initializeDBConnection(); 
-//				 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-//			    	preparedStatement.setInt(1, id);
-//			        ResultSet result = preparedStatement.executeQuery();
-//	        	
-//	        	if (result.next()) {     
-//	                String desc = result.getString("description");
-//	                String cat = result.getString("category");
-//	                double price = result.getDouble("price");  
-//	        		
-//	                try {
-//	                    // Get the appropriate factory for the category
-//	                    ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
-//	                    
-//	                    // Create the specific appliance using the factory
-//	                    appliance = factory.selectAppliance(desc);
-//	                    
-//	                    // Set the common properties
-//	                    appliance.setId(id);
-//	                    appliance.setPrice(price);
-//	                    
-//	                    System.out.println("Created: " + appliance.getCategory() + " - " + appliance.getDescription());
-//
-//	                    
-//	                } catch (IllegalArgumentException e) {
-//	                    System.out.println("Error retrieving appliance: " + e.getMessage());
-//	                }
-//	        	}
-//	        	
-//	        } catch (SQLException e) {
-//					System.out.println("Error connecting to the database");
-//		               System.out.println("SQL Exception: " + e.getMessage());
-//			}
-//			
-//	    	return appliance;
-//		}
+
+		@Override
+		protected ResultSet getById(String query, int id) throws SQLException {
+		    Connection connection = connector.initializeDBConnection();
+		    PreparedStatement statement = connection.prepareStatement(query);
+		    statement.setInt(1, id);
+		    return statement.executeQuery();
+		}
+
+		public User getUser(int userId) {
+		    String userQuery = "SELECT user_id, first_name, last_name, username, email_address, telephone_num, password, business_name " +
+		                       "FROM users WHERE user_id = ?";
+
+		    try (ResultSet userResult = getById(userQuery, userId)) {
+		        if (userResult.next()) {
+		            String firstName = userResult.getString("first_name");
+		            String lastName = userResult.getString("last_name");
+		            String emailAddress = userResult.getString("email_address");
+		            String username = userResult.getString("username");
+		            String password = userResult.getString("password");
+		            String telephoneNum = userResult.getString("telephone_num");
+		            String businessName = userResult.getString("business_name");
+		            String role = getRoleDesc(userId);
+
+		            // Create user based on role
+		            switch (role) {
+		                case "admin":
+		                    return new AdminUser(firstName, lastName, emailAddress, username, password);
+		                case "customer":
+		                    return new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
+		                case "business":
+		                    return new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
+		                default:
+		                    throw new IllegalArgumentException("Unknown role: " + role);
+		            }
+		        } else {
+		            throw new IllegalArgumentException("User not found for ID: " + userId);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        throw new RuntimeException("Error fetching user by ID", e);
+		    }
+		}
 		
+		public List<Address> getAddresses(int userId) {
+		    String addressQuery = "SELECT building_number, street, city, postcode, country, isPrimary, addressType, address_id " +
+		                          "FROM addresses WHERE user_id = ?";
+		    List<Address> addressList = new ArrayList<>();
+
+		    try (ResultSet addressResult = getById(addressQuery, userId)) {
+		        while (addressResult.next()) {
+		            String buildingNumber = addressResult.getString("building_number");
+		            String street = addressResult.getString("street");
+		            String city = addressResult.getString("city");
+		            String postcode = addressResult.getString("postcode");
+		            String country = addressResult.getString("country");
+		            boolean isPrimary = addressResult.getBoolean("isPrimary");
+		            String addressType = addressResult.getString("addressType");
+
+		            Address address;
+		            switch (addressType.toLowerCase()) {
+		                case "billing":
+		                    address = new BillingAddress(buildingNumber, street, city, country, postcode, userId, isPrimary);
+		                    break;
+		                case "shipping":
+		                    address = new ShippingAddress(buildingNumber, street, city, country, postcode, userId, isPrimary);
+		                    break;
+		                default:
+		                    throw new IllegalArgumentException("Unknown address type: " + addressType);
+		            }
+
+		            addressList.add(address);
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        throw new RuntimeException("Error fetching addresses by user ID", e);
+		    }
+
+		    return addressList;
+		}
+
+		public User getUserWithAddresses(int userId) {
+		    User user = getUser(userId);
+		    List<Address> addressList = getAddresses(userId);
+
+		    for (Address address : addressList) {
+			    // Assign addresses to the user
+			    if (user instanceof CustomerUser) {
+			        ((CustomerUser) user).addAddress(address);
+			    } else if (user instanceof BusinessUser) {
+			        ((BusinessUser) user).addAddress(address);
+			    }
+		    }
+		    return user;
+		}
+
+		
+		public Address getUserAddresses (int id) {
+			
+			return null;
+			
+		}
 		
 		public boolean addNewUser(User user, Map<String, String> additionalFields) {
 		    Map<String, Object> fields = new HashMap<>();
@@ -335,17 +396,6 @@ public class UserDao extends DAO<User> {
 	        return updatedRows;
 	    }
 
-		//address
-		
-		//update user role
-		//need to check for count  1
-	
-
-		@Override
-		public User getById(int id) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 		
 		private String getRoleDesc (int id) {
 			System.out.println(id);
@@ -497,11 +547,6 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
-		
-		public Address getUserAddresses () {
-			
-			return null;
-			
-		}
+	
 
 }

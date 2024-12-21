@@ -138,7 +138,7 @@ public class ApplianceConsole {
 			System.out.println("Searching for product " + id);
 			System.out.println();
 			
-			appliance = applianceDAO.getById(id);
+			appliance = applianceDAO.getAppliance(id);
 			
 			printer = new AppliancePrinter(appliance);
 			printer.print();
@@ -163,7 +163,7 @@ public class ApplianceConsole {
 
 		
 		for (int i = 0; i < userInput; i++) {
-			added = applianceDAO.addNew(appliance, null);
+			added = applianceDAO.addNewAppliance(appliance, null);
 			
 			if (added == false) {
 				System.out.println("Failed to add");

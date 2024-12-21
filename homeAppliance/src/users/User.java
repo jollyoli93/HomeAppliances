@@ -62,18 +62,19 @@ public abstract class User {
 		return this.telephoneNum;
 	}
 	
-	public void setTelephoneNum (String number) {
-		try {
-			if (number.length() == 11) {
-				this.telephoneNum = number;
-			}
-		} catch (Exception e) {
-			System.out.println("Invalid telephone number");
-		}
+	public void setTelephoneNum(String number) {
+	    if (number != null && number.matches("\\d{11}")) {
+	        this.telephoneNum = number;
+	    } else {
+	        throw new IllegalArgumentException("Invalid telephone number. It must be 11 digits.");
+	    }
 	}
-	
+
 	//Handle user addresses
 	public void addAddress(Address address) {
+	    if (address == null) {
+	        throw new IllegalArgumentException("Address cannot be null.");
+	    }
 	    if (addressList == null) {
 	        addressList = new ArrayList<>();
 	    }
@@ -81,8 +82,9 @@ public abstract class User {
 	}
 
 	public ArrayList<Address> getAddresses() {
-	    return new ArrayList<>(addressList); 
+	    return addressList == null ? new ArrayList<>() : new ArrayList<>(addressList);
 	}
+
 
 	public void removeAddress(Address address) {
 	    if (addressList != null) {
@@ -92,13 +94,23 @@ public abstract class User {
 	
 	//Handle Passwords
 	public String getPassword() {
-		return password;
+
+//		    // Use BCrypt for hashing (example)
+//		    this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+
+
+		return this.password;
 	}
 
 	public void setPassword(String password) {
 		//hashpassword
 		this.password = password;
 	}
+	
+//	public boolean validatePassword(String inputPassword) {
+//	    return BCrypt.checkpw(inputPassword, this.password);
+//	}
+
 	
 	public abstract String getRole ();
 

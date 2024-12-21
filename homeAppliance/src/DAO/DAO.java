@@ -136,7 +136,7 @@ public abstract class DAO<T> {
 	}
 	
 	public abstract ArrayList<T> findAll();
-	public abstract T getById(int id);
+	protected abstract ResultSet getById(String query, int id) throws SQLException;
 	public abstract int deleteById(int id);
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 
