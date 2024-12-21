@@ -63,7 +63,9 @@ public abstract class User {
 	}
 	
 	public void setTelephoneNum(String number) {
-	    if (number != null && number.matches("\\d{11}")) {
+		if (number == null) {
+			this.telephoneNum = null;
+		} else if (number != null && number.matches("\\d{11}")) {
 	        this.telephoneNum = number;
 	    } else {
 	        throw new IllegalArgumentException("Invalid telephone number. It must be 11 digits.");

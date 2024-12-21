@@ -59,13 +59,13 @@ public class UserDao extends DAO<User> {
 		    + "building_number TEXT NOT NULL, "
 		    + "street TEXT NOT NULL, "
 		    + "city TEXT NOT NULL, "
-		    + "post_code TEXT NOT NULL, "
+		    + "postcode TEXT NOT NULL, "
 		    + "country TEXT NOT NULL, "
 		    + "isPrimary TEXT NOT NULL, "
 		    + "address_type TEXT NOT NULL, "
-		    + "customer_id INTEGER NOT NULL, "
+		    + "user_id INTEGER NOT NULL, "
 		    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
-		    + "FOREIGN KEY (customer_id) REFERENCES users(user_id) ON DELETE CASCADE"
+		    + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
 		    + ");";
 
 	
@@ -160,7 +160,7 @@ public class UserDao extends DAO<User> {
 		public User getUser(int userId) {
 		    String userQuery = "SELECT user_id, first_name, last_name, username, email_address, telephone_num, password, business_name " +
 		                       "FROM users WHERE user_id = ?";
-
+		    
 		    try (ResultSet userResult = getById(userQuery, userId)) {
 		        if (userResult.next()) {
 		            String firstName = userResult.getString("first_name");
@@ -171,7 +171,7 @@ public class UserDao extends DAO<User> {
 		            String telephoneNum = userResult.getString("telephone_num");
 		            String businessName = userResult.getString("business_name");
 		            String role = getRoleDesc(userId);
-
+		    
 		            // Create user based on role
 		            switch (role) {
 		                case "admin":
@@ -191,9 +191,9 @@ public class UserDao extends DAO<User> {
 		        throw new RuntimeException("Error fetching user by ID", e);
 		    }
 		}
-		
+
 		public List<Address> getAddresses(int userId) {
-		    String addressQuery = "SELECT building_number, street, city, postcode, country, isPrimary, addressType, address_id " +
+		    String addressQuery = "SELECT building_number, street, city, postcode, country, isPrimary, address_type, address_id " +
 		                          "FROM addresses WHERE user_id = ?";
 		    List<Address> addressList = new ArrayList<>();
 
@@ -230,26 +230,38 @@ public class UserDao extends DAO<User> {
 		}
 
 		public User getUserWithAddresses(int userId) {
-		    User user = getUser(userId);
-		    List<Address> addressList = getAddresses(userId);
+		    User user = null;
+		    List<Address> addressList = new ArrayList<>();
+		    
+		    try {
+		        user = getUser(userId); 
+		        
+		        if (user == null) {
+		            System.out.println("User not found for ID: " + userId);
+		            return null;  // Early exit
+		        }
 
-		    for (Address address : addressList) {
-			    // Assign addresses to the user
-			    if (user instanceof CustomerUser) {
-			        ((CustomerUser) user).addAddress(address);
-			    } else if (user instanceof BusinessUser) {
-			        ((BusinessUser) user).addAddress(address);
-			    }
+		        // Fetch addresses for the user
+		        addressList = getAddresses(userId);
+		        
+		    } catch (IllegalArgumentException e) {
+		        System.out.println("Error: " + e.getMessage());
+		        return null; 
 		    }
+
+		    // Assign addresses to the user
+		    for (Address address : addressList) {
+		        if (user instanceof CustomerUser) {
+		            ((CustomerUser) user).addAddress(address);
+		        } else if (user instanceof BusinessUser) {
+		            ((BusinessUser) user).addAddress(address);
+		        }
+		    }
+		    
 		    return user;
 		}
 
-		
-		public Address getUserAddresses (int id) {
-			
-			return null;
-			
-		}
+
 		
 		public boolean addNewUser(User user, Map<String, String> additionalFields) {
 		    Map<String, Object> fields = new HashMap<>();

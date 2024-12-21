@@ -63,7 +63,7 @@ public class UserConsole {
 					System.out.println();
 					break;
 				case "2":
-					System.out.println("Search for user");
+					getUserInterface();
 					break;
 				case "3":
 					addUserInterface();
@@ -201,6 +201,35 @@ public class UserConsole {
 		return "returning"; 
 	}
 	
+	public void getUserInterface () {
+		String userIdString = null;
+		User user = null;
+		int userId = 0;
+		
+		System.out.println("Enter User ID.");
+		userIdString = handleInput.getInputString();
+		
+		//convert ID to int
+		userId = Integer.parseInt(userIdString); 
+		
+		//fetch user profile
+		user = userDAO.getUserWithAddresses(userId);
+		
+        switch (user.getRole()) {
+        case "admin":
+            new AdminPrinter(user).print();
+            break;
+        case "business":
+            new BusinessPrinter(user).print();
+            break;
+        case "customer":
+            new CustomerPrinter(user).print();
+            break;
+        default:
+            System.out.println("Unknown role: " + user.getRole());
+            break;
+        }
+	}
 
 	public void getAllUsers() {
 	    ArrayList<User> userList = userDAO.findAll();
