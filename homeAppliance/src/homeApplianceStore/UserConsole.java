@@ -300,7 +300,7 @@ public class UserConsole {
 				telephoneNum = handleInput.getInputString();
 
 				user = new CustomerUser(first_name, last_name, email, username, password, telephoneNum);
-				return userDAO.addNewCustomer(user);
+				return userDAO.addNewCustomer(user, null);
 				
 			case "admin":
 				user = new AdminUser(first_name, last_name, email, username, password);
@@ -314,7 +314,7 @@ public class UserConsole {
 				businessName = handleInput.getInputString();
 				
 				user = new BusinessUser(first_name, last_name, email, username, password, telephoneNum, businessName);
-				return userDAO.addNewBusiness(user);
+				return userDAO.addNewBusiness(user, null);
 			case "quit":
 				return true;
 			default:

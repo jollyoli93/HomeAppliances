@@ -224,16 +224,22 @@ public class UserDao extends DAO<User> {
 		    return addNewUser(newAdmin, null);
 		}
 
-		public boolean addNewCustomer(User newCustomer) {
-		    Map<String, String> additionalFields = new HashMap<>();
+		public boolean addNewCustomer(User newCustomer, Map<String, String> additionalFields) {
+		    Map<String, String> fields = new HashMap<>();
 		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
+		    if (additionalFields != null) {
+		        fields.putAll(additionalFields);
+		    }
 		    return addNewUser(newCustomer, additionalFields);
 		}
 
-		public boolean addNewBusiness(User newBusiness) {
-		    Map<String, String> additionalFields = new HashMap<>();
+		public boolean addNewBusiness(User newBusiness, Map<String, String> additionalFields) {
+		    Map<String, String> fields = new HashMap<>();
 		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
 		    additionalFields.put("business_name", newBusiness.getBusinessName());
+		    if (additionalFields != null) {
+		        fields.putAll(additionalFields);
+		    }
 		    return addNewUser(newBusiness, additionalFields);
 		}
 

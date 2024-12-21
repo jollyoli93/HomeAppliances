@@ -12,6 +12,7 @@ import java.util.Map;
 
 import appliances.Appliance;
 import appliances.ApplianceFactory;
+import users.User;
 
 
 public class ApplianceDao extends DAO<Appliance> {
@@ -130,34 +131,22 @@ public class ApplianceDao extends DAO<Appliance> {
     	return appliance;
 	}
 	
-	
-	@Override
-	public boolean addNew(Appliance newAppliance, Map<String, String> additionalFields) {	
-		String query =  "INSERT INTO appliances" + " (sku, description, category, price) VALUES (?, ?, ?, ?)";
-		
-		if (!checkTableExists("appliances")) {
-			createTable("appliances", tableSchema);
-		}
-		
-		try (Connection connect = connector.initializeDBConnection(); 
-			 PreparedStatement preparedStatement = connect.prepareStatement(query)){
-				preparedStatement.setString(1, newAppliance.getSku());
-				preparedStatement.setString(2, newAppliance.getDescription());
-				preparedStatement.setString(3, newAppliance.getCategory());
-				preparedStatement.setDouble(4, newAppliance.getPrice());
-						
-				int executeRows = preparedStatement.executeUpdate();
-				
-				return executeRows > 0;
-						 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("Error connecting to the database");
-            System.out.println("SQL Exception: " + e.getMessage());
-			return false;
-		}
+	public boolean addNewAppliance(Appliance appliance, Map<String, String> additionalFields) {
+	    Map<String, Object> fields = new HashMap<>();
+	    fields.put("sku", appliance.getSku());
+	    fields.put("description", appliance.getDescription());
+	    fields.put("category", appliance.getCategory());
+	    fields.put("price", appliance.getPrice());
+	    
+	    if (additionalFields != null) {
+	        fields.putAll(additionalFields);
+	    }
+	    
+	    boolean result = addNew("appliances", fields);
 
+	    return result;
 	}
+	
 
     @Override
     public int deleteById(int id) {
