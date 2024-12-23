@@ -326,25 +326,6 @@ public class UserDao extends DAO<User> {
 		    return addNew("addresses", fields);
 		}
 
-
-
-	    @Override
-	    public int deleteById(int id) {
-	        String query = "DELETE FROM users WHERE user_id = ?";
-	        
-	        try (Connection connect = connector.initializeDBConnection();
-	        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-		            preparedStatement.setInt(1, id);
-		            int executedRows = preparedStatement.executeUpdate();
-		            
-		            return executedRows;
-	        } catch (SQLException e) {
-				System.out.println("Error connecting to the database");
-	            System.out.println("SQL Exception: " + e.getMessage());
-	            return 0;
-	        }
-	    }
-
 	    @Override
 	    public int updateById(int id, String table, Map<String, Object> updateFields) {
 	        if (!allowedTablesList.contains(table)) {
@@ -418,30 +399,41 @@ public class UserDao extends DAO<User> {
 	        
 		}
 		
-		public int giveCustomerStatus (int id) {
-			//get current status, if status is admin - add telephone number, addresses etc
+		public int deleteUserById (int id) {
+			try {
+				return deleteById(id, "users", null);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-	        Map<String, Object> update = new HashMap<>();
-	        int updatedRows = 0;
-        	int role_id = getRoleId("customer");
-        	
-        	update.put("role_id", role_id);
-        	updatedRows = updateById(id, "user_role", update);
-	        
-        	return updatedRows;
+			return 0;
 		}
 		
-		public int giveBusinessStatus (int id) {
-			//if customer then add business name?
-	        Map<String, Object> update = new HashMap<>();
-	        int updatedRows = 0;
-        	int role_id = getRoleId("business");
-        	
-        	update.put("role_id", role_id);
-        	updatedRows = updateById(id, "user_role", update);
-	        
-        	return updatedRows;
-		}
+//		public int giveCustomerStatus (int id) {
+//			//get current status, if status is admin - add telephone number, addresses etc
+//			
+//	        Map<String, Object> update = new HashMap<>();
+//	        int updatedRows = 0;
+//        	int role_id = getRoleId("customer");
+//        	
+//        	update.put("role_id", role_id);
+//        	updatedRows = updateById(id, "user_role", update);
+//	        
+//        	return updatedRows;
+//		}
+//		
+//		public int giveBusinessStatus (int id) {
+//			//if customer then add business name?
+//	        Map<String, Object> update = new HashMap<>();
+//	        int updatedRows = 0;
+//        	int role_id = getRoleId("business");
+//        	
+//        	update.put("role_id", role_id);
+//        	updatedRows = updateById(id, "user_role", update);
+//	        
+//        	return updatedRows;
+//		}
 		
 		public int giveAdminStatus (int id) {
 	        Map<String, Object> update = new HashMap<>();
@@ -452,6 +444,20 @@ public class UserDao extends DAO<User> {
         	updatedRows = updateById(id, "user_role", update);
 	        
         	return updatedRows;
+		}
+		
+		public int removeAdminById (int id) {
+	        Map<String, Object> update = new HashMap<>();
+	        update.put("roles_id", 2);
+	        
+			try {
+				return deleteById(id, "user_roles", update);
+			} catch (Exception e) {
+				System.out.println("Failed to remove admin status");
+				e.printStackTrace();
+			}
+			
+			return 0;
 		}
 		
 		private String getRoleDesc (int id) {
@@ -604,5 +610,6 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
+		
 
 }

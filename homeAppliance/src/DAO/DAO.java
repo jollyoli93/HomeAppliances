@@ -141,9 +141,53 @@ public abstract class DAO<T> {
 	    statement.setInt(1, id);
 	    return statement.executeQuery();
 	}
-	
+
+	public int deleteById(int id, String tableName, Map<String, Object> additionalConditions) {
+	    if (!isValidTableName(tableName)) {
+	        throw new IllegalArgumentException("Invalid table name.");
+	    }
+
+	    // Start constructing the DELETE query
+	    StringBuilder queryBuilder = new StringBuilder("DELETE FROM ").append(tableName)
+	            .append(" WHERE user_id = ?");
+
+	    // Add additional conditions dynamically
+	    if (additionalConditions != null && !additionalConditions.isEmpty()) {
+	        for (String column : additionalConditions.keySet()) {
+	            queryBuilder.append(" AND ").append(column).append(" = ?");
+	        }
+	    }
+
+	    String query = queryBuilder.toString();
+
+	    try (Connection connect = connector.initializeDBConnection();
+	         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+	        // Bind the ID parameter
+	        preparedStatement.setInt(1, id);
+
+
+	        if (additionalConditions != null && !additionalConditions.isEmpty()) {
+	            int paramIndex = 2; // Start after the first parameter (id)
+	            for (Object value : additionalConditions.values()) {
+	                preparedStatement.setObject(paramIndex++, value);
+	            }
+	        }
+
+	        // Execute the query and return the number of affected rows
+	        return preparedStatement.executeUpdate();
+	    } catch (SQLException e) {
+	        System.out.println("Error connecting to the database");
+	        System.out.println("SQL Exception: " + e.getMessage());
+	        return 0;
+	    }
+	}
+
+	// Utility method to validate table names
+	private boolean isValidTableName(String tableName) {
+	    return tableName != null && tableName.matches("^[a-zA-Z_][a-zA-Z0-9_]*$");
+	}
+    
 	public abstract ArrayList<T> findAll();
-	public abstract int deleteById(int id);
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 
 }

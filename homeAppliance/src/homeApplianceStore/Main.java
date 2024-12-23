@@ -16,17 +16,3 @@ public class Main {
 	    
 	}
 }
-
-//private void createDatabase() {
-//	  String sql = "CREATE TABLE password" +
-//	               "(passwordId INTEGER not NULL, " +
-//	               " password VARCHAR(20), " + 
-//	               " PRIMARY KEY ( passwordId ))"; 
-//	  try {
-//		  1
-
-//	  }
-//	  
-//	  
-//	  stmt.executeUpdate(sql);
-//}
