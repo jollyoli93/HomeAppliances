@@ -86,7 +86,7 @@ public class UserDao extends DAO<User> {
         addTableMap("addresses", addressesSchema);
         
         initAllTables(tables);
-        populateRoles();
+        populateRolesTable();
 
     }	
 
@@ -399,7 +399,60 @@ public class UserDao extends DAO<User> {
 	        int updatedRows = updateById(id, "users", update);
 	        return updatedRows;
 	    }
-
+	    
+		public int updateRole (int id, String newRole) {
+	        Map<String, Object> update = new HashMap<>();
+	       
+	        
+	        if (newRole.equals("business")) {
+	        	int role_id = getRoleId(newRole);
+	        	
+	        	update.put("role_id", role_id);
+		        
+		        int updatedRows = updateById(id, "user_role", update);
+		        return updatedRows;
+	        } 
+	        
+	        System.out.println("Role failed to update");
+	        return 0;
+	        
+		}
+		
+		public int giveCustomerStatus (int id) {
+			//get current status, if status is admin - add telephone number, addresses etc
+			
+	        Map<String, Object> update = new HashMap<>();
+	        int updatedRows = 0;
+        	int role_id = getRoleId("customer");
+        	
+        	update.put("role_id", role_id);
+        	updatedRows = updateById(id, "user_role", update);
+	        
+        	return updatedRows;
+		}
+		
+		public int giveBusinessStatus (int id) {
+			//if customer then add business name?
+	        Map<String, Object> update = new HashMap<>();
+	        int updatedRows = 0;
+        	int role_id = getRoleId("business");
+        	
+        	update.put("role_id", role_id);
+        	updatedRows = updateById(id, "user_role", update);
+	        
+        	return updatedRows;
+		}
+		
+		public int giveAdminStatus (int id) {
+	        Map<String, Object> update = new HashMap<>();
+	        int updatedRows = 0;
+        	int role_id = getRoleId("admin");
+        	
+        	update.put("role_id", role_id);
+        	updatedRows = updateById(id, "user_role", update);
+	        
+        	return updatedRows;
+		}
 		
 		private String getRoleDesc (int id) {
 			System.out.println(id);
@@ -500,7 +553,7 @@ public class UserDao extends DAO<User> {
 				return 0; 
 			}
 		
-		private boolean populateRoles() {
+		private boolean populateRolesTable() {
 		    String query = "INSERT INTO roles (role_name) VALUES ('customer'),\n"
 		            + "('admin'),\n"
 		            + "('business');";
@@ -551,6 +604,5 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
-	
 
 }
