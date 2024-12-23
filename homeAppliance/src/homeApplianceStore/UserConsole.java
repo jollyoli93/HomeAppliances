@@ -84,6 +84,9 @@ public class UserConsole {
 					System.out.println();
 					break;
 				case "7":
+					consoleOutput = handleAdminStatus();
+					System.out.println();
+				case "8":
 					flag = false;
 					System.out.println("Returning");
 					break;
@@ -482,6 +485,56 @@ public class UserConsole {
 		return false;
 	}
 
+	private String handleAdminStatus () {
+		Boolean success = false;
+		String userIdString = null, input = null;
+		int userId = 0, output = 0;
+			
+			
+		do {
+			System.out.println("------------------------");
+			System.out.println("Choose from these options");
+			System.out.println("------------------------");
+			System.out.println("[1] Give admin status");
+			System.out.println("[2] Remove admin status");
 
-
+			System.out.println();
+			input = handleInput.getInputString();
+			
+			switch (input) {
+			case "1":
+				userId = Integer.parseInt(userIdString);
+				
+				try {
+					output = userDAO.giveAdminStatus(userId);
+					return "Number of rows updated : " + output;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println();
+				break;
+			case "2":
+				userId = Integer.parseInt(userIdString);
+				
+				try {
+					output = userDAO.removeAdminById(userId);
+					return "Number of rows updated : " + output;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println();
+				break;
+			default:
+				System.out.println("Invalid input");
+				break;
+			}
+			
+		} while (success == false);
+		
+		return "No change to user roles";
+	}
+	
+	
 }
