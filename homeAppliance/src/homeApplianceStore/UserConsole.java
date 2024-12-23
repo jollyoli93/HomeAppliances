@@ -361,7 +361,7 @@ public class UserConsole {
 	        int userId = Integer.parseInt(id); // Parse String to int
 		    System.out.println("DEBUG: " + userId);
 		    
-	        deleted = userDAO.deleteById(userId); // Attempt to delete user
+	        deleted = userDAO.deleteUserById(userId); // Attempt to delete user
 	    } catch (NumberFormatException e) {
 	        System.out.println("Invalid user ID. Please enter a valid number.");
 	    } 
