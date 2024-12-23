@@ -138,23 +138,16 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	    return result;
 	}
-	
 
-    @Override
-    public int deleteById(int id) {
-        String query = "DELETE FROM appliances WHERE id = ?";
-        
-        try (Connection connect = connector.initializeDBConnection();
-        	 PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-	            preparedStatement.setInt(1, id);
-	            int executedRows = preparedStatement.executeUpdate();
-	            
-	            return executedRows;
-        } catch (SQLException e) {
-			System.out.println("Error connecting to the database");
-            System.out.println("SQL Exception: " + e.getMessage());
-            return 0;
-        }
+    public int deleteApplianceById(int id) {
+		try {
+			return deleteById(id, "appliances", null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
     }
     
     @Override

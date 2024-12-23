@@ -52,7 +52,8 @@ public class UserConsole {
 				System.out.println("[4] Update a user");
 				System.out.println("[5] Delete a user by ID");
 				System.out.println("[6] Add a user address");
-				System.out.println("[7] Back");
+				System.out.println("[7] Manage admin");
+				System.out.println("[8] Back");
 				System.out.println();
 				input = handleInput.getInputString();
 				
