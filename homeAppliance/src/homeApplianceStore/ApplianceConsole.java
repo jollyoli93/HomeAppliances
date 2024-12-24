@@ -291,7 +291,7 @@ public class ApplianceConsole {
 		
 		int input = handleInput.getInputInt();
 		
-		int deleted = applianceDAO.deleteById(input);
+		int deleted = applianceDAO.deleteApplianceById(input);
 		
 		if (deleted > 0) {
 			consoleOutput = "ID: " + input + " Deleted";

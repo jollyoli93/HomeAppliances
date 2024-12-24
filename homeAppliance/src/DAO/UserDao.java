@@ -448,7 +448,7 @@ public class UserDao extends DAO<User> {
 		
 		public int removeAdminById (int id) {
 	        Map<String, Object> update = new HashMap<>();
-	        update.put("roles_id", 2);
+	        update.put("role_id", 2);
 	        
 			try {
 				return deleteById(id, "user_roles", update);
@@ -537,7 +537,6 @@ public class UserDao extends DAO<User> {
 		        System.out.println("SQL Exception: " + e.getMessage());
 		        return false;
 		    }
-		    
 		}
 		
 		private int getLastIdEntry () {
@@ -611,5 +610,44 @@ public class UserDao extends DAO<User> {
 		    }
 		}
 		
+		public ArrayList<String> getUserRoles (int id) {
+			ArrayList<String> userRoles = new ArrayList<String>();
+			
+			String query = "SELECT roles.role_name\n"
+						+ "FROM user_roles\n"
+						+ "LEFT OUTER JOIN roles\n"
+						+ "   ON user_roles.role_id = roles.role_id\n"
+						+ "WHERE user_roles.user_id = ?;";
+			
+			
+		    try (Connection connect = connector.initializeDBConnection(); 
+		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+				
+		        preparedStatement.setInt(1, id);
+		        
+		        ResultSet result = preparedStatement.executeQuery();
+
+			 	while (result.next()) {
+					userRoles.add(result.getString("role_name"));
+				}
+			 	System.out.println("DEBUG: getting user roles");
+			 	return userRoles;
+		    } catch (SQLException e) {
+				System.out.println("Failed to get user roles");
+				e.printStackTrace();
+			}
+			return userRoles;
+		}
+		
+		public boolean isUserAdmin (int id) {
+			ArrayList<String> userRoles = new ArrayList<String>();
+			
+			userRoles = getUserRoles(id);
+			
+			if (userRoles.contains("admin")) {
+				return true;
+			}
+			return false;
+		}
 
 }

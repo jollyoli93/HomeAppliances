@@ -36,6 +36,7 @@ class CustomerBehaviour implements PrintBehaviour {
 		System.out.println("Full Name: " + obj.getFullName());
 		System.out.println("Username: " + obj.getUsername());
 		System.out.println("Email Address: " + obj.getEmailAddress());
+		System.out.println("Telephone Number: " + obj.getTelephoneNum());
 		System.out.println("-----------------------");
 		System.out.print("");
 	}
@@ -65,9 +66,11 @@ class BusinessBehaviour implements PrintBehaviour {
 	}
 	
 	public void print() {
-		System.out.println("Full Name: " + obj.getFullName());
+		System.out.println("Business Name: " + obj.getBusinessName());
+		System.out.println("Account Holder: " + obj.getFullName());
 		System.out.println("Username: " + obj.getUsername());
 		System.out.println("Email Address: " + obj.getEmailAddress());
+		System.out.println("Telephone Number: " + obj.getTelephoneNum());
 		System.out.println("-----------------------");
 		System.out.print("");
 	}

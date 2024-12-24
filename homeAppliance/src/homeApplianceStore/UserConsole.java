@@ -490,46 +490,60 @@ public class UserConsole {
 		Boolean success = false;
 		String userIdString = null, input = null;
 		int userId = 0, output = 0;
-			
-			
+		ArrayList<String> userRoles = new ArrayList<String>();	
+		
 		do {
-			System.out.println("------------------------");
-			System.out.println("Choose from these options");
-			System.out.println("------------------------");
-			System.out.println("[1] Give admin status");
-			System.out.println("[2] Remove admin status");
-
-			System.out.println();
-			input = handleInput.getInputString();
+			System.out.println("Enter user ID");
+			userIdString = handleInput.getInputString();
+			userId = Integer.parseInt(userIdString);
 			
-			switch (input) {
-			case "1":
-				userId = Integer.parseInt(userIdString);
-				
-				try {
-					output = userDAO.giveAdminStatus(userId);
-					return "Number of rows updated : " + output;
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			userRoles = userDAO.getUserRoles(userId);
+			System.out.println("Current user roles");
+			for (String role : userRoles) {
+				System.out.println(role);
+			}
+			
+			if (userDAO.isUserAdmin(userId) ) {
+
+				System.out.println("------------------------");
+				System.out.println("Choose from these options");
+				System.out.println("------------------------");
+				System.out.println("[1] Give admin status");
+				System.out.println("[2] Remove admin status");
+
 				System.out.println();
-				break;
-			case "2":
-				userId = Integer.parseInt(userIdString);
+				input = handleInput.getInputString();
 				
-				try {
-					output = userDAO.removeAdminById(userId);
-					return "Number of rows updated : " + output;
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				switch (input) {
+				case "1":
+					try {
+						output = userDAO.giveAdminStatus(userId);
+						return "Number of rows updated : " + output;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println();
+					break;
+					
+				case "2":					
+					try {
+						output = userDAO.removeAdminById(userId);
+						return "Number of rows updated : " + output;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println();
+					break;
+				default:
+					System.out.println("Invalid input");
+					break;
 				}
-				System.out.println();
-				break;
-			default:
-				System.out.println("Invalid input");
-				break;
+			} 
+			else {
+				System.out.println("User not an admin. Returning.");
+				return "No change to user roles";
 			}
 			
 		} while (success == false);
