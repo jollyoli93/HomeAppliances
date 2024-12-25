@@ -491,8 +491,8 @@ public class UserDao extends DAO<User> {
 		    return 0;
 		}
 		
-		private boolean addUserRole(int id, String role) {			
-			String query = "INSERT INTO user_roles (user_id, role_id)\n"
+		private int addUserRole(int id, String role) {			
+			String query = "INSERT INTO user_roles (user_id, role_id)"
 							+ "VALUES (?, ?);";
 			
 		    try (Connection connect = connector.initializeDBConnection(); 
@@ -505,12 +505,12 @@ public class UserDao extends DAO<User> {
 		        preparedStatement.setInt(2, role_id);
 		        
 		        int executeRows = preparedStatement.executeUpdate();
-		        return executeRows > 0;
+		        return executeRows;
 		        
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		        System.out.println("SQL Exception: " + e.getMessage());
-		        return false;
+		        return 0;
 		    }
 		}
 		
@@ -630,14 +630,16 @@ public class UserDao extends DAO<User> {
 		}
 		
 		public int giveAdminStatus (int id) {
-	        Map<String, Object> update = new HashMap<>();
 	        int updatedRows = 0;
-        	int role_id = getRoleId("admin");
-        	
-        	update.put("role_id", role_id);
-        	updatedRows = updateById(id, "user_roles", update);
-	        
-        	return updatedRows;
+     
+        	try {
+				updatedRows = addUserRole(id, "admin");
+				return updatedRows;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	return 0;
 		}
 		
 		public int removeAdminById (int id) {

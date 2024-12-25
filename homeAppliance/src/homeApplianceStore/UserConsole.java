@@ -87,6 +87,7 @@ public class UserConsole {
 				case "7":
 					consoleOutput = handleAdminStatus();
 					System.out.println();
+					break;
 				case "8":
 					flag = false;
 					System.out.println("Returning");
@@ -125,7 +126,7 @@ public class UserConsole {
 				System.out.println("[4] Update password");
 				System.out.println("[5] Update address");
 				System.out.println("[6] Update telephone number");
-
+				System.out.println("[7] Update business name");
 				System.out.println("[9] Back");
 				System.out.println();
 				
@@ -170,16 +171,11 @@ public class UserConsole {
 					case "7":
 						System.out.println("update address");
 						//need to select address ID to update
-						
-						//userInput = handleInput.getInputString();
-						//return userDAO.updateBusinessNameById(userId, userInput);
+
 						break;
 					case "8":
 						System.out.println("update user role");
-						//need to select role
-						
-						//userInput = handleInput.getInputString();
-						//return userDAO.updateBusinessNameById(userId, userInput);
+	
 						break;
 					case "9":
 						System.out.println("user not updated");
@@ -460,7 +456,7 @@ public class UserConsole {
 			return new ShippingAddress(number, street, city, country, postCode, customerId, isPrimary);
 		}
 		
-		if (addressType.equalsIgnoreCase("shipping")) {
+		if (addressType.equalsIgnoreCase("billing")) {
 			return new BillingAddress(number, street, city, country, postCode, customerId, isPrimary);
 		}
 		
@@ -505,25 +501,14 @@ public class UserConsole {
 				System.out.println("------------------------");
 				System.out.println("Choose from these options");
 				System.out.println("------------------------");
-				System.out.println("[1] Give admin status");
-				System.out.println("[2] Remove admin status");
+				System.out.println("[1] Remove admin status");
+				System.out.println("[2] Return");
 				System.out.println();
 				
 				input = handleInput.getInputString();
 				
 				switch (input) {
-				case "1":
-					try {
-						output = userDAO.giveAdminStatus(userId);
-						return "Number of rows updated : " + output;
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println();
-					break;
-					
-				case "2":					
+				case "1":					
 					try {
 						output = userDAO.removeAdminById(userId);
 						return "Number of rows updated : " + output;
@@ -533,6 +518,8 @@ public class UserConsole {
 					}
 					System.out.println();
 					break;
+				case "2":
+					return "Returning.";
 				default:
 					System.out.println("Invalid input");
 					break;
@@ -543,6 +530,7 @@ public class UserConsole {
 				System.out.println("Choose from these options");
 				System.out.println("------------------------");
 				System.out.println("[1] Give admin status");
+				System.out.println("[2] Return");
 				System.out.println();
 				
 				input = handleInput.getInputString();
