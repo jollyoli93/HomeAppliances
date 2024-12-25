@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.management.relation.Role;
 
 /**
  * This class provides the user database access functionality
@@ -381,23 +380,23 @@ public class UserDao extends DAO<User> {
 	        return updatedRows;
 	    }
 	    
-		public int updateRole (int id, String newRole) {
-	        Map<String, Object> update = new HashMap<>();
-	       
-	        
-	        if (newRole.equals("business")) {
-	        	int role_id = getRoleId(newRole);
-	        	
-	        	update.put("role_id", role_id);
-		        
-		        int updatedRows = updateById(id, "user_role", update);
-		        return updatedRows;
-	        } 
-	        
-	        System.out.println("Role failed to update");
-	        return 0;
-	        
-		}
+//		public int updateRole (int id, String newRole) {
+//	        Map<String, Object> update = new HashMap<>();
+//	       
+//	        
+//	        if (newRole.equals("business")) {
+//	        	int role_id = getRoleId(newRole);
+//	        	
+//	        	update.put("role_id", role_id);
+//		        
+//		        int updatedRows = updateById(id, "user_role", update);
+//		        return updatedRows;
+//	        } 
+//	        
+//	        System.out.println("Role failed to update");
+//	        return 0;
+//	        
+//		}
 		
 		public int deleteUserById (int id) {
 			try {
@@ -434,31 +433,7 @@ public class UserDao extends DAO<User> {
 //	        
 //        	return updatedRows;
 //		}
-		
-		public int giveAdminStatus (int id) {
-	        Map<String, Object> update = new HashMap<>();
-	        int updatedRows = 0;
-        	int role_id = getRoleId("admin");
-        	
-        	update.put("role_id", role_id);
-        	updatedRows = updateById(id, "user_role", update);
-	        
-        	return updatedRows;
-		}
-		
-		public int removeAdminById (int id) {
-	        Map<String, Object> update = new HashMap<>();
-	        update.put("role_id", 2);
-	        
-			try {
-				return deleteById(id, "user_roles", update);
-			} catch (Exception e) {
-				System.out.println("Failed to remove admin status");
-				e.printStackTrace();
-			}
-			
-			return 0;
-		}
+	
 		
 		private String getRoleDesc (int id) {
 			System.out.println(id);
@@ -610,6 +585,8 @@ public class UserDao extends DAO<User> {
 		    }
 		}
 		
+		//admin and role methods
+		
 		public ArrayList<String> getUserRoles (int id) {
 			ArrayList<String> userRoles = new ArrayList<String>();
 			
@@ -645,9 +622,36 @@ public class UserDao extends DAO<User> {
 			userRoles = getUserRoles(id);
 			
 			if (userRoles.contains("admin")) {
+				System.out.println("User is admin.");
 				return true;
 			}
+			System.out.println("User does not have admin status.");
 			return false;
+		}
+		
+		public int giveAdminStatus (int id) {
+	        Map<String, Object> update = new HashMap<>();
+	        int updatedRows = 0;
+        	int role_id = getRoleId("admin");
+        	
+        	update.put("role_id", role_id);
+        	updatedRows = updateById(id, "user_roles", update);
+	        
+        	return updatedRows;
+		}
+		
+		public int removeAdminById (int id) {
+	        Map<String, Object> update = new HashMap<>();
+	        update.put("role_id", 2);
+	        
+			try {
+				return deleteById(id, "user_roles", update);
+			} catch (Exception e) {
+				System.out.println("Failed to remove admin status");
+				e.printStackTrace();
+			}
+			
+			return 0;
 		}
 
 }

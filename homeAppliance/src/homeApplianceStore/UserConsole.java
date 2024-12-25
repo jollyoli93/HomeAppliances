@@ -487,7 +487,7 @@ public class UserConsole {
 	}
 
 	private String handleAdminStatus () {
-		Boolean success = false;
+		Boolean success = false, hasAdminStatus = false;
 		String userIdString = null, input = null;
 		int userId = 0, output = 0;
 		ArrayList<String> userRoles = new ArrayList<String>();	
@@ -497,21 +497,18 @@ public class UserConsole {
 			userIdString = handleInput.getInputString();
 			userId = Integer.parseInt(userIdString);
 			
-			userRoles = userDAO.getUserRoles(userId);
-			System.out.println("Current user roles");
-			for (String role : userRoles) {
-				System.out.println(role);
-			}
+			//get user role status
+			hasAdminStatus = userDAO.isUserAdmin(userId);
 			
-			if (userDAO.isUserAdmin(userId) ) {
+			if (hasAdminStatus) {
 
 				System.out.println("------------------------");
 				System.out.println("Choose from these options");
 				System.out.println("------------------------");
 				System.out.println("[1] Give admin status");
 				System.out.println("[2] Remove admin status");
-
 				System.out.println();
+				
 				input = handleInput.getInputString();
 				
 				switch (input) {
@@ -541,9 +538,33 @@ public class UserConsole {
 					break;
 				}
 			} 
-			else {
-				System.out.println("User not an admin. Returning.");
-				return "No change to user roles";
+			else if (!hasAdminStatus) {
+				System.out.println("------------------------");
+				System.out.println("Choose from these options");
+				System.out.println("------------------------");
+				System.out.println("[1] Give admin status");
+				System.out.println();
+				
+				input = handleInput.getInputString();
+				
+				
+				switch (input) {
+				case "1":
+					try {
+						output = userDAO.giveAdminStatus(userId);
+						return "Number of rows updated : " + output;
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return "Failed to give admin status. Returning.";
+					}
+				case "2":
+					return "Returning.";
+				default:
+					System.out.println("Invalid input");
+					break;
+				}
+				
 			}
 			
 		} while (success == false);
