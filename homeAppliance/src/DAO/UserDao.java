@@ -260,8 +260,6 @@ public class UserDao extends DAO<User> {
 		    return user;
 		}
 
-
-		
 		public boolean addNewUser(User user, Map<String, String> additionalFields) {
 		    Map<String, Object> fields = new HashMap<>();
 		    fields.put("first_name", user.getFirstName());
@@ -379,6 +377,27 @@ public class UserDao extends DAO<User> {
 	        int updatedRows = updateById(id, "users", update);
 	        return updatedRows;
 	    }
+	    
+	    public int updateUserAddress(int id, Address address, String addressType) {
+	        // Validate the address type
+	        if (!addressType.equals("shipping_addresses") && !addressType.equals("billing_addresses")) {
+	            throw new IllegalArgumentException("Invalid address type. Use 'shipping_addresses' or 'billing_addresses'.");
+	        }
+
+	        // Map to hold the update fields
+	        Map<String, Object> updateFields = new HashMap<>();
+	        updateFields.put("number", address.getNumber());
+	        updateFields.put("street", address.getStreet());
+	        updateFields.put("city", address.getCity());
+	        updateFields.put("country", address.getCountry());
+	        updateFields.put("postCode", address.getPostCode());
+	        updateFields.put("isPrimary", address.isPrimary());
+
+	        // Call the updateById method for the appropriate table
+	        return updateById(id, addressType, updateFields);
+	    }
+
+
 	    
 //		public int updateRole (int id, String newRole) {
 //	        Map<String, Object> update = new HashMap<>();
@@ -568,6 +587,7 @@ public class UserDao extends DAO<User> {
 		   
 		}
 		
+		//for testing purposes
 		public boolean dropUserTable() {
 		    String query = "DROP TABLE Users";
 
@@ -584,8 +604,7 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
-		
-		//admin and role methods
+	
 		
 		public ArrayList<String> getUserRoles (int id) {
 			ArrayList<String> userRoles = new ArrayList<String>();
