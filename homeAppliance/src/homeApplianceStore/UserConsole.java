@@ -127,7 +127,7 @@ public class UserConsole {
 				System.out.println("[5] Update address");
 				System.out.println("[6] Update telephone number");
 				System.out.println("[7] Update business name");
-				System.out.println("[9] Back");
+				System.out.println("[8] Back");
 				System.out.println();
 				
 				selectUpdate = handleInput.getInputString();
@@ -170,15 +170,11 @@ public class UserConsole {
 						break;
 					case "7":
 						System.out.println("update address");
-						//need to select address ID to update
+						updatedRows = updateAddressHandler(userId);
 
 						break;
 					case "8":
-						System.out.println("update user role");
-	
-						break;
-					case "9":
-						System.out.println("user not updated");
+						System.out.println("User not updated. Returning.");
 						System.out.println();
 						break;
 					default:
@@ -208,8 +204,6 @@ public class UserConsole {
 		
 		System.out.println("Enter User ID.");
 		userIdString = handleInput.getInputString();
-		
-		//convert ID to int
 		userId = Integer.parseInt(userIdString); 
 		
 		//fetch user profile
@@ -413,7 +407,7 @@ public class UserConsole {
 			return consoleOutput;
 	}
 	
-	private boolean addAddressHandler (int user_id) {
+	private Address userAddressHandler (int user_id) {
         String number;
         String street;
         String city;
@@ -448,7 +442,29 @@ public class UserConsole {
 		
 		address = selectAddressType(addressType, number, street, city, country, postCode, user_id, isPrimary);
 		
-		return userDAO.addAddress(address, null);
+		return address;
+	}
+	
+	private boolean addAddressHandler (int user_id) {
+		Address address = userAddressHandler(user_id);
+		 return userDAO.addAddress(address, null);
+	}
+	
+	private int updateAddressHandler (int user_id) {
+		Address address = userAddressHandler(user_id);
+		
+		System.out.println("Enter Building Number: ");
+		String addressType =  handleInput.getInputString();
+		
+		if (addressType.equalsIgnoreCase("shipping")) {
+			return userDAO.updateUserAddress(user_id, address, "shipping");
+		}
+		if (addressType.equalsIgnoreCase("shipping")) {
+			return userDAO.updateUserAddress(user_id, address, "billing");
+		} else {
+			return 0;
+		}
+
 	}
 	
 	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {
@@ -559,6 +575,7 @@ public class UserConsole {
 		
 		return "No change to user roles";
 	}
+	
 	
 	
 }
