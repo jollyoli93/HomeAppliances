@@ -311,8 +311,8 @@ public class UserDao extends DAO<User> {
 		    fields.put("street", address.getStreet());
 		    fields.put("city", address.getCity());
 		    fields.put("country", address.getCountry());
-		    fields.put("post_code", address.getPostCode());
-		    fields.put("customer_id", address.getCustomerId());
+		    fields.put("postcode", address.getPostCode());
+		    fields.put("user_id", address.getCustomerId());
 		    fields.put("address_type", address.getAddressType());
 		    fields.put("isPrimary", address.isPrimary());
 		    
@@ -427,31 +427,6 @@ public class UserDao extends DAO<User> {
 			
 			return 0;
 		}
-		
-//		public int giveCustomerStatus (int id) {
-//			//get current status, if status is admin - add telephone number, addresses etc
-//			
-//	        Map<String, Object> update = new HashMap<>();
-//	        int updatedRows = 0;
-//        	int role_id = getRoleId("customer");
-//        	
-//        	update.put("role_id", role_id);
-//        	updatedRows = updateById(id, "user_role", update);
-//	        
-//        	return updatedRows;
-//		}
-//		
-//		public int giveBusinessStatus (int id) {
-//			//if customer then add business name?
-//	        Map<String, Object> update = new HashMap<>();
-//	        int updatedRows = 0;
-//        	int role_id = getRoleId("business");
-//        	
-//        	update.put("role_id", role_id);
-//        	updatedRows = updateById(id, "user_role", update);
-//	        
-//        	return updatedRows;
-//		}
 	
 		
 		private String getRoleDesc (int id) {

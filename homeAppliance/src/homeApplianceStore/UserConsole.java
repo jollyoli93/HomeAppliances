@@ -67,17 +67,14 @@ public class UserConsole {
 					getUserInterface();
 					break;
 				case "3":
-					addUserInterface();
+					consoleOutput = addUserInterface();
 					
 					break;
 				case "4":
 					consoleOutput = selectUpdateMethod();
-					
-					System.out.println(consoleOutput);
-					System.out.println();
 					break;
 				case "5":
-					deleteByUserID();
+					consoleOutput = deleteByUserID();
 					System.out.println();
 					break;
 				case "6":
@@ -412,7 +409,7 @@ public class UserConsole {
         String street;
         String city;
         String country;
-        String postCode;
+        String postcode;
         boolean isPrimary;
         Address address;
         String addressType;
@@ -430,7 +427,7 @@ public class UserConsole {
 		country = handleInput.getInputString();
 		
 		System.out.println("Enter Postcode: ");
-		postCode = handleInput.getInputString();
+		postcode = handleInput.getInputString();
 		
 		System.out.println("Is it the primary address? true or false: ");
 		String isPrimaryInput = handleInput.getInputString();
@@ -440,7 +437,7 @@ public class UserConsole {
 		System.out.println("Enter address type: ");
 		addressType = handleInput.getInputString();
 		
-		address = selectAddressType(addressType, number, street, city, country, postCode, user_id, isPrimary);
+		address = selectAddressType(addressType, number, street, city, country, postcode, user_id, isPrimary);
 		
 		return address;
 	}
