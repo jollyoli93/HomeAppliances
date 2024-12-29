@@ -17,15 +17,15 @@ class UserConsoleTest {
 	
 	@BeforeEach
 	public void userConsoleTest () {
-		System.out.println("DEBUG: Console - Connect to DAO");
+//		System.out.println("DEBUG: Console - Connect to DAO");
 		//clear user table before each test
 		dao = new UserDao(dbpath);
-		
-		System.out.println("DEBUG: Console - dropping tables");
+//		
+//		System.out.println("DEBUG: Console - dropping tables");
 
 		dao.dropUserTable();
 		
-		System.out.println("DEBUG: Console - Initialise console");
+//		System.out.println("DEBUG: Console - Initialise console");
 		//Initialise user console
 		console = new UserConsole(dbpath);
 
@@ -34,7 +34,7 @@ class UserConsoleTest {
 	@Test
 	public void addUserCustomer () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum
-		String[] customer = {"3","customer", "Billy", "Jean", "billyjean@mjm.com", "NotMyLover", "07523435456"};
+		String[] customer = {"3","customer", "Billy", "Jean", "billyjean@mjm.com", "BillyJean93", "NotMyLover", "07523435456"};
 		
 		console.setHandler(new MockIOHandler(customer));
 		output = console.userMenu();
@@ -45,25 +45,25 @@ class UserConsoleTest {
 	@Test
 	public void addUserAdmin () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password
-		String[] customer = {"3","admin", "Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman"};
+		String[] admin = {"3","admin", "Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman"};
 		
-		console.setHandler(new MockIOHandler(customer));
+		console.setHandler(new MockIOHandler(admin));
 		output = console.userMenu();
 		
 		assertEquals("Succesfully added to the database", output);
 	}
-	
+
 	@Test
 	public void addUserBusiness () {
 		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessNamw
-		String[] customer = {"3","business", "Jimmy", "Jean", "jimmyjean@mjm.com", "BillyJeansLover", "Music Shop"};
+		String[] business = {"3","business", "Jimmy", "Jean", "jimmyjean@mjm.com", "JimmyJean", "BillyJeansLover", "07565345827", "Music Shop"};
 		
-		console.setHandler(new MockIOHandler(customer));
+		console.setHandler(new MockIOHandler(business));
 		output = console.userMenu();
 		
 		assertEquals("Succesfully added to the database", output);
 	}
-	
+
 	
 	@Test
 	public void findAllUsers () {
@@ -204,7 +204,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersBusinessName() {
-		String[] UpdateFirstUser = {"4", "1","5", "Best Biz", "9"};
+		String[] UpdateFirstUser = {"4", "1","5", "Best Biz"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Business Name");
@@ -220,7 +220,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersTelephoneNum() {
-		String[] UpdateFirstUser = {"4", "1","6", "01514353521", "9"};
+		String[] UpdateFirstUser = {"4", "1","6", "01514353521"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Telephone Num");
@@ -233,4 +233,55 @@ class UserConsoleTest {
 		
 		assertEquals("Number of rows updated: 1", output);
 	}
+	
+
+    @Test
+    public void updateUser() {
+        String[] updateCustomer = {"4", "1", "1", "William", "8"};
+        
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+        console.setHandler(new MockIOHandler(updateCustomer));
+        console.userMenu();
+       
+        
+        assertEquals("Succesfully added to the database", output);
+    }
+
+    @Test
+    public void addUserAddress() {
+        String[] addAddress = {"6", "1", "12", "Maple Street", "Springfield", "USA", "12345", "true", "shipping"};
+        
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Update User address");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+        console.setHandler(new MockIOHandler(addAddress));
+        console.userMenu();
+        
+        
+        assertEquals("Succesfully added to the database", output);
+    }
+
+    @Test
+    public void handleAdminStatus() {
+        String[] giveAdmin = {"7", "1", "1"};
+        
+        
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Handle Admin Status");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserCustomer();
+		
+        console.setHandler(new MockIOHandler(giveAdmin));
+        output = console.userMenu();
+        
+        assertEquals("Number of rows updated: 1", output);
+    }
 }

@@ -287,6 +287,10 @@ public class UserDao extends DAO<User> {
 		}
 
 		public boolean addNewCustomer(User newCustomer, Map<String, String> additionalFields) {
+			 if (additionalFields == null) {
+			        additionalFields = new HashMap<>();
+			    }
+			 
 		    Map<String, String> fields = new HashMap<>();
 		    additionalFields.put("telephone_num", newCustomer.getTelephoneNum());
 		    if (additionalFields != null) {
@@ -296,6 +300,10 @@ public class UserDao extends DAO<User> {
 		}
 
 		public boolean addNewBusiness(User newBusiness, Map<String, String> additionalFields) {
+			 if (additionalFields == null) {
+			        additionalFields = new HashMap<>();
+			    }
+			 
 		    Map<String, String> fields = new HashMap<>();
 		    additionalFields.put("telephone_num", newBusiness.getTelephoneNum());
 		    additionalFields.put("business_name", newBusiness.getBusinessName());
@@ -306,6 +314,14 @@ public class UserDao extends DAO<User> {
 		}
 
 		public boolean addAddress(Address address, Map<String, String> additionalFields) {
+			 if (address == null) {
+			        throw new IllegalArgumentException("Address cannot be null.");
+			    }
+			 
+			 if (additionalFields == null) {
+			        additionalFields = new HashMap<>();
+			    }
+			 
 		    Map<String, Object> fields = new HashMap<>();
 		    fields.put("building_number", address.getNumber());
 		    fields.put("street", address.getStreet());
@@ -319,7 +335,7 @@ public class UserDao extends DAO<User> {
 		    if (additionalFields != null) {
 		        fields.putAll(additionalFields);
 		    }
-		    
+
 		    return addNew("addresses", fields);
 		}
 

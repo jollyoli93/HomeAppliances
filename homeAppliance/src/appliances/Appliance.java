@@ -38,6 +38,11 @@ public abstract class Appliance {
 	public String getDetails() {
 		return "Description: " + description + ", Category: " + category + ", Price: " + price + " ID:" + id + ", SKU: " + sku;
 	}
+	
+    public String toHTMLString() {
+	    return "<tr><td>" + id + "</td><td>" + description + "</td><td>" + category + "</td><td>" + price + "</td><td>" + sku
+	        + "</td></tr>";
+	  }
 }
 
 class BasicTVAppliance extends Appliance {

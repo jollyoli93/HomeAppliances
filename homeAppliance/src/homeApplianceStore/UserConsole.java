@@ -53,7 +53,7 @@ public class UserConsole {
 				System.out.println("[5] Delete a user by ID");
 				System.out.println("[6] Add a user address");
 				System.out.println("[7] Manage admin");
-				System.out.println("[8] Back");
+				System.out.println("[back] Back");
 				System.out.println();
 				input = handleInput.getInputString();
 				
@@ -68,7 +68,6 @@ public class UserConsole {
 					break;
 				case "3":
 					consoleOutput = addUserInterface();
-					
 					break;
 				case "4":
 					consoleOutput = selectUpdateMethod();
@@ -83,9 +82,9 @@ public class UserConsole {
 					break;
 				case "7":
 					consoleOutput = handleAdminStatus();
-					System.out.println();
+					System.out.println(consoleOutput);
 					break;
-				case "8":
+				case "quit":
 					flag = false;
 					System.out.println("Returning");
 					break;
@@ -124,7 +123,7 @@ public class UserConsole {
 				System.out.println("[5] Update address");
 				System.out.println("[6] Update telephone number");
 				System.out.println("[7] Update business name");
-				System.out.println("[8] Back");
+				System.out.println("[back] Back");
 				System.out.println();
 				
 				selectUpdate = handleInput.getInputString();
@@ -170,7 +169,7 @@ public class UserConsole {
 						updatedRows = updateAddressHandler(userId);
 
 						break;
-					case "8":
+					case "back":
 						System.out.println("User not updated. Returning.");
 						System.out.println();
 						break;
@@ -524,13 +523,12 @@ public class UserConsole {
 				case "1":					
 					try {
 						output = userDAO.removeAdminById(userId);
-						return "Number of rows updated : " + output;
+						return "Number of rows updated: " + output;
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
+						return "Failed to give admin status.";
 					}
-					System.out.println();
-					break;
+					
 				case "2":
 					return "Returning.";
 				default:
@@ -553,11 +551,10 @@ public class UserConsole {
 				case "1":
 					try {
 						output = userDAO.giveAdminStatus(userId);
-						return "Number of rows updated : " + output;
+						return "Number of rows updated: " + output;
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
-						return "Failed to give admin status. Returning.";
+						return "Failed to give admin status.";
 					}
 				case "2":
 					return "Returning.";

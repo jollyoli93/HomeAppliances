@@ -27,20 +27,12 @@ public class MockIOHandler implements InputOutputHandler {
         	mockStringValue.offer(input);
         }
     }
-    
-    public MockIOHandler(int[] mockInt, String[] mockString) {
-    	for (int input : mockInt) {
-        	mockIntValue.offer(input);
-        }
-        for (String input : mockString) {
-        	mockStringValue.offer(input);
-        }
-    }
+   
 
 	@Override
     public int getInputInt() {
         if (mockIntValue.isEmpty()) {
-        	return 6;
+        	return 8;
         }
 		return mockIntValue.poll();
     }
@@ -48,7 +40,7 @@ public class MockIOHandler implements InputOutputHandler {
     @Override
     public String getInputString() {
         if (mockStringValue.isEmpty()) {
-        	return "6";
+        	return "quit";
         }
 		return mockStringValue.poll();
     }
