@@ -124,4 +124,18 @@ public abstract class User {
 		this.businessName = businessName;
 	}
 
+	
+	public String toHTMLString() {
+	    return "<tr>" +
+	            "<td>" + firstName + "</td>" +
+	            "<td>" + lastName + "</td>" +
+	            "<td>" + username + "</td>" +
+	            "<td>" + emailAddress + "</td>" +
+	            "<td>" + password + "</td>" +
+	            "<td>" + customerId + "</td>" +
+	            "<td>" + telephoneNum + "</td>" +
+	            "<td>" + businessName + "</td>" +
+	            "</tr>";
+	}
+
 }
