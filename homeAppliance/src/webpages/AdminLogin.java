@@ -1,10 +1,16 @@
 package webpages;
 
 import com.sun.net.httpserver.HttpHandler;
+
+import util.Util;
+
 import com.sun.net.httpserver.HttpExchange;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class AdminLogin implements HttpHandler {
 
@@ -33,9 +39,22 @@ public class AdminLogin implements HttpHandler {
             // Process login
             String response = "Processing admin login...";
             he.sendResponseHeaders(200, response.length());
-            try (OutputStream os = he.getResponseBody()) {
-                os.write(response.getBytes());
-            }
+    		
+    		BufferedReader in = new BufferedReader(new InputStreamReader(he.getRequestBody()));
+    		
+    		String line;
+    		String request = "";
+    		
+    		while( (line = in.readLine()) != null) {
+    			request = request + line;
+    		}
+    		
+    		HashMap<String,String> map = Util.requestStringToMap(request);
+
+    		String username = map.get("username");
+    		String password = map.get("password");
+    		
+    		System.out.println(username + " " + password);
         } else {
             he.sendResponseHeaders(405, -1); // Method not allowed
         }
