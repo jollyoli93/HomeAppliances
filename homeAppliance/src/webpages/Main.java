@@ -28,9 +28,12 @@ public class Main {
     // ADMIN
     server.createContext("/admin", new AdminHandler());
     server.createContext("/admin/products", new ApplianceHandler());
-    server.createContext("/admin/users", new UsersHandler());
     server.createContext("/admin/products/edit", new EditProductHandler()); 
-    server.createContext("/admin/products/delete", new DeleteProductHandler());  
+    server.createContext("/admin/products/delete", new DeleteProductHandler()); 
+    
+    server.createContext("/admin/users", new UsersHandler());
+    server.createContext("/admin/users/create", new CreateUserHandler());  
+   
 
     //Customer
   }

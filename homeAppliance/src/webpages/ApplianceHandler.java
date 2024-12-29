@@ -48,8 +48,8 @@ public class ApplianceHandler implements HttpHandler {
                 "</head>" +
                 "<body>" +
                 "<div class=\"container\">" +
-                "  <h1 class=\"mt-4\">Welcome to the Home Appliance Store</h1>" +  // Homepage Header
-                "  <a href=\"/\" class=\"btn btn-primary mb-4\">Back to Homepage</a>" + // Homepage Link
+                "  <h1 class=\"mt-4\">Welcome to the Home Appliance Store</h1>" + 
+                "  <a href=\"/\" class=\"btn btn-primary mb-4\">Back to Homepage</a>" +
                 "  <h2>Appliances in Stock</h2>" +
                 "  <table class=\"table table-striped\">" +
                 "    <thead class=\"thead-dark\">" +
