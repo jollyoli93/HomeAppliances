@@ -118,7 +118,7 @@ public class UserDao extends DAO<User> {
 	                   System.out.println("Debug user id: "  + user_id);
 	                   System.out.println("Debug user role: "  + role);
 	                   
-                	   if (!(user_id == 0)) {
+                	   if (user_id != 0) {
 							//change to lambda
 							switch (role) {
 							case "admin":
@@ -140,6 +140,7 @@ public class UserDao extends DAO<User> {
 						}                 
 	                   
 	                   System.out.println("DEBUG: adding users to list");
+	                   user.setCustomerId(user_id);
 	                   userList.add(user);
 	               } 
 
@@ -170,18 +171,33 @@ public class UserDao extends DAO<User> {
 		            String telephoneNum = userResult.getString("telephone_num");
 		            String businessName = userResult.getString("business_name");
 		            String role = getRoleDesc(userId);
-		    
+		            
+		            User user;
 		            // Create user based on role
-		            switch (role) {
-		                case "admin":
-		                    return new AdminUser(firstName, lastName, emailAddress, username, password);
-		                case "customer":
-		                    return new CustomerUser(firstName, lastName, emailAddress, username, password, telephoneNum);
-		                case "business":
-		                    return new BusinessUser(firstName, lastName, emailAddress, username, password, telephoneNum, businessName);
-		                default:
-		                    throw new IllegalArgumentException("Unknown role: " + role);
-		            }
+             	   if (userId != 0) {
+							//change to lambda
+							switch (role) {
+							case "admin":
+								user = new AdminUser(firstName, lastName, emailAddress, username, password);
+								break;
+							case "customer":
+								user = new CustomerUser(firstName, lastName, emailAddress, username, password,
+										telephoneNum);
+								break;
+							case "business":
+								user = new BusinessUser(firstName, lastName, emailAddress, username, password,
+										telephoneNum, businessName);
+								break;
+							default:
+								throw new IllegalArgumentException("Unknown role: " + role);
+							}
+						} else {
+							throw new IllegalArgumentException("No role found");
+						}                 
+	                   
+	                   user.setCustomerId(userId);
+	                   return user;
+	
 		        } else {
 		            throw new IllegalArgumentException("User not found for ID: " + userId);
 		        }
