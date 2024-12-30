@@ -19,7 +19,7 @@ public class Main {
     ApplianceDao applianceDao = new ApplianceDao(dbpath);
     UserDao userDao = new UserDao(dbpath);
     
-    // Create contexts dynamically
+    //create contexts
     registerContexts(server, applianceDao, userDao);
     
     // Start server

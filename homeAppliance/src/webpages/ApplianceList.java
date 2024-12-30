@@ -38,9 +38,21 @@ public class ApplianceList implements HttpHandler {
                 "integrity=\"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2\" crossorigin=\"anonymous\">" +
                 "</head>" +
                 "<body>" +
+                "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">" +
+                "  <a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
+                "  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" " +
+                "    aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">" +
+                "    <span class=\"navbar-toggler-icon\"></span>" +
+                "  </button>" +
+                "  <div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
+                "    <ul class=\"navbar-nav\">" +
+                "      <li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                "    </ul>" +
+                "  </div>" +
+                "</nav>" +
                 "<div class=\"container\">" +
                 "  <h1 class=\"mt-4\">Welcome to the Home Appliance Store</h1>" + 
-                "  <a href=\"/\" class=\"btn btn-primary mb-4\">Back to Homepage</a>" +
+                "  <a href=\"/admin\" class=\"btn btn-primary mb-4\">Back to Admin Dashboard</a>" +
                 "  <h2>Appliances in Stock</h2>" +
                 "  <table class=\"table table-striped\">" +
                 "    <thead class=\"thead-dark\">" +

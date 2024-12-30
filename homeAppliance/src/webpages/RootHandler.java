@@ -34,9 +34,8 @@ public class RootHandler implements HttpHandler {
                 "  </button>" +
                 "  <div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
                 "    <ul class=\"navbar-nav\">" +
-                "      <li class=\"nav-item active\"><a class=\"nav-link\" href=\"#\">Home</a></li>" +
+                "      <li class=\"nav-item active\"><a class=\"nav-link\" href=\"\">Home</a></li>" +
                 "      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#about\">About Us</a></li>" +
-                "      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#products\">Products</a></li>" +
                 "      <li class=\"nav-item\"><a class=\"nav-link\" href=\"#contact\">Contact</a></li>" +
                 "    </ul>" +
                 "  </div>" +
