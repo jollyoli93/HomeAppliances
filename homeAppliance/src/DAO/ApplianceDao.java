@@ -201,10 +201,10 @@ public class ApplianceDao extends DAO<Appliance> {
         }
     }
 	
-	public String updateFieldById(int id, String table, String field, Object value) {
+	public String updateFieldById(int id, String field, Object value) {
 	    Map<String, Object> update = new HashMap<>();
 	    update.put(field, value);
-	    int updatedRows = updateById(id, table, update);
+	    int updatedRows = updateById(id, "appliances", update);
 	    return "Rows updated: " + updatedRows;
 	}
 }

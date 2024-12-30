@@ -16,23 +16,22 @@ public class UpdateApplianceHandler implements HttpHandler{
 		this.applianceDao = applianceDao;
 	}
 	
-	@Override
-    public void handle(HttpExchange he) throws IOException {
-	    String response = "Processing update...";
-	    he.sendResponseHeaders(200, response.length());
-		
-		Map<String, String> map = null;
-		try {
-			map = WebUtil.getResponseMap(he);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(map);
-	
-		String price = map.get("price");
-		
-		//System.out.println(username + " " + password);
-    }
+	 @Override
+	    public void handle(HttpExchange he) throws IOException {
+	        Map<String, String> formData = WebUtil.getResponseMap(he);
+	        
+	        // Extract form data
+	        int id = Integer.parseInt(formData.get("id"));
+	        String price = formData.get("price");
+	        
+	        // Update price in database
+	        String result = applianceDao.updateFieldById(id, "price", Double.parseDouble(price));
+	        
+	        // Prepare response
+	        String response = "Update complete: " + result;
+	        he.getResponseHeaders().add("Location", "/admin/appliances");
+	        he.sendResponseHeaders(302, response.length());
+	        he.getResponseBody().write(response.getBytes());
+	        he.getResponseBody().close();
+	    }
 }

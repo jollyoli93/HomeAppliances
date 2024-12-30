@@ -242,15 +242,11 @@ public class ApplianceConsole {
 	private void updatePrice() {
 		System.out.println("Please select an option");
 		System.out.println("[1] Update a product price by ID");
-		System.out.println("[2] Update related product price using SKU");
 		int userInputID = handleInput.getInputInt();
 		
 		switch (userInputID) {
 			case 1: 
 				updatePriceByID();
-				break;
-			case 2:
-				updatePriceBySKU();
 				break;
 		}
 	}
@@ -263,7 +259,7 @@ public class ApplianceConsole {
 		double userInputPrice = handleInput.getInputDouble();
 		
 		try {
-			consoleOutput = applianceDAO.updateFieldById(userInputID,"appliances", "price", userInputPrice);
+			consoleOutput = applianceDAO.updateFieldById(userInputID, "price", userInputPrice);
 			
 		} catch (NullPointerException ex) {
 			System.out.println("Product not in database");
@@ -271,9 +267,6 @@ public class ApplianceConsole {
 		return consoleOutput;
 	}
 
-	private void updatePriceBySKU() {
-		
-	}
 	private void deleteProduct() {
 		System.out.println("Please enter ID");
 		System.out.println();
