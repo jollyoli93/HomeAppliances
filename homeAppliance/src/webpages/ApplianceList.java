@@ -15,15 +15,21 @@ import java.io.IOException;
 
 
 
-public class ApplianceHandler implements HttpHandler {
+public class ApplianceList implements HttpHandler {
+	private ApplianceDao applianceDao;
+	
+	public ApplianceList(ApplianceDao applianceDao) {
+		this.applianceDao = applianceDao;
+	}
+	
+	@Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
         try {
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
 
-            DAO appliances = new ApplianceDao("HomeAppliances", null);
-            List<Appliance> allAppliances = appliances.findAll();
+            List<Appliance> allAppliances = applianceDao.findAll();
 
             out.write(
                 "<html>" +
@@ -59,8 +65,8 @@ public class ApplianceHandler implements HttpHandler {
                     "<td>" + a.getPrice() + "</td>" +
                     "<td>" + a.getSku() + "</td>" +
                     "<td>" +
-                    "<a href=\"/admin/products/edit?id=" + a.getId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " +
-                    "<a href=\"/admin/products/delete?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" +
+                    "<a href=\"/admin/appliances/edit?id=" + a.getId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " +
+                    "<a href=\"/admin/appliances/delete?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" +
                     "</td>" +
                     "</tr>"
                 );

@@ -12,7 +12,6 @@ import java.util.Map;
 
 import appliances.Appliance;
 import appliances.ApplianceFactory;
-import users.User;
 import util.FactoryRegistry;
 
 
@@ -20,8 +19,10 @@ public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
 	String tableSchema;
+	Map<String, ApplianceFactory> factories;
+	FactoryRegistry registerAppliances = new FactoryRegistry();
 	
-	public ApplianceDao(String dbPath, Map<String, ApplianceFactory> factories) {
+	public ApplianceDao(String dbPath) {
         this.dbPath = dbPath;
         connector = new SqlLiteConnection(dbPath);
         
@@ -35,6 +36,8 @@ public class ApplianceDao extends DAO<Appliance> {
     			+"PRIMARY KEY(id AUTOINCREMENT))";
     	
     	allowedTablesList.add("appliances");
+    	registerAppliances.initApplianceFactories();
+    	factories = registerAppliances.getFactories();    	
     }
 
 

@@ -22,26 +22,15 @@ public class ApplianceConsole {
     private String dbPath;
 	private String consoleOutput = null;
 
-	Map<String, ApplianceFactory> applianceFactories = new HashMap<String, ApplianceFactory>();
-
 	public ApplianceConsole(String dbPath) {
 		this.dbPath = dbPath;
-		initFactoriesMap();
 		this.handleInput = new ConsoleIOHandler();
 		
-		this.applianceDAO = new ApplianceDao(dbPath, applianceFactories);
+		this.applianceDAO = new ApplianceDao(dbPath);
 	}
 	
 	public void setHandler(InputOutputHandler handleInput) {
 		this.handleInput = handleInput;
-	}
-	
-	private void initFactoriesMap () {
-		ApplianceFactory entertainment = new EntertainmentFactory();
-		ApplianceFactory homeCleaning = new HomeCleaningFactory();
-		
-		applianceFactories.put("Entertainment", entertainment);
-		applianceFactories.put("Home Cleaning", homeCleaning);
 	}
 	
 	public String displayMenu() {
