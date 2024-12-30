@@ -2,7 +2,7 @@ package webpages;
 
 import com.sun.net.httpserver.HttpHandler;
 
-import util.Util;
+import util.WebUtil;
 
 import com.sun.net.httpserver.HttpExchange;
 
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AdminLogin implements HttpHandler {
 
@@ -40,16 +41,13 @@ public class AdminLogin implements HttpHandler {
             String response = "Processing admin login...";
             he.sendResponseHeaders(200, response.length());
     		
-    		BufferedReader in = new BufferedReader(new InputStreamReader(he.getRequestBody()));
-    		
-    		String line;
-    		String request = "";
-    		
-    		while( (line = in.readLine()) != null) {
-    			request = request + line;
-    		}
-    		
-    		HashMap<String,String> map = Util.requestStringToMap(request);
+    		Map<String, String> map = null;
+			try {
+				map = WebUtil.getResponseMap(he);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
     		String username = map.get("username");
     		String password = map.get("password");
