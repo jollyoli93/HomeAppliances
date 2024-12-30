@@ -13,6 +13,7 @@ import java.util.Map;
 import appliances.Appliance;
 import appliances.ApplianceFactory;
 import users.User;
+import util.FactoryRegistry;
 
 
 public class ApplianceDao extends DAO<Appliance> {

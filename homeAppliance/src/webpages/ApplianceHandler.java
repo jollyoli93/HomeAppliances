@@ -6,34 +6,19 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
 import DAO.DAO;
 import appliances.Appliance;
-import appliances.ApplianceFactory;
-import appliances.EntertainmentFactory;
-import appliances.HomeCleaningFactory;
 
 import com.sun.net.httpserver.HttpExchange;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class ApplianceHandler implements HttpHandler {
-    Map<String, ApplianceFactory> applianceFactories = new HashMap<String, ApplianceFactory>();
 
-    private void initFactoriesMap() {
-        ApplianceFactory entertainment = new EntertainmentFactory();
-        ApplianceFactory homeCleaning = new HomeCleaningFactory();
-        
-        applianceFactories.put("Entertainment", entertainment);
-        applianceFactories.put("Home Cleaning", homeCleaning);
-    }
-    
+
+public class ApplianceHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
         try {
-            initFactoriesMap();
-
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
 
@@ -59,7 +44,7 @@ public class ApplianceHandler implements HttpHandler {
                 "        <th>Category</th>" +
                 "        <th>Price</th>" +
                 "        <th>SKU</th>" +
-                "        <th>Actions</th>" +  // New column for buttons
+                "        <th>Actions</th>" +
                 "      </tr>" +
                 "    </thead>" +
                 "    <tbody>");
@@ -74,8 +59,8 @@ public class ApplianceHandler implements HttpHandler {
                     "<td>" + a.getPrice() + "</td>" +
                     "<td>" + a.getSku() + "</td>" +
                     "<td>" +
-                    "<a href=\"/admin/products/edit?id=" + a.getId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " + // Edit button
-                    "<a href=\"/admin/products/delete?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" + // Delete button
+                    "<a href=\"/admin/products/edit?id=" + a.getId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " +
+                    "<a href=\"/admin/products/delete?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" +
                     "</td>" +
                     "</tr>"
                 );
@@ -89,18 +74,17 @@ public class ApplianceHandler implements HttpHandler {
                 "</html>");
 
         } catch (Exception e) {
-            he.sendResponseHeaders(500, 0); // Send an HTTP 500 response code
+            he.sendResponseHeaders(500, 0); 
             if (out != null) {
                 out.write("<html><body><h1>Internal Server Error</h1><p>Could not load appliances.</p></body></html>");
             }
-            e.printStackTrace(); // Log the error to the console
-
+            e.printStackTrace(); 
         } finally {
             if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace(); // Log any error while closing the writer
+                    e.printStackTrace(); 
                 }
             }
         }
