@@ -142,35 +142,38 @@ public abstract class DAO<T> {
 	    return statement.executeQuery();
 	}
 
-	public int deleteById(int id, String tableName, Map<String, Object> additionalConditions) {
-	    if (!isValidTableName(tableName)) {
-	        throw new IllegalArgumentException("Invalid table name.");
+	public int deleteById(String tableName, Map<String, Object> conditions) {
+    	System.out.println(allowedTablesList);
+    	
+	    if (!allowedTablesList.contains(tableName)) {
+	        throw new IllegalArgumentException("Invalid table.");
+	    }
+
+	    if (conditions == null || conditions.isEmpty()) {
+	        throw new IllegalArgumentException("Conditions cannot be null or empty.");
 	    }
 
 	    // Start constructing the DELETE query
-	    StringBuilder queryBuilder = new StringBuilder("DELETE FROM ").append(tableName)
-	            .append(" WHERE user_id = ?");
+	    StringBuilder queryBuilder = new StringBuilder("DELETE FROM ").append(tableName).append(" WHERE ");
 
-	    // Add additional conditions dynamically
-	    if (additionalConditions != null && !additionalConditions.isEmpty()) {
-	        for (String column : additionalConditions.keySet()) {
-	            queryBuilder.append(" AND ").append(column).append(" = ?");
+	    // Add conditions dynamically
+	    boolean firstCondition = true;
+	    for (String column : conditions.keySet()) {
+	        if (!firstCondition) {
+	            queryBuilder.append(" AND ");
 	        }
+	        queryBuilder.append(column).append(" = ?");
+	        firstCondition = false;
 	    }
 
 	    String query = queryBuilder.toString();
 
 	    try (Connection connect = connector.initializeDBConnection();
 	         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
-	        // Bind the ID parameter
-	        preparedStatement.setInt(1, id);
-
-
-	        if (additionalConditions != null && !additionalConditions.isEmpty()) {
-	            int paramIndex = 2; // Start after the first parameter (id)
-	            for (Object value : additionalConditions.values()) {
-	                preparedStatement.setObject(paramIndex++, value);
-	            }
+	        // Bind the condition values
+	        int paramIndex = 1; // Start from the first parameter
+	        for (Object value : conditions.values()) {
+	            preparedStatement.setObject(paramIndex++, value);
 	        }
 
 	        // Execute the query and return the number of affected rows
@@ -182,11 +185,6 @@ public abstract class DAO<T> {
 	    }
 	}
 
-	// Utility method to validate table names
-	private boolean isValidTableName(String tableName) {
-	    return tableName != null && tableName.matches("^[a-zA-Z_][a-zA-Z0-9_]*$");
-	}
-    
 	public abstract ArrayList<T> findAll();
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 

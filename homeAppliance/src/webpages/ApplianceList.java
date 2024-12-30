@@ -66,7 +66,7 @@ public class ApplianceList implements HttpHandler {
                     "<td>" + a.getSku() + "</td>" +
                     "<td>" +
                     "<a href=\"/admin/appliances/edit?id=" + a.getId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " +
-                    "<a href=\"/admin/appliances/delete?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" +
+                    "<a href=\"/admin/appliances/delete-confirm?id=" + a.getId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" +
                     "</td>" +
                     "</tr>"
                 );

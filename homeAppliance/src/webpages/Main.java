@@ -38,8 +38,10 @@ public class Main {
     server.createContext("/admin", new AdminHandler());
     server.createContext("/admin/appliances", new ApplianceList(applianceDao));
     server.createContext("/admin/appliances/edit", new EditApplianceForm(applianceDao)); 
-    server.createContext("/admin/appliances/delete", new DeleteApplianceForm(applianceDao));
     server.createContext("/admin/appliances/update", new UpdateApplianceHandler(applianceDao));
+    
+    server.createContext("/admin/appliances/delete", new DeleteApplianceHandler(applianceDao));
+    server.createContext("/admin/appliances/delete-confirm", new DeleteConfirmationHandler(applianceDao));
     
     
     server.createContext("/admin/users", new UsersHandler());

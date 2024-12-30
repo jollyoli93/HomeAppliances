@@ -53,7 +53,7 @@ public class UserConsole {
 				System.out.println("[5] Delete a user by ID");
 				System.out.println("[6] Add a user address");
 				System.out.println("[7] Manage admin");
-				System.out.println("[back] Back");
+				System.out.println("[back] Go Back");
 				System.out.println();
 				input = handleInput.getInputString();
 				
@@ -84,7 +84,7 @@ public class UserConsole {
 					consoleOutput = handleAdminStatus();
 					System.out.println(consoleOutput);
 					break;
-				case "quit":
+				case "back":
 					flag = false;
 					System.out.println("Returning");
 					break;
@@ -92,8 +92,7 @@ public class UserConsole {
 					System.out.println("Try again");
 				}
 			} while (flag);
-			
-			System.out.println("End of loop");
+
 			System.out.println();
 		return consoleOutput;
 		
@@ -110,7 +109,7 @@ public class UserConsole {
 		System.out.println("Please select update method");
 		String selectUpdate = "0";
 		
-		while (selectUpdate != "7") {
+		while (selectUpdate != "back") {
 				System.out.println("------------------------");
 				System.out.println("Choose from these options");
 				System.out.println("------------------------");

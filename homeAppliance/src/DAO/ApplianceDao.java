@@ -144,8 +144,11 @@ public class ApplianceDao extends DAO<Appliance> {
 	}
 
     public int deleteApplianceById(int id) {
+    	Map<String, Object> conditions = new HashMap<>();
+    	conditions.put("id", id);
+
 		try {
-			return deleteById(id, "appliances", null);
+			return deleteById("appliances", conditions);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

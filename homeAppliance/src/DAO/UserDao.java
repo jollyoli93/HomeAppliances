@@ -27,7 +27,6 @@ import java.util.Map;
  */
 public class UserDao extends DAO<User> {
 	String dbPath;
-	ArrayList<String> allowedTablesList;
 	
 	String userSchema = "CREATE TABLE \"users\" ("
 	        + "\"first_name\" TEXT NOT NULL, "
@@ -450,8 +449,11 @@ public class UserDao extends DAO<User> {
 //		}
 		
 		public int deleteUserById (int id) {
+	    	Map<String, Object> update = new HashMap<>();
+	    	update.put("id", id);
+	    	
 			try {
-				return deleteById(id, "users", null);
+				return deleteById("users", update);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -672,8 +674,11 @@ public class UserDao extends DAO<User> {
 	        Map<String, Object> update = new HashMap<>();
 	        update.put("role_id", 2);
 	        
+	        //where
+	        update.put("user_id", id);
+	    	System.out.println(allowedTablesList);
 			try {
-				return deleteById(id, "user_roles", update);
+				return deleteById("user_roles", update);
 			} catch (Exception e) {
 				System.out.println("Failed to remove admin status");
 				e.printStackTrace();
