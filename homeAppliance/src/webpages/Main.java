@@ -12,14 +12,14 @@ public class Main {
   private static final int PORT = 8080;
 
   public static void main(String[] args) throws IOException {
-	String dbpath = "HomeAppliances";
+    String dbpath = "HomeAppliances";
     HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
     
     // Create DAO objects
     ApplianceDao applianceDao = new ApplianceDao(dbpath);
     UserDao userDao = new UserDao(dbpath);
     
-    //create contexts
+    // Create contexts
     registerContexts(server, applianceDao, userDao);
     
     // Start server
@@ -37,17 +37,21 @@ public class Main {
     // ADMIN
     server.createContext("/admin", new AdminHandler());
     server.createContext("/admin/appliances", new ApplianceList(applianceDao));
+    
+    // Department selection and type selection
+    server.createContext("/admin/appliances/add", new AddApplianceHandler(applianceDao)); // Department selection page // Type selection page
+    server.createContext("/admin/appliances/add/type", new AddApplianceTypeHandler(applianceDao)); // Department selection page // Type selection page
+
+    // Other appliance routes
     server.createContext("/admin/appliances/edit", new EditApplianceForm(applianceDao)); 
     server.createContext("/admin/appliances/update", new UpdateApplianceHandler(applianceDao));
-    
     server.createContext("/admin/appliances/delete", new DeleteApplianceHandler(applianceDao));
     server.createContext("/admin/appliances/delete-confirm", new DeleteConfirmationHandler(applianceDao));
     
-    
+    // User management
     server.createContext("/admin/users", new UsersHandler());
     server.createContext("/admin/users/create", new CreateUserHandler());  
-   
-
-    //Customer
+    
+    // Customer routes (if any needed)
   }
 }

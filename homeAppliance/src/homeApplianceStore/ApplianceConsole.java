@@ -77,8 +77,6 @@ public class ApplianceConsole {
 						
 					case 5:
 						deleteProduct();
-//						Boolean delete = deleteProduct();
-
 						break;
 						
 					case 6:
