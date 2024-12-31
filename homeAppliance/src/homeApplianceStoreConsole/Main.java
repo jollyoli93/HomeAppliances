@@ -1,16 +1,16 @@
 //STUDENT NO. 24862664
 
-package homeApplianceStore;
+package homeApplianceStoreConsole;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
 
-public class ConsoleMain {
+public class Main {
 	public static void main(String[] args) {
 		String database = "HomeAppliances";
 		InputOutputHandler handleInput = new ConsoleIOHandler();
 		
-		ConsoleHandler consoleHandler = new ConsoleHandler(database);
+		StoreConsole consoleHandler = new StoreConsole(database);
 		
 		consoleHandler.displayMainMenu();
 	    

@@ -1,6 +1,6 @@
 //STUDENT NO. 24862664
 
-package homeApplianceStore;
+package homeApplianceStoreConsole;
 
 import java.util.ArrayList;
 import java.util.HashMap;

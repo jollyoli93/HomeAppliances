@@ -1,13 +1,13 @@
-package homeApplianceStore;
+package homeApplianceStoreConsole;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
 
-public class ConsoleHandler {
+public class StoreConsole {
     private String database;
     private InputOutputHandler handleInput;
 
-    public ConsoleHandler(String db) {
+    public StoreConsole(String db) {
         this.database = db;
         this.handleInput = new ConsoleIOHandler();
     }

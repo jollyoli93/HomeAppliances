@@ -66,10 +66,10 @@ public class ApplianceDao extends DAO<Appliance> {
                    
                    try {
                        // Get the appropriate department for the category
-                       ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat);
+                       ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat.toLowerCase());
                        
                        // Create the specific appliance using the factory
-                       product = department.selectAppliance(desc);
+                       product = department.selectAppliance(desc.toLowerCase());
                        
                        // Set the common properties
                        product.setId(id);
@@ -104,10 +104,10 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	            try {
 	                // Get the appropriate factory for the category
-	                ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat);
+	                ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat.toLowerCase());
 
 	                // Create the specific appliance using the factory method
-	                appliance = department.selectAppliance(desc);
+	                appliance = department.selectAppliance(desc.toLowerCase());
 
 	                // Set the common properties
 	                appliance.setId(id);
@@ -130,8 +130,8 @@ public class ApplianceDao extends DAO<Appliance> {
 	public boolean addNewAppliance(Appliance appliance, Map<String, String> additionalFields) {
 	    Map<String, Object> fields = new HashMap<>();
 	    fields.put("sku", appliance.getSku());
-	    fields.put("description", appliance.getDescription());
-	    fields.put("category", appliance.getCategory());
+	    fields.put("description", appliance.getDescription().toLowerCase());
+	    fields.put("category", appliance.getCategory().toLowerCase());
 	    fields.put("price", appliance.getPrice());
 	    
 	    if (additionalFields != null) {
