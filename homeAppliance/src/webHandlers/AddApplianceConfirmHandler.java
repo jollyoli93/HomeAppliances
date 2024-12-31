@@ -142,6 +142,10 @@ public class AddApplianceConfirmHandler implements HttpHandler {
                 try {
 					applianceDao.addNewAppliance(appliance, null);
 					response = "Appliance added successfully!";
+	                // Redirect to admin
+	                he.getResponseHeaders().add("Location", "/admin/");
+	                he.sendResponseHeaders(302, -1); // 302 Found (redirect)
+	                return;
 				} catch (Exception e) {
 					response = "Failed to add appliance.";
 					e.printStackTrace();
@@ -159,6 +163,7 @@ public class AddApplianceConfirmHandler implements HttpHandler {
         try (OutputStream os = he.getResponseBody()) {
             os.write(response.getBytes());
         }
+ 
     }
 
 
