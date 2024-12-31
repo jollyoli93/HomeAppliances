@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class ApplianceFactory {
-	public static Map<String, Supplier<ApplianceFactory>> applianceFactoryMap = new HashMap<>();
+public abstract class ApplianceDepartments {
+	public static Map<String, Supplier<ApplianceDepartments>> applianceDepartmentMap = new HashMap<>();
 	protected Map<String, Supplier<Appliance>> applianceMap = new HashMap<>();
     
     public Appliance selectAppliance(String type) {
@@ -18,8 +18,8 @@ public abstract class ApplianceFactory {
         return applianceCreator.get();
     }
     
-    public static ApplianceFactory selectApplianceFactory(String type) {
-        Supplier<ApplianceFactory> factoryCreator = applianceFactoryMap.get(type);
+    public static ApplianceDepartments selectApplianceDepartment(String type) {
+        Supplier<ApplianceDepartments> factoryCreator = applianceFactoryMap.get(type);
         
         if (factoryCreator == null) {
             throw new IllegalArgumentException("Unknown appliance type: " + type);

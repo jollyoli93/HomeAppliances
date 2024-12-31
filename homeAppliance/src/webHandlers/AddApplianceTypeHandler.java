@@ -10,7 +10,7 @@ import com.sun.net.httpserver.HttpHandler;
 
 import DAO.ApplianceDao;
 import appliances.Appliance;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
 import util.WebUtil;
@@ -48,7 +48,7 @@ public class AddApplianceTypeHandler implements HttpHandler {
 
         // add dynamically population for department options
 
-		ApplianceFactory applianceFactory = null;        
+		ApplianceDepartments applianceFactory = null;        
         
         switch (selectedDepartment)  {
         case "entertainment":

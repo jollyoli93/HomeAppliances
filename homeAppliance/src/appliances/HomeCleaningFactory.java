@@ -1,6 +1,6 @@
 package appliances;
 
-public class HomeCleaningFactory extends ApplianceFactory {
+public class HomeCleaningFactory extends ApplianceDepartments {
     public HomeCleaningFactory() {
         initializeApplianceTypes();
         applianceFactoryMap.put("Home Cleaning", () -> new HomeCleaningFactory());

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import appliances.Appliance;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 import util.FactoryRegistry;
 
 
@@ -19,7 +19,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
 	String tableSchema;
-	Map<String, ApplianceFactory> factories;
+	Map<String, ApplianceDepartments> factories;
 	FactoryRegistry registerAppliances = new FactoryRegistry();
 	
 	public ApplianceDao(String dbPath) {
@@ -65,11 +65,11 @@ public class ApplianceDao extends DAO<Appliance> {
                    double price = result.getDouble("price");
                    
                    try {
-                       // Get the appropriate factory for the category
-                       ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+                       // Get the appropriate department for the category
+                       ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat);
                        
                        // Create the specific appliance using the factory
-                       product = factory.selectAppliance(desc);
+                       product = department.selectAppliance(desc);
                        
                        // Set the common properties
                        product.setId(id);
@@ -104,7 +104,7 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	            try {
 	                // Get the appropriate factory for the category
-	                ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(cat);
+	                ApplianceDepartments factory = ApplianceDepartments.selectApplianceDepartment(cat);
 
 	                // Create the specific appliance using the factory
 	                appliance = factory.selectAppliance(desc);

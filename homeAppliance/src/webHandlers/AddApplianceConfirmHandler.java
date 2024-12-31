@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import appliances.Appliance;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 import util.WebUtil;
 
 public class AddApplianceConfirmHandler implements HttpHandler {
 	private ApplianceDao applianceDao;
-	private ApplianceFactory departments;
+	private ApplianceDepartments department;
 	private Appliance appliance;
 	
 	public AddApplianceConfirmHandler(ApplianceDao applianceDao) {
@@ -36,12 +36,12 @@ public class AddApplianceConfirmHandler implements HttpHandler {
             System.out.println("Debug: " + selectedDepartment + " " + applianceType);
             
             //select department
-            departments = ApplianceFactory.selectApplianceFactory(applianceType);
-            //select appliance
-            appliance = departments.selectAppliance();
+            department = ApplianceDepartments.selectApplianceDepartment(selectedDepartment);
+            System.out.println(department);
             
-            System.out.println("Debug: " + selectedDepartment + " " + applianceType);
-
+            //select appliance
+            appliance = department.selectAppliance(applianceType);
+            System.out.println(appliance);
             
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));

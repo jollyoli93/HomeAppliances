@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 
 public class AddApplianceDeptHandler implements HttpHandler {
     private ApplianceDao applianceDao;
@@ -18,7 +18,7 @@ public class AddApplianceDeptHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         // Get the list of departments from the appliance factories
-        ArrayList<String> departments = ApplianceFactory.selectApplianceFactory("Entertainment").listFactoryTypes();
+        ArrayList<String> departments = ApplianceDepartments.selectApplianceDepartment("Entertainment").listFactoryTypes();
 
         // Handle the case where no departments are found
         if (departments.isEmpty()) {

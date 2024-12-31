@@ -10,7 +10,7 @@ import DAO.ApplianceDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
 import appliances.Appliance;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
 import printer.AppliancePrinter;
@@ -139,7 +139,7 @@ public class ApplianceConsole {
 	}
 	
 	private void addProduct() {
-		ApplianceFactory applianceFactory = selectDepartment();
+		ApplianceDepartments applianceFactory = selectDepartment();
 		Appliance appliance = selectAppliance(applianceFactory);
 		int userInput;
 		boolean added = false;
@@ -164,8 +164,8 @@ public class ApplianceConsole {
 
 	}
 	
-	private ApplianceFactory selectDepartment () {
-		ApplianceFactory applianceFactory = null;
+	private ApplianceDepartments selectDepartment () {
+		ApplianceDepartments applianceFactory = null;
 		
 		int userInput = 0;
 		do {
@@ -195,8 +195,8 @@ public class ApplianceConsole {
 		return applianceFactory;
 	}
 	
-	private Appliance selectAppliance (ApplianceFactory factory) {
-		ApplianceFactory applianceFactory = factory;
+	private Appliance selectAppliance (ApplianceDepartments factory) {
+		ApplianceDepartments applianceFactory = factory;
 		ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
 		Appliance appliance = null;
 		

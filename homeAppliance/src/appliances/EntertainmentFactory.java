@@ -1,9 +1,9 @@
 package appliances;
 
-public class EntertainmentFactory extends ApplianceFactory {
+public class EntertainmentFactory extends ApplianceDepartments {
     public EntertainmentFactory() {
         initializeApplianceTypes();
-        applianceFactoryMap.put("Entertainment", () -> new EntertainmentFactory());
+        applianceDepartmentMap.put("Entertainment", () -> new EntertainmentFactory());
     }
     
     @Override

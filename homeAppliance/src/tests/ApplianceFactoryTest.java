@@ -6,15 +6,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import appliances.Appliance;
-import appliances.ApplianceFactory;
+import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
 
 
 	
 class ApplianceFactoryTest {
-    ApplianceFactory entertainmentFactory;
-    ApplianceFactory cleaningFactory;
+    ApplianceDepartments entertainmentFactory;
+    ApplianceDepartments cleaningFactory;
 
     @BeforeEach
     public void setUp() {
