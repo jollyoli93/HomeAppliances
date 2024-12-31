@@ -22,7 +22,7 @@ public abstract class ApplianceDepartments {
         Supplier<ApplianceDepartments> factoryCreator = applianceDepartmentMap.get(type);
         
         if (factoryCreator == null) {
-            throw new IllegalArgumentException("Unknown departmenet: " + type);
+            throw new IllegalArgumentException("Unknown department: " + type);
         }
         
         return factoryCreator.get();

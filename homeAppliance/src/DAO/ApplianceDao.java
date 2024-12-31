@@ -19,7 +19,7 @@ public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
 	String tableSchema;
-	Map<String, ApplianceDepartments> factories;
+	Map<String, ApplianceDepartments> departments;
 	FactoryRegistry registerAppliances = new FactoryRegistry();
 	
 	public ApplianceDao(String dbPath) {
@@ -37,7 +37,7 @@ public class ApplianceDao extends DAO<Appliance> {
     	
     	allowedTablesList.add("appliances");
     	registerAppliances.initApplianceFactories();
-    	factories = registerAppliances.getFactories();    	
+    	departments = registerAppliances.getDepartments();    	
     }
 
 
@@ -104,10 +104,10 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	            try {
 	                // Get the appropriate factory for the category
-	                ApplianceDepartments factory = ApplianceDepartments.selectApplianceDepartment(cat);
+	                ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat);
 
-	                // Create the specific appliance using the factory
-	                appliance = factory.selectAppliance(desc);
+	                // Create the specific appliance using the factory method
+	                appliance = department.selectAppliance(desc);
 
 	                // Set the common properties
 	                appliance.setId(id);

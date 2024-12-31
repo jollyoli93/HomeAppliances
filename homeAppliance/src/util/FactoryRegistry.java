@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FactoryRegistry {
-    private Map<String, ApplianceDepartments> applianceFactories;
+    private Map<String, ApplianceDepartments> applianceDepartments;
 
     public FactoryRegistry() {
-        applianceFactories = new HashMap<>();
+    	applianceDepartments = new HashMap<>();
         initApplianceFactories();
     }
 
     public void initApplianceFactories() {
-        applianceFactories.put("Entertainment", new EntertainmentFactory());
-        applianceFactories.put("Home Cleaning", new HomeCleaningFactory());
+    	applianceDepartments.put("entertainment", new EntertainmentFactory());
+    	applianceDepartments.put("home cleaning", new HomeCleaningFactory());
     }
 
-    public Map<String, ApplianceDepartments> getFactories() {
-        return applianceFactories;
+    public Map<String, ApplianceDepartments> getDepartments() {
+        return applianceDepartments;
     }
 }

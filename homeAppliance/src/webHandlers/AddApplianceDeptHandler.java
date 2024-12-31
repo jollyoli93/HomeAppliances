@@ -18,7 +18,7 @@ public class AddApplianceDeptHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         // Get the list of departments from the appliance factories
-        ArrayList<String> departments = ApplianceDepartments.selectApplianceDepartment("Entertainment").listFactoryTypes();
+        ArrayList<String> departments = ApplianceDepartments.selectApplianceDepartment("entertainment").listFactoryTypes();
 
         // Handle the case where no departments are found
         if (departments.isEmpty()) {
