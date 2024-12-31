@@ -3,7 +3,7 @@ package appliances;
 public class HomeCleaningFactory extends ApplianceDepartments {
     public HomeCleaningFactory() {
         initializeApplianceTypes();
-        applianceFactoryMap.put("Home Cleaning", () -> new HomeCleaningFactory());
+        applianceDepartmentMap.put("home cleaning", () -> new HomeCleaningFactory());
     }
     
     @Override

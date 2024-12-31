@@ -19,10 +19,10 @@ public abstract class ApplianceDepartments {
     }
     
     public static ApplianceDepartments selectApplianceDepartment(String type) {
-        Supplier<ApplianceDepartments> factoryCreator = applianceFactoryMap.get(type);
+        Supplier<ApplianceDepartments> factoryCreator = applianceDepartmentMap.get(type);
         
         if (factoryCreator == null) {
-            throw new IllegalArgumentException("Unknown appliance type: " + type);
+            throw new IllegalArgumentException("Unknown departmenet: " + type);
         }
         
         return factoryCreator.get();
@@ -38,7 +38,7 @@ public abstract class ApplianceDepartments {
     
     public ArrayList<String> listFactoryTypes () {
         ArrayList<String> types = new ArrayList<>();
-        applianceFactoryMap.forEach((key, value) -> {
+        applianceDepartmentMap.forEach((key, value) -> {
             types.add(key);
         });
         

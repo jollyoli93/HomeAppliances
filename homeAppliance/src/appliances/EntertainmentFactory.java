@@ -3,7 +3,7 @@ package appliances;
 public class EntertainmentFactory extends ApplianceDepartments {
     public EntertainmentFactory() {
         initializeApplianceTypes();
-        applianceDepartmentMap.put("Entertainment", () -> new EntertainmentFactory());
+        applianceDepartmentMap.put("entertainment", () -> new EntertainmentFactory());
     }
     
     @Override
