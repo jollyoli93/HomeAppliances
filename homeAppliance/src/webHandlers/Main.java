@@ -1,4 +1,4 @@
-package webpages;
+package webHandlers;
 
 import com.sun.net.httpserver.HttpServer;
 
@@ -39,9 +39,10 @@ public class Main {
     server.createContext("/admin/appliances", new ApplianceList(applianceDao));
     
     // Department selection and type selection
-    server.createContext("/admin/appliances/add", new AddApplianceHandler(applianceDao)); // Department selection page // Type selection page
-    server.createContext("/admin/appliances/add/type", new AddApplianceTypeHandler(applianceDao)); // Department selection page // Type selection page
-
+    server.createContext("/admin/appliances/add", new AddApplianceDeptHandler(applianceDao)); // Department selection page 
+    server.createContext("/admin/appliances/add/type", new AddApplianceTypeHandler(applianceDao)); //Type selection page
+    server.createContext("/admin/appliances/add/confirm", new AddApplianceConfirmHandler(applianceDao)); // confirm appliance and submit
+    
     // Other appliance routes
     server.createContext("/admin/appliances/edit", new EditApplianceForm(applianceDao)); 
     server.createContext("/admin/appliances/update", new UpdateApplianceHandler(applianceDao));

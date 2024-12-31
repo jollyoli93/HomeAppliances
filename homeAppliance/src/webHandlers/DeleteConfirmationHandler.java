@@ -1,5 +1,5 @@
 // DeleteConfirmationHandler.java
-package webpages;
+package webHandlers;
 
 import java.io.IOException;
 import java.io.OutputStream;

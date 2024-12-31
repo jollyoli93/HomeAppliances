@@ -1,4 +1,4 @@
-package webpages;
+package webHandlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
@@ -8,10 +8,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import appliances.ApplianceFactory;
 
-public class AddApplianceHandler implements HttpHandler {
+public class AddApplianceDeptHandler implements HttpHandler {
     private ApplianceDao applianceDao;
 
-    public AddApplianceHandler(ApplianceDao applianceDao) {
+    public AddApplianceDeptHandler(ApplianceDao applianceDao) {
         this.applianceDao = applianceDao;
     }
 

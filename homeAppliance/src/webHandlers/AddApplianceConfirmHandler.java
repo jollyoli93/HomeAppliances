@@ -1,4 +1,4 @@
-package webpages;
+package webHandlers;
 
 import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
@@ -6,74 +6,97 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
 
 import com.sun.net.httpserver.HttpExchange;
-import java.util.ArrayList;
-import java.util.HashMap;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import appliances.Appliance;
 import appliances.ApplianceFactory;
 import util.WebUtil;
 
-public class AddTypeHandler implements HttpHandler {
+public class AddApplianceConfirmHandler implements HttpHandler {
 	private ApplianceDao applianceDao;
+	private ApplianceFactory departments;
+	private Appliance appliance;
 	
-	public AddTypeHandler(ApplianceDao applianceDao) {
+	public AddApplianceConfirmHandler(ApplianceDao applianceDao) {
 		this.applianceDao = applianceDao;
 	}
+
     @Override
     public void handle(HttpExchange he) throws IOException {
-        // Get the query parameters
-        String query = he.getRequestURI().getQuery();
-        HashMap<String, String> requestString = WebUtil.requestStringToMap(query);
-        String selectedDepartment = requestString.get("department");
-        System.out.println(selectedDepartment);
-        
-        
-        // Get the appliance types for the selected department
-        ApplianceFactory factory = ApplianceFactory.selectApplianceFactory(selectedDepartment);
-        System.out.println("Print factory: " + factory);
-        
-        ArrayList<String> types = factory.listAllApplianceTypes();
-        System.out.println("Print factory: " + types);
-        
-        // Generate appliance type options
-        StringBuilder typeOptions = new StringBuilder();
-        for (String type : types) {
-            typeOptions.append("<option value=\"")
-                       .append(type.toLowerCase())
-                       .append("\">")
-                       .append(type)
-                       .append("</option>");
-        }
+        BufferedWriter out = null;
+               
+        try {
+            String query = he.getRequestURI().getQuery();
+            Map<String, String> queryParams = WebUtil.requestStringToMap(query);
+            String selectedDepartment = queryParams.get("department");
+            String applianceType = queryParams.get("appliance");
+            
+            System.out.println("Debug: " + selectedDepartment + " " + applianceType);
+            
+            //select department
+            departments = ApplianceFactory.selectApplianceFactory(applianceType);
+            //select appliance
+            appliance = departments.selectAppliance();
+            
+            System.out.println("Debug: " + selectedDepartment + " " + applianceType);
 
-        // Generate HTML for the appliance type selection form
-        String html = "<html>" +
-            "<head>" +
-                "<title>Add New Appliance</title>" +
-                "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\">" +
-            "</head>" +
-            "<body>" +
-                "<div class=\"container mt-4\">" +
-                    "<h2>Add New Appliance</h2>" +
-                    "<form method=\"post\" action=\"/admin/appliances/add/submit\">" + // Submit the form to another endpoint
-                        "<div class=\"form-group\">" +
-                            "<label>Type</label>" +
-                            "<select name=\"type\" class=\"form-control\" required>" +
-                            typeOptions +
-                            "</select>" +
-                        "</div>" +
-                        "<div class=\"form-group\">" +
-                            "<label>Quantity</label>" +
-                            "<input type=\"number\" name=\"quantity\" class=\"form-control\" required min=\"1\">" +
-                        "</div>" +
-                        "<button type=\"submit\" class=\"btn btn-primary\">Add Appliance</button>" +
-                    "</form>" +
-                "</div>" +
-            "</body>" +
-        "</html>";
-
-        // Send response
-        he.sendResponseHeaders(200, html.length());
-        try (OutputStream os = he.getResponseBody()) {
-            os.write(html.getBytes());
+            
+            he.sendResponseHeaders(200, 0);
+            out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
+            
+            if ( appliance != null) {
+                out.write(
+                    "<html>" +
+                    "<head> <title>Edit Appliance</title> " +
+                    "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\" " +
+                    "integrity=\"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2\" crossorigin=\"anonymous\">" +
+                    "</head>" +
+                    "<body>" +
+                    "<div class=\"container\">" +
+                    "  <h1 class=\"mt-4\">Add Appliance</h1>" +
+                    "  <form method=\"post\" action=\"/admin/appliances/add-confirm\">" +
+                    "    <div class=\"form-group\">" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"description\">Description</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"description\" name=\"description\" value=\"" + appliance.getDescription() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"category\">Category</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"category\" name=\"category\" value=\"" + appliance.getCategory() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"sku\">SKU</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"sku\" name=\"sku\" value=\"" + appliance.getSku() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"price\">Price</label>" +
+                    "      <input type=\"number\" step=\"0.01\" class=\"form-control\" id=\"price\" name=\"price\" value=\"" + appliance.getPrice() + "\" readonly>" +
+                    "    </div>" +
+                    "    <button type=\"submit\" class=\"btn btn-success\">Save Changes</button>" +
+                    "  </form>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>");
+            } else {
+                out.write("<html><body><h1>Appliance Not Found</h1></body></html>");
+            }
+            
+        } catch (Exception e) {
+            he.sendResponseHeaders(500, 0);
+            if (out != null) {
+                out.write("<html><body><h1>Internal Server Error</h1></body></html>");
+            }
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

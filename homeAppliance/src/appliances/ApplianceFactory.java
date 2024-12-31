@@ -56,13 +56,3 @@ public abstract class ApplianceFactory {
     
     abstract void initializeApplianceTypes();
 }
-
-
-//class Robotics extends ApplianceFactory {
-//
-//	@Override
-//	void initializeApplianceTypes() {
-//		
-//	}
-//	
-//}

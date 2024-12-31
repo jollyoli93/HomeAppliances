@@ -1,4 +1,4 @@
-package webpages;
+package webHandlers;
 
 import java.io.OutputStreamWriter;
 import com.sun.net.httpserver.HttpHandler;

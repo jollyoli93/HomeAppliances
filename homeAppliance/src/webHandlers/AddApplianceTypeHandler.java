@@ -1,4 +1,4 @@
-package webpages;
+package webHandlers;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -39,20 +39,23 @@ public class AddApplianceTypeHandler implements HttpHandler {
             "<body>" +
                 "<div class=\"container mt-4\">" +
                     "<h2>Select Appliance Type</h2>" +
-                    "<form method=\"get\" action=\"/admin/appliances/add/type\">" +
+                    "<form method=\"get\" action=\"/admin/appliances/add/confirm\">" +
                         "<div class=\"form-group\">" +
-                            "<label>Department</label>" +
-                            "<select name=\"department\" class=\"form-control\" required>";
+                        	"<label for=\"department\">Department</label>" +
+                            "<input type=\"text\" class=\"form-control\" id=\"department\" name=\"department\" value=\"" + selectedDepartment + "\" readonly>" +
+                            "<label>Appliance</label>" +
+                            "<select name=\"appliance\" class=\"form-control\" required>";
 
-        // Dynamically populate the department options
-        // Assuming you have a list of departments (replace this with actual data if necessary)
-        //String[] departments = {"Entertainment", "Home Appliances", "Kitchen", "Cleaning"};
+        // add dynamically population for department options
 
 		ApplianceFactory applianceFactory = null;        
         
         switch (selectedDepartment)  {
         case "entertainment":
 			applianceFactory = new EntertainmentFactory();
+			break;
+        case "home cleaning":
+			applianceFactory = new HomeCleaningFactory();
 			break;
 		default:
 			applianceFactory = new EntertainmentFactory();
@@ -63,14 +66,12 @@ public class AddApplianceTypeHandler implements HttpHandler {
 		System.out.println(applianceTypes);
         
         for (String appliances : applianceTypes) {
-            // Mark the selected department if it matches the one passed in the query string
+            // Mark the selected appliance if it matches the one passed in the query string
             html += "<option value=\"" + appliances.toLowerCase() + "\""
                     + (appliances.equalsIgnoreCase(selectedDepartment) ? " selected" : "")
                     + ">" + appliances + "</option>";
         }
-        
-        //to add appliance type
-        //appliance = applianceFactory.selectAppliance(applianceTypes.get(userInput -1));
+       
 
         html += "</select>" +
                 "</div>" +
