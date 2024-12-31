@@ -36,6 +36,18 @@ public class AddApplianceTypeHandler implements HttpHandler {
                 "<title>Select Appliance Type</title>" +
                 "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\">" +
             "</head>" +
+            "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">" +
+	            "<a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
+	            "<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\">" +
+	                "<span class=\"navbar-toggler-icon\"></span>" +
+	            "</button>" +
+	            "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
+	                "<ul class=\"navbar-nav\">" +
+	                    "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                        "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/admin\">Dashboard</a></li>" +
+	                "</ul>" +
+	            "</div>" +
+            "</nav>" +
             "<body>" +
                 "<div class=\"container mt-4\">" +
                     "<h2>Select Appliance Type</h2>" +
