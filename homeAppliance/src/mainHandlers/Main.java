@@ -1,9 +1,23 @@
-package webHandlers;
+package mainHandlers;
 
 import com.sun.net.httpserver.HttpServer;
 
 import DAO.ApplianceDao;
 import DAO.UserDao;
+import applianceHandlers.AddApplianceConfirmHandler;
+import applianceHandlers.AddApplianceDeptHandler;
+import applianceHandlers.AddApplianceTypeHandler;
+import applianceHandlers.ApplianceList;
+import applianceHandlers.DeleteApplianceHandler;
+import applianceHandlers.DeleteConfirmationHandler;
+import applianceHandlers.EditApplianceForm;
+import applianceHandlers.UpdateApplianceHandler;
+import userHandlers.CreateUserHandler;
+import userHandlers.DeleteUserHandler;
+import userHandlers.EditUserHandler;
+import userHandlers.UsersHandler;
+import userHandlers.ViewAdminUsersHandler;
+import userHandlers.ViewCustomerUsersHandler;
 
 import java.net.InetSocketAddress;
 import java.io.IOException;
@@ -51,10 +65,12 @@ public class Main {
     
     // User management
     server.createContext("/admin/users", new UsersHandler());
-    server.createContext("/admin/users/view", new ViewAllUsersHandler());  
-    server.createContext("/admin/users/add", new CreateUserHandler());
-    server.createContext("/admin/users/edit", new EditUserHandler());
-    server.createContext("/admin/users/delete", new DeleteUserHandler());  
+    server.createContext("/admin/users/view", new ViewCustomerUsersHandler(userDao));
+    server.createContext("/admin/users/view-admin", new ViewAdminUsersHandler(userDao)); 
+    server.createContext("/admin/users/add", new CreateUserHandler(userDao));
+    server.createContext("/admin/users/edit", new EditUserHandler(userDao));
+    server.createContext("/admin/users/delete", new DeleteUserHandler(userDao));
+    server.createContext("/admin/users/promote", new PromoteUserHandler(userDao));  
     
     // Customer routes (if any needed)
   }
