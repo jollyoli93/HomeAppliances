@@ -7,6 +7,7 @@ import java.util.List;
 import DAO.UserDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
+import exceptions.InvalidUserIdException;
 import printer.AdminPrinter;
 import printer.BusinessPrinter;
 import printer.CustomerPrinter;
@@ -18,347 +19,342 @@ import users.CustomerUser;
 import users.ShippingAddress;
 import users.User;
 import users.UserFactory;
+import util.Util;
 
 public class UserConsole {
     private UserDao userDAO;
     private InputOutputHandler handleInput;
     private String dbPath;
-	private String consoleOutput = null;
-	User customer;
-	
-	public UserConsole (String dbPath) {
-		this.dbPath = dbPath;
-		this.handleInput = new ConsoleIOHandler();
-		
-		this.userDAO = new UserDao(dbPath);
-	}
-	
-	public void setHandler(InputOutputHandler handleInput) {
-	    this.handleInput = handleInput;
-	}
+    private String consoleOutput = null;
+    User customer;
 
-	
-	public String userMenu () {
-		String input = "0";
-		boolean flag = true;
-		
-			do {
-				System.out.println("------------------------");
-				System.out.println("Choose from these options");
-				System.out.println("------------------------");
-				System.out.println("[1] List all users");
-				System.out.println("[2] Search by the user ID");
-				System.out.println("[3] Add a new user");
-				System.out.println("[4] Update a user");
-				System.out.println("[5] Delete a user by ID");
-				System.out.println("[6] Add a user address");
-				System.out.println("[7] Manage admin");
-				System.out.println("[back] Go Back");
-				System.out.println();
-				input = handleInput.getInputString();
-				
-				switch (input) {
-				case "1":
-					getAllUsers();
-					//System.out.println(consoleOutput);
-					System.out.println();
-					break;
-				case "2":
-					getUserInterface();
-					break;
-				case "3":
-					consoleOutput = addUserInterface();
-					break;
-				case "4":
-					consoleOutput = selectUpdateMethod();
-					break;
-				case "5":
-					consoleOutput = deleteByUserID();
-					System.out.println();
-					break;
-				case "6":
-					consoleOutput = addAddressInterface();
-					System.out.println();
-					break;
-				case "7":
-					consoleOutput = handleAdminStatus();
-					System.out.println(consoleOutput);
-					break;
-				case "back":
-					flag = false;
-					System.out.println("Returning");
-					break;
-				default:
-					System.out.println("Try again");
-				}
-			} while (flag);
+    public UserConsole(String dbPath) {
+        this.dbPath = dbPath;
+        this.handleInput = new ConsoleIOHandler();
 
-			System.out.println();
-		return consoleOutput;
-		
-	}
-	
-	
-	private String selectUpdateMethod () {
-		String inputIdString, input;
-		int userId, updatedRows = 0;
-		
-		System.out.println("Enter user ID");
-		inputIdString = handleInput.getInputString();
-	
-		System.out.println("Please select update method");
-		String selectUpdate = "0";
-		
-		while (selectUpdate != "back") {
-				System.out.println("------------------------");
-				System.out.println("Choose from these options");
-				System.out.println("------------------------");
-				
-				
-				System.out.println("[1] Update first name");
-				System.out.println("[2] Update last name");
-				System.out.println("[3] Update email");
-				System.out.println("[4] Update password");
-				System.out.println("[5] Update address");
-				System.out.println("[6] Update telephone number");
-				System.out.println("[7] Update business name");
-				System.out.println("[back] Back");
-				System.out.println();
-				
-				selectUpdate = handleInput.getInputString();
-				String userInput= null;
-				
-				userId = Integer.parseInt(inputIdString); 
-				
-				switch (selectUpdate) {
-					case "1": 
-						System.out.println("Enter new first name");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "first_name", userInput);
-						break;
-					case "2":
-						System.out.println("Enter new last name");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "last_name", userInput);
-						break;
+        this.userDAO = new UserDao(dbPath);
+    }
 
-					case "3":
-						System.out.println("Enter new email");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "email_address", userInput);
-						break;
-					case "4":
-						System.out.println("Enter new password");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "password", userInput);
-						break;
-					case "5":
-						System.out.println("Enter new business name");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "business_name", userInput);
-						break;
-						
-					case "6":
-						System.out.println("Enter new telephone number");
-						userInput = handleInput.getInputString();
-						updatedRows = userDAO.updateFieldById(userId, "telephone_num", userInput);
-						break;
-					case "7":
-						System.out.println("update address");
-						updatedRows = updateAddressHandler(userId);
+    public void setHandler(InputOutputHandler handleInput) {
+        this.handleInput = handleInput;
+    }
 
-						break;
-					case "back":
-						System.out.println("User not updated. Returning.");
-						System.out.println();
-						break;
-					default:
-						System.out.println("Try again");
-				}
-				
-			    if (updatedRows > 0) {
-			        System.out.println("DEBUG: updated user.");
+    public String userMenu() {
+        String input = "0";
+        boolean flag = true;
 
-			        consoleOutput = "Number of rows updated: " + updatedRows;
-			        return consoleOutput;
-			    } else {
-			        System.out.println("DEBUG: Failed to update user.");
-			        consoleOutput = "Number of rows updated: " + updatedRows;
-			        return consoleOutput;
-			    }
-		}
-		
-		System.out.println("DEBUG: Updated end of loop");
-		return "returning"; 
-	}
-	
-	public void getUserInterface () {
-		String userIdString = null;
-		User user = null;
-		int userId = 0;
-		
-		System.out.println("Enter User ID.");
-		userIdString = handleInput.getInputString();
-		userId = Integer.parseInt(userIdString); 
-		
-		//fetch user profile
-		user = userDAO.getUserWithAddresses(userId);
-		
-		if (user == null) {
-			System.out.println("User doesn't exist");
-			return;
-		}
-		
-        switch (user.getRole()) {
-        case "admin":
-            new AdminPrinter(user).print();
-            break;
-        case "business":
-            new BusinessPrinter(user).print();
-            break;
-        case "customer":
-            new CustomerPrinter(user).print();
-            break;
-        default:
-            System.out.println("Unknown role: " + user.getRole());
-            break;
+        do {
+            System.out.println("------------------------");
+            System.out.println("Choose from these options");
+            System.out.println("------------------------");
+            System.out.println("[1] List all users");
+            System.out.println("[2] Search by the user ID");
+            System.out.println("[3] Add a new user");
+            System.out.println("[4] Update a user");
+            System.out.println("[5] Delete a user by ID");
+            System.out.println("[6] Add a user address");
+            System.out.println("[7] Manage admin");
+            System.out.println("[back] Go Back");
+            System.out.println();
+            input = handleInput.getInputString();
+
+            switch (input) {
+                case "1":
+                    getAllUsers();
+                    System.out.println();
+                    break;
+                case "2":
+                    getUserInterface();
+                    break;
+                case "3":
+                    consoleOutput = addUserInterface();
+                    break;
+                case "4":
+                    consoleOutput = selectUpdateMethod();
+                    break;
+                case "5":
+                    consoleOutput = deleteByUserID();
+                    System.out.println();
+                    break;
+                case "6":
+                    consoleOutput = addAddressInterface();
+                    System.out.println();
+                    break;
+                case "7":
+                    consoleOutput = handleAdminStatus();
+                    System.out.println(consoleOutput);
+                    break;
+                case "back":
+                    flag = false;
+                    System.out.println("Returning");
+                    break;
+                default:
+                    System.out.println("Try again");
+            }
+        } while (flag);
+
+        System.out.println();
+        return consoleOutput;
+    }
+
+    private String selectUpdateMethod() {
+        String inputIdString, selectUpdate;
+        int userId = 0, updatedRows = 0;
+
+        System.out.println("Enter user ID");
+        inputIdString = handleInput.getInputString();
+
+        try {
+            userId = Util.parseUserId(inputIdString);
+        } catch (InvalidUserIdException e) {
+            System.out.println(e.getMessage());
+            return "Failed to update user: " + e.getMessage();
         }
-	}
 
-	public void getAllUsers() {
-	    ArrayList<User> userList = userDAO.findAll();
+        System.out.println("Please select update method");
+        selectUpdate = "0";
 
-	    if (userList.isEmpty()) {
-	        return;
-	    }
+        while (!selectUpdate.equals("back")) {
+            System.out.println("------------------------");
+            System.out.println("Choose from these options");
+            System.out.println("------------------------");
+            System.out.println("[1] Update first name");
+            System.out.println("[2] Update last name");
+            System.out.println("[3] Update email");
+            System.out.println("[4] Update password");
+            System.out.println("[5] Update address");
+            System.out.println("[6] Update telephone number");
+            System.out.println("[7] Update business name");
+            System.out.println("[back] Back");
+            System.out.println();
 
-	    System.out.println("Looping through user list...");
-	    System.out.println();
+            selectUpdate = handleInput.getInputString();
+            String userInput = null;
 
-	    for (User user : userList) {
-	        switch (user.getRole()) {
-	            case "admin":
-	                new AdminPrinter(user).print();
-	                break;
-	            case "business":
-	                new BusinessPrinter(user).print();
-	                break;
-	            case "customer":
-	                new CustomerPrinter(user).print();
-	                break;
-	            default:
-	                System.out.println("Unknown role: " + user.getRole());
-	                break;
-	        }
-	    }
-	}
+            switch (selectUpdate) {
+                case "1":
+                    System.out.println("Enter new first name");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "first_name", userInput);
+                    break;
+                case "2":
+                    System.out.println("Enter new last name");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "last_name", userInput);
+                    break;
+                case "3":
+                    System.out.println("Enter new email");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "email_address", userInput);
+                    break;
+                case "4":
+                    System.out.println("Enter new password");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "password", userInput);
+                    break;
+                case "5":
+                    System.out.println("update address");
+                    updatedRows = updateAddressHandler(userId);
+                    break;
+                case "6":
+                    System.out.println("Enter new telephone number");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "telephone_num", userInput);
+                    break;
+                case "7":
+                    System.out.println("Enter new business name");
+                    userInput = handleInput.getInputString();
+                    updatedRows = userDAO.updateFieldById(userId, "business_name", userInput);
+                    break;
+                case "back":
+                    System.out.println("User not updated. Returning.");
+                    System.out.println();
+                    break;
+                default:
+                    System.out.println("Try again");
+            }
 
-	
-	public String addUserInterface () {
-		Boolean success = false;
-		
-			while (success == false) {
-				System.out.println("Please enter user role or type quit to exit");
-				System.out.println("admin, customer, business");
-				
-				//get roles dynamically;?
-				String role = handleInput.getInputString();
-				
-				try {
-					success = addUserByRole(role.toLowerCase());
-	
-					if (success == true) {
-						System.out.println();
-						System.out.println("Succesfully added to the database");
-						
-						
-						consoleOutput = "Succesfully added to the database";
-						return consoleOutput;
-					}
-					else {
-						System.out.println();
-						System.out.println("Error adding user - try again");
-						consoleOutput = "Error adding user - try again";
-						return consoleOutput;
-					}
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					System.out.println("CATCH: Error adding user - try again");
-					e.printStackTrace();
-				}
-			}
-			return consoleOutput;
-	}
+            if (updatedRows > 0) {
+                System.out.println("DEBUG: updated user.");
+                return "Number of rows updated: " + updatedRows;
+            } else {
+                System.out.println("DEBUG: Failed to update user.");
+                return "Number of rows updated: " + updatedRows;
+            }
+        }
 
-	private boolean addUserByRole(String role) {
-		String first_name = null;
-		String last_name = null;
-		String email = null;
-		String username = null;
-		String password = null;
-		String telephoneNum = null;
-		String businessName = null;
-		User user;
-		
-		System.out.println("First Name: ");
-		first_name = handleInput.getInputString();
-		
-		System.out.println("Last Name: ");
-		last_name = handleInput.getInputString();
+        return "returning";
+    }
 
-		System.out.println("Email: ");
-		email = handleInput.getInputString();
-		
-		System.out.println("username: ");
-		username = handleInput.getInputString();
-		
-		System.out.println("password: ");
-		password = handleInput.getInputString();
-		
-		
-		switch (role) {
-			case "customer":
-				System.out.println("Telephone Number: ");
-				telephoneNum = handleInput.getInputString();
+    public void getUserInterface() {
+        String userIdString = null;
+        User user = null;
+        int userId = 0;
 
-				user = new CustomerUser(first_name, last_name, email, username, password, telephoneNum);
-				return userDAO.addNewCustomer(user, null);
-				
-			case "admin":
-				user = new AdminUser(first_name, last_name, email, username, password);
-				return userDAO.addNewAdmin(user);
-				
-			case "business":
-				System.out.println("Telephone Number: ");
-				telephoneNum = handleInput.getInputString();
-				
-				System.out.println("Business Name: ");
-				businessName = handleInput.getInputString();
-				
-				user = new BusinessUser(first_name, last_name, email, username, password, telephoneNum, businessName);
-				return userDAO.addNewBusiness(user, null);
-			case "quit":
-				return true;
-			default:
-				return false;
-		}
-	}
-	
+        System.out.println("Enter User ID.");
+        userIdString = handleInput.getInputString();
+        try {
+        	userId = Util.parseUserId(userIdString);
+        } catch (InvalidUserIdException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        //fetch user profile
+        user = userDAO.getUserWithAddresses(userId);
+
+        if (user == null) {
+            System.out.println("User doesn't exist");
+            return;
+        }
+
+        switch (user.getRole()) {
+            case "admin":
+                new AdminPrinter(user).print();
+                break;
+            case "business":
+                new BusinessPrinter(user).print();
+                break;
+            case "customer":
+                new CustomerPrinter(user).print();
+                break;
+            default:
+                System.out.println("Unknown role: " + user.getRole());
+                break;
+        }
+    }
+
+    public void getAllUsers() {
+        ArrayList<User> userList = userDAO.findAll();
+
+        if (userList.isEmpty()) {
+            return;
+        }
+
+        System.out.println("Looping through user list...");
+        System.out.println();
+
+        for (User user : userList) {
+            switch (user.getRole()) {
+                case "admin":
+                    new AdminPrinter(user).print();
+                    break;
+                case "business":
+                    new BusinessPrinter(user).print();
+                    break;
+                case "customer":
+                    new CustomerPrinter(user).print();
+                    break;
+                default:
+                    System.out.println("Unknown role: " + user.getRole());
+                    break;
+            }
+        }
+    }
+
+    public String addUserInterface() {
+        Boolean success = false;
+
+        while (success == false) {
+            System.out.println("Please enter user role or type quit to exit");
+            System.out.println("admin, customer, business");
+
+            //get roles dynamically;?
+            String role = handleInput.getInputString();
+
+            try {
+                success = addUserByRole(role.toLowerCase());
+
+                if (success == true) {
+                    System.out.println();
+                    System.out.println("Succesfully added to the database");
+
+                    consoleOutput = "Succesfully added to the database";
+                    return consoleOutput;
+                } else {
+                    System.out.println();
+                    System.out.println("Error adding user - try again");
+                    consoleOutput = "Error adding user - try again";
+                    return consoleOutput;
+                }
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                System.out.println("CATCH: Error adding user - try again");
+                e.printStackTrace();
+            }
+        }
+        return consoleOutput;
+    }
+
+    private boolean addUserByRole(String role) {
+        String first_name = null;
+        String last_name = null;
+        String email = null;
+        String username = null;
+        String password = null;
+        String telephoneNum = null;
+        String businessName = null;
+        User user;
+
+        System.out.println("First Name: ");
+        first_name = handleInput.getInputString();
+
+        System.out.println("Last Name: ");
+        last_name = handleInput.getInputString();
+
+        System.out.println("Email: ");
+        email = handleInput.getInputString();
+
+        System.out.println("username: ");
+        username = handleInput.getInputString();
+
+        System.out.println("password: ");
+        password = handleInput.getInputString();
+
+        switch (role) {
+            case "customer":
+                System.out.println("Telephone Number: ");
+                telephoneNum = handleInput.getInputString();
+
+                user = new CustomerUser(first_name, last_name, email, username, password, telephoneNum);
+                return userDAO.addNewCustomer(user, null);
+
+            case "admin":
+                user = new AdminUser(first_name, last_name, email, username, password);
+                return userDAO.addNewAdmin(user);
+
+            case "business":
+                System.out.println("Telephone Number: ");
+                telephoneNum = handleInput.getInputString();
+
+                System.out.println("Business Name: ");
+                businessName = handleInput.getInputString();
+
+                user = new BusinessUser(first_name, last_name, email, username, password, telephoneNum, businessName);
+                return userDAO.addNewBusiness(user, null);
+            case "quit":
+                return true;
+            default:
+                return false;
+        }
+    }
+
 	private String deleteByUserID() {
 	    System.out.println("Please enter the user ID number you wish to delete:");
-	    String id = handleInput.getInputString();
-	    System.out.println("DEBUG: " + id);
+	    String inputIdString = handleInput.getInputString();
+	    System.out.println("DEBUG: " + inputIdString);
 	    int deleted = 0;
+	    int userId = 0;
 
-	    try {
-	        int userId = Integer.parseInt(id); // Parse String to int
-		    System.out.println("DEBUG: " + userId);
+        try {
+            userId = Util.parseUserId(inputIdString);
+        } catch (InvalidUserIdException e) {
+            System.out.println(e.getMessage());
+            return "Failed to update user: " + e.getMessage();
+        }
 		    
 	        deleted = userDAO.deleteUserById(userId); // Attempt to delete user
-	    } catch (NumberFormatException e) {
-	        System.out.println("Invalid user ID. Please enter a valid number.");
-	    } 
 	    
 	    if (deleted > 0) {
 	        System.out.println("User deleted successfully.");
@@ -373,13 +369,19 @@ public class UserConsole {
 	
 	public String addAddressInterface () {
 		Boolean success = false;
+		int userId = 0;
 		
 			while (success == false) {				
 				try {
 					System.out.println("Enter user ID.");
 					String userIdString = handleInput.getInputString();
 					
-					int userId = Integer.parseInt(userIdString);
+					try {
+			            userId = Util.parseUserId(userIdString);
+			        } catch (InvalidUserIdException e) {
+			            System.out.println(e.getMessage());
+			            return "Failed to update user: " + e.getMessage();
+			        }
 					
 					success = addAddressHandler(userId);
 	
@@ -507,7 +509,12 @@ public class UserConsole {
 		do {
 			System.out.println("Enter user ID");
 			userIdString = handleInput.getInputString();
-			userId = Integer.parseInt(userIdString);
+			try {
+	            userId = Util.parseUserId(userIdString);
+	        } catch (InvalidUserIdException e) {
+	            System.out.println(e.getMessage());
+	            return "Failed to update user: " + e.getMessage();
+	        }
 			
 			//get user role status
 			hasAdminStatus = userDAO.isUserAdmin(userId);
