@@ -671,19 +671,31 @@ public class UserDao extends DAO<User> {
 		}
 		
 		public int removeAdminById (int id) {
+			ArrayList<String> userRoles = new ArrayList<>();
 	        Map<String, Object> update = new HashMap<>();
-	        update.put("role_id", 2);
 	        
-	        //where
-	        update.put("user_id", id);
-	    	System.out.println(allowedTablesList);
-			try {
-				return deleteById("user_roles", update);
-			} catch (Exception e) {
-				System.out.println("Failed to remove admin status");
-				e.printStackTrace();
-			}
-			
+	        //check if user had additional roles
+	        userRoles = getUserRoles(id);
+	        
+	        if (userRoles.contains("admin") && (userRoles.size() == 1) ) {
+	        	System.out.println("User is admin. Cannot remove admin status.");
+	        	return 0;
+	        } else if (!userRoles.contains("admin")) {
+	        	System.out.println("User does not have admin status.");
+	        	return 0;
+	        } else if (userRoles.contains("admin") && (userRoles.size() > 1)) {
+		        //select admin role
+		        update.put("role_id", 2);
+		        //where
+		        update.put("user_id", id);
+		        
+				try {
+					return deleteById("user_roles", update);
+				} catch (Exception e) {
+					System.out.println("Failed to remove admin status");
+					e.printStackTrace();
+				}	
+	        }
 			return 0;
 		}
 

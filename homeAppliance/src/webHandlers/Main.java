@@ -51,7 +51,10 @@ public class Main {
     
     // User management
     server.createContext("/admin/users", new UsersHandler());
-    server.createContext("/admin/users/create", new CreateUserHandler());  
+    server.createContext("/admin/users/view", new ViewAllUsersHandler());  
+    server.createContext("/admin/users/add", new CreateUserHandler());
+    server.createContext("/admin/users/edit", new EditUserHandler());
+    server.createContext("/admin/users/delete", new DeleteUserHandler());  
     
     // Customer routes (if any needed)
   }

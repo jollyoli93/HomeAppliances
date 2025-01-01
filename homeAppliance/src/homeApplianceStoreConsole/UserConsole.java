@@ -204,6 +204,11 @@ public class UserConsole {
 		//fetch user profile
 		user = userDAO.getUserWithAddresses(userId);
 		
+		if (user == null) {
+			System.out.println("User doesn't exist");
+			return;
+		}
+		
         switch (user.getRole()) {
         case "admin":
             new AdminPrinter(user).print();
