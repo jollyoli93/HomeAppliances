@@ -1,4 +1,4 @@
-package mainHandlers;
+package userHandlers;
 
 import java.io.IOException;
 import java.util.Map;
@@ -40,7 +40,7 @@ public class PromoteUserHandler implements HttpHandler {
             String response;
             if (result > 0) {
                 response = "Promote to admin. Rows affected: " + result;
-                he.getResponseHeaders().add("Location", "/admin/users/success");
+                he.getResponseHeaders().add("Location", "/admin/success");
                 he.sendResponseHeaders(302, response.length());
             } else {
                 response = "Failed to promote the user to admin.";

@@ -24,11 +24,12 @@ public class UsersHandler implements HttpHandler {
                         "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
                             "<ul class=\"navbar-nav\">" +
                                 "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                                "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/admin\">Dashboard</a></li>" +
                             "</ul>" +
                         "</div>" +
                     "</nav>" +
                     "<div class=\"container mt-4\">" +
-                        "<h1 class=\"mb-4\">Admin Dashboard</h1>" +
+                        "<h1 class=\"mb-4\">User Admin Dashboard</h1>" +
                         "<div class=\"list-group\">" +
                             "<a href=\"/admin/users/view\" class=\"list-group-item list-group-item-action\">" +
                                 "<h5 class=\"mb-1\">View Customers</h5>" +

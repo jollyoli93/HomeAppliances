@@ -70,7 +70,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                             "<td>" + user.getTelephoneNum() + "</td>" +
                             "<td class=\"d-flex\">" +
                             "<a href=\"/admin/users/edit?id=" + user.getCustomerId() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-                            "<a href=\"/admin/users/delete?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+                            "<a href=\"/admin/users/delete-confirm?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
                             "</td>" +
 	                        "<td>"+
 	                        	adminOption(user)+

@@ -8,10 +8,10 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
 import appliances.Appliance;
 
-public class DeleteConfirmationHandler implements HttpHandler {
+public class DeleteApplianceConfirmationHandler implements HttpHandler {
     private ApplianceDao applianceDao;
     
-    public DeleteConfirmationHandler(ApplianceDao applianceDao) {
+    public DeleteApplianceConfirmationHandler(ApplianceDao applianceDao) {
         this.applianceDao = applianceDao;
     }
     

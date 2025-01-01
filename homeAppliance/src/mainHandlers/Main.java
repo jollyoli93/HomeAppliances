@@ -9,12 +9,14 @@ import applianceHandlers.AddApplianceDeptHandler;
 import applianceHandlers.AddApplianceTypeHandler;
 import applianceHandlers.ApplianceList;
 import applianceHandlers.DeleteApplianceHandler;
-import applianceHandlers.DeleteConfirmationHandler;
+import applianceHandlers.DeleteApplianceConfirmationHandler;
 import applianceHandlers.EditApplianceForm;
 import applianceHandlers.UpdateApplianceHandler;
 import userHandlers.CreateUserHandler;
+import userHandlers.DeleteUserConfirmationHandler;
 import userHandlers.DeleteUserHandler;
 import userHandlers.EditUserHandler;
+import userHandlers.PromoteUserHandler;
 import userHandlers.UsersHandler;
 import userHandlers.ViewAdminUsersHandler;
 import userHandlers.ViewCustomerUsersHandler;
@@ -51,6 +53,7 @@ public class Main {
     // ADMIN
     server.createContext("/admin", new AdminHandler());
     server.createContext("/admin/appliances", new ApplianceList(applianceDao));
+    server.createContext("/admin/success", new SuccessPageHandler()); 
     
     // Department selection and type selection
     server.createContext("/admin/appliances/add", new AddApplianceDeptHandler(applianceDao)); // Department selection page 
@@ -61,7 +64,7 @@ public class Main {
     server.createContext("/admin/appliances/edit", new EditApplianceForm(applianceDao)); 
     server.createContext("/admin/appliances/update", new UpdateApplianceHandler(applianceDao));
     server.createContext("/admin/appliances/delete", new DeleteApplianceHandler(applianceDao));
-    server.createContext("/admin/appliances/delete-confirm", new DeleteConfirmationHandler(applianceDao));
+    server.createContext("/admin/appliances/delete-confirm", new DeleteApplianceConfirmationHandler(applianceDao));
     
     // User management
     server.createContext("/admin/users", new UsersHandler());
@@ -70,8 +73,9 @@ public class Main {
     server.createContext("/admin/users/add", new CreateUserHandler(userDao));
     server.createContext("/admin/users/edit", new EditUserHandler(userDao));
     server.createContext("/admin/users/delete", new DeleteUserHandler(userDao));
+    server.createContext("/admin/users/delete-confirm", new DeleteUserConfirmationHandler(userDao));
     server.createContext("/admin/users/promote", new PromoteUserHandler(userDao));  
-    
+
     // Customer routes (if any needed)
   }
 }

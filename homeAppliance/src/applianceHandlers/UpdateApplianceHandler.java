@@ -29,7 +29,7 @@ public class UpdateApplianceHandler implements HttpHandler{
 	        
 	        // Prepare response
 	        String response = "Update complete: " + result;
-	        he.getResponseHeaders().add("Location", "/admin/appliances");
+	        he.getResponseHeaders().add("Location", "/admin/success");
 	        he.sendResponseHeaders(302, response.length());
 	        he.getResponseBody().write(response.getBytes());
 	        he.getResponseBody().close();
