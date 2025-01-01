@@ -204,7 +204,7 @@ class UserConsoleTest {
 	
 	@Test
 	public void CorrectUpdateFirstUsersBusinessName() {
-		String[] UpdateFirstUser = {"4", "1","5", "Best Biz"};
+		String[] UpdateFirstUser = {"4", "1","7", "Best Biz"};
 		
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User Business Name");
@@ -283,5 +283,22 @@ class UserConsoleTest {
         output = console.userMenu();
         
         assertEquals("Number of rows updated: 1", output);
+    }
+    
+    @Test
+    public void rejectRemoveAdminStatus() {
+        String[] giveAdmin = {"7", "1", "1"};
+        
+        
+		System.out.println("_________________________________________________________________________________");
+		System.out.println("TEST - Handle Admin Status");
+		System.out.println("_________________________________________________________________________________");
+		
+		addUserAdmin();
+		
+        console.setHandler(new MockIOHandler(giveAdmin));
+        output = console.userMenu();
+        
+        assertEquals("Number of rows updated: 0", output);
     }
 }

@@ -450,7 +450,7 @@ public class UserDao extends DAO<User> {
 		
 		public int deleteUserById (int id) {
 	    	Map<String, Object> update = new HashMap<>();
-	    	update.put("id", id);
+	    	update.put("user_id", id);
 	    	
 			try {
 				return deleteById("users", update);
@@ -598,13 +598,27 @@ public class UserDao extends DAO<User> {
 		
 		//for testing purposes
 		public boolean dropUserTable() {
-		    String query = "DROP TABLE Users";
+		    String disableFKQuery = "PRAGMA foreign_keys = OFF;";  // Disable foreign key checks temporarily
+		    String dropUserRolesTable = "DROP TABLE IF EXISTS user_roles;";  // Drop child table first
+		    String dropUsersTable = "DROP TABLE IF EXISTS users;";  // Drop parent table
+		    String dropRolesTable = "DROP TABLE IF EXISTS roles;";  // Drop roles table
 
 		    try (Connection conn = connector.initializeDBConnection();
 		         Statement stmt = conn.createStatement()) {
 
-		        // Execute the SQL query
-		        stmt.executeUpdate(query);
+		        // Disable foreign key constraints temporarily
+		        stmt.executeUpdate(disableFKQuery);
+
+		        // Drop the user_roles table first to avoid foreign key constraint issues
+		        stmt.executeUpdate(dropUserRolesTable);
+
+		        // Drop the users and roles tables
+		        stmt.executeUpdate(dropUsersTable);
+		        stmt.executeUpdate(dropRolesTable);
+
+		        // Optionally, you can enable foreign key checks again after the tables are dropped (SQLite-specific)
+		        // stmt.executeUpdate("PRAGMA foreign_keys = ON;");
+
 		        return true;
 
 		    } catch (SQLException e) {
@@ -613,7 +627,8 @@ public class UserDao extends DAO<User> {
 		        return false;
 		    }
 		}
-	
+
+
 		
 		public ArrayList<String> getUserRoles (int id) {
 			ArrayList<String> userRoles = new ArrayList<String>();
@@ -692,8 +707,9 @@ public class UserDao extends DAO<User> {
 				try {
 					return deleteById("user_roles", update);
 				} catch (Exception e) {
-					System.out.println("Failed to remove admin status");
+					System.out.println("Failed to give admin status.");
 					e.printStackTrace();
+					return 0;
 				}	
 	        }
 			return 0;

@@ -42,6 +42,7 @@ public class UserConsole {
     public String userMenu() {
         String input = "0";
         boolean flag = true;
+        int count = 0;
 
         do {
             System.out.println("------------------------");
@@ -89,7 +90,9 @@ public class UserConsole {
                     System.out.println("Returning");
                     break;
                 default:
-                    System.out.println("Try again");
+                	if (count>1) flag = false;
+                	count++;
+                    System.out.println("Try again " + (3 - count) + " trys left");
             }
         } while (flag);
 
