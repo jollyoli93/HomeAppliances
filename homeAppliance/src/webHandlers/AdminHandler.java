@@ -38,6 +38,10 @@ public class AdminHandler implements HttpHandler {
                                 "<h5 class=\"mb-1\">View All Appliances</h5>" +
                                 "<small>Manage existing appliances</small>" +
                             "</a>" +
+                            "<a href=\"/admin/users\" class=\"list-group-item list-group-item-action\">" +
+                            "<h5 class=\"mb-1\">Manage Users</h5>" +
+                            "<small>Manage customer accounts</small>" +
+                        "</a>" +
                         "</div>" +
                     "</div>" +
                     "<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"></script>" +
