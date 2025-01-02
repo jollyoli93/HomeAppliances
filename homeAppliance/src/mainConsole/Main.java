@@ -1,6 +1,6 @@
 //STUDENT NO. 24862664
 
-package console;
+package mainConsole;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;

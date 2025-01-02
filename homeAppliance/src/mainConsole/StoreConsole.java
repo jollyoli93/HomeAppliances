@@ -1,4 +1,4 @@
-package console;
+package mainConsole;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;

@@ -52,35 +52,35 @@ public class EditAddressHandler implements HttpHandler {
                         "<body><div class=\"container\">" +
                         "<h1 class=\"mt-4\">Edit Address</h1>" +
                         "<form method=\"post\" action=\"/admin/users/update-address\">" +
-                        "<input type=\"hidden\" name=\"customerId\" value=\"" + customerId + "\">" +
-                        "<input type=\"hidden\" name=\"addressId\" value=\"" + addressId + "\">" +
-                        "<div class=\"form-group\">" +
-                        "<label for=\"number\">Number</label>" +
-                        "<input type=\"text\" class=\"form-control\" id=\"number\" name=\"number\" value=\"" + address.getNumber() + "\">" +
-                        "</div>" +
-                        "<div class=\"form-group\">" +
-                        "<label for=\"street\">Street</label>" +
-                        "<input type=\"text\" class=\"form-control\" id=\"street\" name=\"street\" value=\"" + address.getStreet() + "\">" +
-                        "</div>" +
-                        "<div class=\"form-group\">" +
-                        "<label for=\"city\">City</label>" +
-                        "<input type=\"text\" class=\"form-control\" id=\"city\" name=\"city\" value=\"" + address.getCity() + "\">" +
-                        "</div>" +
-                        "<div class=\"form-group\">" +
-                        "<label for=\"postCode\">Post Code</label>" +
-                        "<input type=\"text\" class=\"form-control\" id=\"postCode\" name=\"postCode\" value=\"" + address.getPostCode() + "\">" +
-                        "</div>" +
-                        "<div class=\"form-group\">" +
-                        "<label for=\"country\">Country</label>" +
-                        "<input type=\"text\" class=\"form-control\" id=\"country\" name=\"country\" value=\"" + address.getCountry() + "\">" +
-                        "</div>" +
-                        "<div class=\"form-check\">" +
-                        "<input class=\"form-check-input\" type=\"checkbox\" id=\"isPrimary\" name=\"isPrimary\" " +
-                        (address.isPrimary() ? "checked" : "") + ">" +
-                        "<label class=\"form-check-label\" for=\"isPrimary\">Set as Primary Address</label>" +
-                        "</div>" +
-                        "<button type=\"submit\" class=\"btn btn-success mt-3\">Save Changes</button>" +
-                        "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2 mt-3\">Cancel</a>" +
+	                        "<input type=\"hidden\" name=\"customerId\" value=\"" + customerId + "\">" +
+	                        "<input type=\"hidden\" name=\"addressId\" value=\"" + addressId + "\">" +
+	                        "<div class=\"form-group\">" +
+		                        "<label for=\"number\">Number</label>" +
+		                        "<input type=\"text\" class=\"form-control\" id=\"number\" name=\"number\" value=\"" + address.getNumber() + "\">" +
+	                        "</div>" +
+	                        "<div class=\"form-group\">" +
+		                        "<label for=\"street\">Street</label>" +
+		                        "<input type=\"text\" class=\"form-control\" id=\"street\" name=\"street\" value=\"" + address.getStreet() + "\">" +
+	                        "</div>" +
+	                        "<div class=\"form-group\">" +
+		                        "<label for=\"city\">City</label>" +
+		                        "<input type=\"text\" class=\"form-control\" id=\"city\" name=\"city\" value=\"" + address.getCity() + "\">" +
+	                        "</div>" +
+	                        "<div class=\"form-group\">" +
+		                        "<label for=\"postCode\">Post Code</label>" +
+		                        "<input type=\"text\" class=\"form-control\" id=\"postCode\" name=\"postCode\" value=\"" + address.getPostCode() + "\">" +
+	                        "</div>" +
+	                        "<div class=\"form-group\">" +
+		                        "<label for=\"country\">Country</label>" +
+		                        "<input type=\"text\" class=\"form-control\" id=\"country\" name=\"country\" value=\"" + address.getCountry() + "\">" +
+	                        "</div>" +
+	                        "<div class=\"form-check\">" +
+		                        "<input class=\"form-check-input\" type=\"checkbox\" id=\"isPrimary\" name=\"isPrimary\" " +
+		                        (address.isPrimary() ? "checked" : "") + ">" +
+		                        "<label class=\"form-check-label\" for=\"isPrimary\">Set as Primary Address</label>" +
+	                        "</div>" +
+	                        "<button type=\"submit\" class=\"btn btn-success mt-3\">Save Changes</button>" +
+	                        "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2 mt-3\">Cancel</a>" +
                         "</form></div></body></html>");
 
                 out.write(html.toString());

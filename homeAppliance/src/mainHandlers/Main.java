@@ -75,6 +75,8 @@ public class Main {
     server.createContext("/admin/users/view-address", new ViewAddressHandler(userDao)); 
     server.createContext("/admin/users/add", new CreateUserHandler(userDao));
     server.createContext("/admin/users/edit", new EditUserHandler(userDao));
+    server.createContext("/admin/users/update", new UpdateUserHandler(userDao));
+    server.createContext("/admin/users/update-address", new UpdateAddressHandler());
     server.createContext("/admin/users/edit-address", new EditAddressHandler(userDao));
     server.createContext("/admin/users/delete", new DeleteUserHandler(userDao));
     server.createContext("/admin/users/delete-confirm", new DeleteUserConfirmationHandler(userDao));

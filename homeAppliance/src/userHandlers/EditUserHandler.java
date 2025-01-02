@@ -41,31 +41,31 @@ public class EditUserHandler implements HttpHandler {
                     "</head>" +
                     "<body><div class=\"container\">" +
                     "<h1 class=\"mt-4\">Edit User</h1>" +
-                    "<form method=\"post\" action=\"/admin/users/edit\">" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"customerId\">Customer ID</label>" +
-                    "<input type=\"text\" class=\"form-control\" id=\"customerId\" name=\"customerId\" value=\"" + user.getCustomerId() + "\" readonly>" +
-                    "</div>" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"firstName\">First Name</label>" +
-                    "<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\" value=\"" + user.getFirstName() + "\">" +
-                    "</div>" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"lastName\">Last Name</label>" +
-                    "<input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\" value=\"" + user.getLastName() + "\">" +
-                    "</div>" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"username\">Username</label>" +
-                    "<input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"" + user.getUsername() + "\">" +
-                    "</div>" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"emailAddress\">Email Address</label>" +
-                    "<input type=\"email\" class=\"form-control\" id=\"emailAddress\" name=\"emailAddress\" value=\"" + user.getEmailAddress() + "\">" +
-                    "</div>" +
-                    "<div class=\"form-group\">" +
-                    "<label for=\"telephoneNum\">Telephone Number</label>" +
-                    "<input type=\"tel\" class=\"form-control\" id=\"telephoneNum\" name=\"telephoneNum\" value=\"" + user.getTelephoneNum() + "\" pattern=\"\\d{11}\" title=\"Please enter 11 digits\">" +
-                    "</div>");
+                    "<form method=\"post\" action=\"/admin/users/update\">" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"customerId\">Customer ID</label>" +
+		                    "<input type=\"text\" class=\"form-control\" id=\"customerId\" name=\"customerId\" value=\"" + user.getCustomerId() + "\" readonly>" +
+	                    "</div>" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"firstName\">First Name</label>" +
+		                    "<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\" value=\"" + user.getFirstName() + "\">" +
+	                    "</div>" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"lastName\">Last Name</label>" +
+		                    "<input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\" value=\"" + user.getLastName() + "\">" +
+	                    "</div>" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"username\">Username</label>" +
+		                    "<input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"" + user.getUsername() + "\">" +
+	                    "</div>" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"emailAddress\">Email Address</label>" +
+		                    "<input type=\"email\" class=\"form-control\" id=\"emailAddress\" name=\"emailAddress\" value=\"" + user.getEmailAddress() + "\">" +
+	                    "</div>" +
+	                    "<div class=\"form-group\">" +
+		                    "<label for=\"telephoneNum\">Telephone Number</label>" +
+		                    "<input type=\"tel\" class=\"form-control\" id=\"telephoneNum\" name=\"telephoneNum\" value=\"" + user.getTelephoneNum() + "\" pattern=\"\\d{11}\" title=\"Please enter 11 digits\">" +
+	                    "</div>");
 
                 if (userRoles.contains("business")) {
                     String businessName = user.getBusinessName();
@@ -78,8 +78,8 @@ public class EditUserHandler implements HttpHandler {
                 }
 
                 html.append("<div class=\"form-group\">" +
-                    "<label for=\"password\">Password</label>" +
-                    "<input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"Enter new password\">" +
+	                    "<label for=\"password\">Password</label>" +
+	                    "<input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"Enter new password\">" +
                     "</div>" +
                     "<button type=\"submit\" class=\"btn btn-success\">Save Changes</button>" +
                     "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
