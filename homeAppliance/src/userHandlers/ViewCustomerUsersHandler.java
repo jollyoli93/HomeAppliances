@@ -51,7 +51,8 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<th>Email Address</th>" +
                 "<th>Telephone Number</th>" +
                 "<th>Actions</th>" +
-                "<th>Admin</th>" +                
+                "<th>Admin</th>" + 
+                "<th>Addresses</th>" + 
                 "</tr>" +
                 "</thead>" +
                 "<tbody>"
@@ -75,6 +76,9 @@ public class ViewCustomerUsersHandler implements HttpHandler {
 	                        "<td>"+
 	                        	adminOption(user)+
                             "</td>"+
+                            "<td>"+
+                        		"<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
+                        	"</td>"+
                             "</tr>"
                         );
                     }
@@ -99,6 +103,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<th>Business Name</th>" +
                 "<th>Actions</th>" +
                 "<th>Admin</th>" +
+                "<th>Addresses</th>" + 
                 "</tr>" +
                 "</thead>" +
                 "<tbody>"
@@ -122,6 +127,9 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                             "</td>" +
 	                        "<td>"+
 	                        	adminOption(user)+
+                            "</td>"+
+                            "<td>"+
+                            	"<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
                             "</td>"+
                             "</tr>"
                         );

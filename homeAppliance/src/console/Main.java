@@ -1,6 +1,6 @@
 //STUDENT NO. 24862664
 
-package homeApplianceStoreConsole;
+package console;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;

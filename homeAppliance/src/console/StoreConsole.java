@@ -1,4 +1,4 @@
-package homeApplianceStoreConsole;
+package console;
 
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;

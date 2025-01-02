@@ -60,7 +60,6 @@ public class UserDao extends DAO<User> {
 		    + "postcode TEXT NOT NULL, "
 		    + "country TEXT NOT NULL, "
 		    + "isPrimary TEXT NOT NULL, "
-		    + "address_type TEXT NOT NULL, "
 		    + "user_id INTEGER NOT NULL, "
 		    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
 		    + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
@@ -97,8 +96,6 @@ public class UserDao extends DAO<User> {
 	        try (Connection connect = connector.initializeDBConnection();
 	        	 Statement statement = connect.createStatement();
 	        	 ResultSet result = statement.executeQuery(query)) {
-	        	
-	        		System.out.println("DEBUG: parse results");
 	        		
 	        		while (result.next()) {
 	            	   User user = null;
@@ -112,10 +109,6 @@ public class UserDao extends DAO<User> {
 	                   String telephoneNum = result.getString("telephone_num");
 	                   String businessName = result.getString("business_name");
 	                   String role = getRoleDesc(user_id);
-	                   
-	                   System.out.println("DEBUG: results added ");
-	                   System.out.println("Debug user id: "  + user_id);
-	                   System.out.println("Debug user role: "  + role);
 	                   
                 	   if (user_id != 0) {
 							//change to lambda
@@ -138,7 +131,6 @@ public class UserDao extends DAO<User> {
 							throw new IllegalArgumentException("No role found");
 						}                 
 	                   
-	                   System.out.println("DEBUG: adding users to list");
 	                   user.setCustomerId(user_id);
 	                   userList.add(user);
 	               } 
@@ -219,7 +211,7 @@ public class UserDao extends DAO<User> {
 		            String postcode = addressResult.getString("postcode");
 		            String country = addressResult.getString("country");
 		            boolean isPrimary = addressResult.getBoolean("isPrimary");
-		            String addressType = addressResult.getString("addressType");
+		            String addressType = addressResult.getString("address_type");
 
 		            Address address;
 		            switch (addressType.toLowerCase()) {
@@ -527,7 +519,6 @@ public class UserDao extends DAO<User> {
 		         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 		        
 				int role_id = getRoleId(role);
-				System.out.println("DEBUG: role id is: " + role_id);
 				
 		        preparedStatement.setInt(1, id);
 		        preparedStatement.setInt(2, role_id);
@@ -576,19 +567,16 @@ public class UserDao extends DAO<User> {
 				         Statement statement = connect.createStatement()) {
 				    	
 				        // Execute the SQL query
-						System.out.println("DEBUG: Populating roles");
 				    	statement.executeUpdate(query);
 
 				        return true;
 				    } catch (SQLException e) {
 				        e.printStackTrace();
-						System.out.println("DEBUG: Error inserting roles into table");
 				        System.out.println("SQL Exception: " + e.getMessage());
 				        return false;
 				    }
 		        }
 		    } catch (SQLException e) {
-				System.out.println("DEBUG: Error populating roles during SELECT Statement");
 				e.printStackTrace();
 		        System.out.println("SQL Exception: " + e.getMessage());
 		    }
@@ -650,7 +638,6 @@ public class UserDao extends DAO<User> {
 			 	while (result.next()) {
 					userRoles.add(result.getString("role_name"));
 				}
-			 	System.out.println("DEBUG: getting user roles");
 			 	return userRoles;
 		    } catch (SQLException e) {
 				System.out.println("Failed to get user roles");

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import IOHandlers.MockIOHandler;
-import homeApplianceStoreConsole.ApplianceConsole;
+import console.ApplianceConsole;
 
 class ApplianceConsoleTest {
 	ApplianceConsole console;

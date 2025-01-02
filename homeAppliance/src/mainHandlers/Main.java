@@ -18,6 +18,7 @@ import userHandlers.DeleteUserHandler;
 import userHandlers.EditUserHandler;
 import userHandlers.PromoteUserHandler;
 import userHandlers.UsersHandler;
+import userHandlers.ViewAddressHandler;
 import userHandlers.ViewAdminUsersHandler;
 import userHandlers.ViewCustomerUsersHandler;
 
@@ -70,6 +71,7 @@ public class Main {
     server.createContext("/admin/users", new UsersHandler());
     server.createContext("/admin/users/view", new ViewCustomerUsersHandler(userDao));
     server.createContext("/admin/users/view-admin", new ViewAdminUsersHandler(userDao)); 
+    server.createContext("/admin/users/view-address", new ViewAddressHandler(userDao)); 
     server.createContext("/admin/users/add", new CreateUserHandler(userDao));
     server.createContext("/admin/users/edit", new EditUserHandler(userDao));
     server.createContext("/admin/users/delete", new DeleteUserHandler(userDao));

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import DAO.UserDao;
 import IOHandlers.MockIOHandler;
-import homeApplianceStoreConsole.UserConsole;
+import console.UserConsole;
 
 class UserConsoleTest {
 	UserConsole console;
