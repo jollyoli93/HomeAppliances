@@ -77,10 +77,7 @@ public class EditUserHandler implements HttpHandler {
                     }
                 }
 
-                html.append("<div class=\"form-group\">" +
-	                    "<label for=\"password\">Password</label>" +
-	                    "<input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"Enter new password\">" +
-                    "</div>" +
+                html.append(
                     "<button type=\"submit\" class=\"btn btn-success\">Save Changes</button>" +
                     "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
                     "</form></div></body></html>");
