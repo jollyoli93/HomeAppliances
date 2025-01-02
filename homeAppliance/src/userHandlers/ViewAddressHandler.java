@@ -49,6 +49,7 @@ public class ViewAddressHandler implements HttpHandler {
             }
 
             List<Address> userAddresses = userDao.getAddresses(user.getCustomerId());
+        	System.out.println("DEBUG: " + userAddresses);
 
             he.sendResponseHeaders(200, 0);
             out.write(
@@ -71,7 +72,12 @@ public class ViewAddressHandler implements HttpHandler {
                 "<table class=\"table table-striped\">" +
                 "<thead class=\"thead-dark\">" +
                 "<tr>" +
-                "<th>Address</th>" +
+                "<th>Number</th>" +
+                "<th>Street</th>" +
+                "<th>City</th>" +
+                "<th>Postcode</th>" +
+                "<th>Country</th>" +
+                "<th>Is Primary</th>" +
                 "<th>Actions</th>" +
                 "</tr>" +
                 "</thead>" +
@@ -80,15 +86,21 @@ public class ViewAddressHandler implements HttpHandler {
 
             boolean billingFound = false;
             for (Address address : userAddresses) {
-                if (address.getAddressType().equals("Billing")) {
+            	System.out.println("DEBUG: " + address);
+                if (address.getAddressType().equals("billing")) {
                     billingFound = true;
                     out.write(
                         "<tr>" +
-                        "<td>" + address.toString() + "</td>" +
-                        "<td class=\"d-flex\">" +
-                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
-                        "</td>" +
+	                        "<td>" + address.getNumber() + "</td>" +
+	                        "<td>" + address.getStreet() + "</td>" +
+	                        "<td>" + address.getCity() + "</td>" +
+	                        "<td>" + address.getPostCode() + "</td>" +
+	                        "<td>" + address.getCountry() + "</td>" +
+	                        "<td>" + address.isPrimary() + "</td>" +
+	                        "<td class=\"d-flex\">" +
+	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
+	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+	                        "</td>" +
                         "</tr>"
                     );
                 }
@@ -109,8 +121,13 @@ public class ViewAddressHandler implements HttpHandler {
                 "<table class=\"table table-striped\">" +
                 "<thead class=\"thead-dark\">" +
                 "<tr>" +
-                "<th>Address</th>" +
-                "<th>Actions</th>" +
+	                "<th>Number</th>" +
+	                "<th>Street</th>" +
+	                "<th>City</th>" +
+	                "<th>Postcode</th>" +
+	                "<th>Country</th>" +
+	                "<th>Is Primary</th>" +
+	                "<th>Actions</th>" +
                 "</tr>" +
                 "</thead>" +
                 "<tbody>"
@@ -118,15 +135,22 @@ public class ViewAddressHandler implements HttpHandler {
 
             boolean shippingFound = false;
             for (Address address : userAddresses) {
-                if (address.getAddressType().equals("Shipping")) {
+            	System.out.println("DEBUG: " + address);
+
+                if (address.getAddressType().equals("shipping")) {
                     shippingFound = true;
                     out.write(
                         "<tr>" +
-                        "<td>" + address.toString() + "</td>" +
-                        "<td class=\"d-flex\">" +
-                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
-                        "</td>" +
+	                        "<td>" + address.getNumber() + "</td>" +
+	                        "<td>" + address.getStreet() + "</td>" +
+	                        "<td>" + address.getCity() + "</td>" +
+	                        "<td>" + address.getPostCode() + "</td>" +
+	                        "<td>" + address.getCountry() + "</td>" +
+	                        "<td>" + address.isPrimary() + "</td>" +
+	                        "<td class=\"d-flex\">" +
+	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
+	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+	                        "</td>" +
                         "</tr>"
                     );
                 }
