@@ -212,7 +212,8 @@ public class UserDao extends DAO<User> {
 		            String country = addressResult.getString("country");
 		            boolean isPrimary = addressResult.getBoolean("isPrimary");
 		            String addressType = addressResult.getString("address_type");
-
+		            int addressId = addressResult.getInt("address_id");
+		            
 		            Address address;
 		            switch (addressType.toLowerCase()) {
 		                case "billing":
@@ -224,6 +225,9 @@ public class UserDao extends DAO<User> {
 		                default:
 		                    throw new IllegalArgumentException("Unknown address type: " + addressType);
 		            }
+		            
+		            address.setAddress_id(addressId);
+		            System.out.println("DEBUG: address id " + addressId);
 
 		            addressList.add(address);
 		        }
@@ -266,6 +270,49 @@ public class UserDao extends DAO<User> {
 		    
 		    return user;
 		}
+		
+		public Address getAddress(int userId, int addressId) {
+		    String query = "SELECT building_number, street, city, postcode, country, isPrimary, address_type " +
+		            "FROM addresses WHERE user_id = ? AND address_id = ?";
+
+		    try (Connection connect = connector.initializeDBConnection();
+		         PreparedStatement preparedStatement = connect.prepareStatement(query)){
+		    	
+		    	preparedStatement.setInt(1, userId);
+		    	preparedStatement.setInt(2, addressId);
+		    	
+		        try (ResultSet userResult = preparedStatement.executeQuery()) {
+		            if (userResult.next()) {
+		                String buildingNumber = userResult.getString("building_number");
+		                String street = userResult.getString("street");
+		                String city = userResult.getString("city");
+		                String postcode = userResult.getString("postcode");
+		                String country = userResult.getString("country");
+		                boolean isPrimary = userResult.getBoolean("isPrimary");
+		                String addressType = userResult.getString("address_type");
+
+		                Address address;
+			            switch (addressType.toLowerCase()) {
+			                case "billing":
+			                    address = new BillingAddress(buildingNumber, street, city, country, postcode, userId, isPrimary);
+			                    break;
+			                case "shipping":
+			                    address = new ShippingAddress(buildingNumber, street, city, country, postcode, userId, isPrimary);
+			                    break;
+			                default:
+			                    throw new IllegalArgumentException("Unknown address type: " + addressType);
+			            }
+			            
+		                address.setAddress_id(addressId);
+		                return address;
+		            }
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return null;
+		}
+
 
 		public boolean addNewUser(User user, Map<String, String> additionalFields) {
 		    Map<String, Object> fields = new HashMap<>();

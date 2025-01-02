@@ -98,8 +98,8 @@ public class ViewAddressHandler implements HttpHandler {
 	                        "<td>" + address.getCountry() + "</td>" +
 	                        "<td>" + address.isPrimary() + "</td>" +
 	                        "<td class=\"d-flex\">" +
-	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Billing\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&address_id=" + address.getAddress_id() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
+	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&address_id=" + address.getAddress_id() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
 	                        "</td>" +
                         "</tr>"
                     );
@@ -148,8 +148,8 @@ public class ViewAddressHandler implements HttpHandler {
 	                        "<td>" + address.getCountry() + "</td>" +
 	                        "<td>" + address.isPrimary() + "</td>" +
 	                        "<td class=\"d-flex\">" +
-	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&addressType=Shipping\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+	                        "<a href=\"/admin/users/edit-address?id=" + user.getCustomerId() + "&address_id=" + address.getAddress_id() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
+	                        "<a href=\"/admin/users/delete-address?id=" + user.getCustomerId() + "&address_id=" + address.getAddress_id() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
 	                        "</td>" +
                         "</tr>"
                     );
