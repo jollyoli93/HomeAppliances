@@ -422,10 +422,13 @@ public class UserDao extends DAO<User> {
 	                    preparedStatement.setInt(index++, (Integer) value);
 	                } else if (value instanceof Double) {
 	                    preparedStatement.setDouble(index++, (Double) value);
+	                } else if (value instanceof Boolean) {
+	                    preparedStatement.setBoolean(index++, (Boolean) value);
 	                } else {
 	                    throw new IllegalArgumentException("Unsupported data type: " + value.getClass().getSimpleName());
 	                }
 	            }
+
 	            // Set the ID parameter
 	            preparedStatement.setInt(index, id);
 
@@ -448,44 +451,26 @@ public class UserDao extends DAO<User> {
 	        return updatedRows;
 	    }
 	    
-	    public int updateUserAddress(int id, Address address, String addressType) {
+	    public int updateUserAddress(int id, Address address) {
+	    	String addressType = address.getAddressType();
 	        // Validate the address type
-	        if (!addressType.equals("shipping_addresses") && !addressType.equals("billing_addresses")) {
-	            throw new IllegalArgumentException("Invalid address type. Use 'shipping_addresses' or 'billing_addresses'.");
+	        if (!addressType.equals("shipping") && !addressType.equals("billing")) {
+	            throw new IllegalArgumentException("Invalid address type. Use 'shipping' or 'billing'.");
 	        }
 
 	        // Map to hold the update fields
 	        Map<String, Object> updateFields = new HashMap<>();
-	        updateFields.put("number", address.getNumber());
+	        updateFields.put("building_number", address.getNumber());
 	        updateFields.put("street", address.getStreet());
 	        updateFields.put("city", address.getCity());
 	        updateFields.put("country", address.getCountry());
 	        updateFields.put("postCode", address.getPostCode());
 	        updateFields.put("isPrimary", address.isPrimary());
+	        updateFields.put("address_type", addressType);
 
 	        // Call the updateById method for the appropriate table
-	        return updateById(id, addressType, updateFields);
+	        return updateById(id, "addresses", updateFields);
 	    }
-
-
-	    
-//		public int updateRole (int id, String newRole) {
-//	        Map<String, Object> update = new HashMap<>();
-//	       
-//	        
-//	        if (newRole.equals("business")) {
-//	        	int role_id = getRoleId(newRole);
-//	        	
-//	        	update.put("role_id", role_id);
-//		        
-//		        int updatedRows = updateById(id, "user_role", update);
-//		        return updatedRows;
-//	        } 
-//	        
-//	        System.out.println("Role failed to update");
-//	        return 0;
-//	        
-//		}
 		
 		public int deleteUserById (int id) {
 	    	Map<String, Object> update = new HashMap<>();

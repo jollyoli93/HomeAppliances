@@ -457,19 +457,14 @@ public class UserConsole {
 	
 	private int updateAddressHandler (int user_id) {
 		Address address = userAddressHandler(user_id);
-		
-		System.out.println("Enter Building Number: ");
-		String addressType =  handleInput.getInputString();
-		
-		if (addressType.equalsIgnoreCase("shipping")) {
-			return userDAO.updateUserAddress(user_id, address, "shipping");
+	
+		try {
+			return userDAO.updateUserAddress(user_id, address);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if (addressType.equalsIgnoreCase("shipping")) {
-			return userDAO.updateUserAddress(user_id, address, "billing");
-		} else {
-			return 0;
-		}
-
+		return 0;
 	}
 	
 	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {

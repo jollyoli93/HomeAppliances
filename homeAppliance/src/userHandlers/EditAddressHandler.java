@@ -54,6 +54,7 @@ public class EditAddressHandler implements HttpHandler {
                         "<form method=\"post\" action=\"/admin/users/update-address\">" +
 	                        "<input type=\"hidden\" name=\"customerId\" value=\"" + customerId + "\">" +
 	                        "<input type=\"hidden\" name=\"addressId\" value=\"" + addressId + "\">" +
+	                        "<input type=\"hidden\" name=\"addressType\" value=\"" + address.getAddressType() + "\">" + 
 	                        "<div class=\"form-group\">" +
 		                        "<label for=\"number\">Number</label>" +
 		                        "<input type=\"text\" class=\"form-control\" id=\"number\" name=\"number\" value=\"" + address.getNumber() + "\">" +
