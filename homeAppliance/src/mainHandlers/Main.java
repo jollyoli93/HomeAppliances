@@ -18,6 +18,8 @@ import userHandlers.DeleteUserHandler;
 import userHandlers.EditAddressHandler;
 import userHandlers.EditUserHandler;
 import userHandlers.PromoteUserHandler;
+import userHandlers.UpdateAddressHandler;
+import userHandlers.UpdateUserHandler;
 import userHandlers.UsersHandler;
 import userHandlers.ViewAddressHandler;
 import userHandlers.ViewAdminUsersHandler;

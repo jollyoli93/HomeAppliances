@@ -1,4 +1,4 @@
-package mainHandlers;
+package userHandlers;
 
 import java.io.IOException;
 
