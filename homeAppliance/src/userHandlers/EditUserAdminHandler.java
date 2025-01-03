@@ -3,6 +3,7 @@ package userHandlers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import DAO.UserDao;
+import sessionManagement.SessionManager;
 import users.User;
 import util.WebUtil;
 import java.io.BufferedWriter;
@@ -11,10 +12,10 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class EditUserHandler implements HttpHandler {
+public class EditUserAdminHandler implements HttpHandler {
     private UserDao userDao;
     
-    public EditUserHandler(UserDao userDao) {
+    public EditUserAdminHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
