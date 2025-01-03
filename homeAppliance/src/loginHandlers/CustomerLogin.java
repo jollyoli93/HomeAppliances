@@ -1,4 +1,4 @@
-package mainHandlers;
+package loginHandlers;
 
 import com.sun.net.httpserver.HttpHandler;
 

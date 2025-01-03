@@ -38,7 +38,7 @@ public class CreateUserHandler implements HttpHandler {
                         "integrity=\"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2\" crossorigin=\"anonymous\">" +
                         "</head>" +
                         "<body><div class=\"container\">" +
-                        "<h1 class=\"mt-4\">Create " + type + " </h1>" +
+                        "<h1 class=\"mt-4\">Create " + type + " account </h1>" +
                         "<form method=\"post\" action=\"/admin/users/add-confirm\">" +
                         "<input type=\"hidden\" name=\"type\" value=\"" + type + "\">" +
                         "<div class=\"form-group\">" +
@@ -82,7 +82,7 @@ public class CreateUserHandler implements HttpHandler {
                         "</div>");
 
                 html.append("<button type=\"submit\" class=\"btn btn-success\">Create User</button>" +
-                        "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
+                        "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
                         "</form></div></body></html>");
 
                 out.write(html.toString());

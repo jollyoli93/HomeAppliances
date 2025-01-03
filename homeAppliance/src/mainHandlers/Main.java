@@ -12,6 +12,8 @@ import applianceHandlers.DeleteApplianceHandler;
 import applianceHandlers.DeleteApplianceConfirmationHandler;
 import applianceHandlers.EditApplianceForm;
 import applianceHandlers.UpdateApplianceHandler;
+import loginHandlers.AdminLogin;
+import loginHandlers.CustomerLogin;
 import userHandlers.ConfirmCreateUserHandler;
 import userHandlers.CreateUserHandler;
 import userHandlers.DeleteUserConfirmationHandler;
@@ -88,6 +90,7 @@ public class Main {
     server.createContext("/admin/users/delete-confirm", new DeleteUserConfirmationHandler(userDao));
     server.createContext("/admin/users/promote", new PromoteUserHandler(userDao));  
 
-    // Customer routes (if any needed)
+    // Customer routes 
+    server.createContext("/users/add", new CreateUserHandler(userDao));
   }
 }
