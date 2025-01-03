@@ -1,9 +1,17 @@
-package users;
+package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import users.Address;
+import users.AdminUser;
+import users.BillingAddress;
+import users.BusinessUser;
+import users.CustomerUser;
+import users.ShippingAddress;
+import users.User;
 
 class UserTesting {
     User customer;
@@ -74,5 +82,46 @@ class UserTesting {
     @Test
     public void isBusiness () {
         assertEquals("business", business.getRole());
+    }
+    
+    // Password validation tests
+    @Test
+    public void passwordIsHashedAndValid_whenSetCorrectly() {
+        // Set the password
+        String plainPassword = "ilovefootball";
+        customer.setPassword(plainPassword);
+
+        // Validate that the hashed password matches
+        assertTrue(customer.validatePassword(plainPassword));
+    }
+
+    @Test
+    public void passwordIsInvalid_whenIncorrectPassword() {
+        // Set the password
+        String plainPassword = "ilovefootball";
+        customer.setPassword(plainPassword);
+
+        // Validate with incorrect password
+        assertFalse(customer.validatePassword("wrongpassword"));
+    }
+
+    @Test
+    public void passwordIsInvalid_whenNullPassword() {
+        // Set the password
+        String plainPassword = "ilovefootball";
+        customer.setPassword(plainPassword);
+
+        // Validate with null password
+        assertFalse(customer.validatePassword(null));
+    }
+
+    @Test
+    public void passwordIsInvalid_whenEmptyPassword() {
+        // Set the password
+        String plainPassword = "ilovefootball";
+        customer.setPassword(plainPassword);
+
+        // Validate with empty password
+        assertFalse(customer.validatePassword(""));
     }
 }

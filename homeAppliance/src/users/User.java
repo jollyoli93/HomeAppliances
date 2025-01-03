@@ -113,6 +113,7 @@ public abstract class User {
     }
 	    
 	private String hashPassword(String password) {
+		if (password != null) {
 	        try {
 	            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 	            byte[] hashedBytes = digest.digest(password.getBytes());
@@ -124,7 +125,11 @@ public abstract class User {
 	        } catch (NoSuchAlgorithmException e) {
 	            throw new RuntimeException("Error hashing password", e);
 	        }
-	    }
+		}
+		else {
+			return "Password cannot be null";
+		}
+	}
 
 	public String getBusinessName() {
 		return businessName;
