@@ -323,10 +323,8 @@ public class UserDao extends DAO<User> {
 		    
 		    // Ensure the password is hashed before storing it
 		    String plainPassword = user.getPassword();
-		    System.out.println("Before hashing " + plainPassword);
 		    user.setPassword(plainPassword);
 		    String hashedPassword = user.getPassword();
-		    System.out.println("After hashing " + hashedPassword);
 		    
 		    fields.put("password", hashedPassword);
 		    
