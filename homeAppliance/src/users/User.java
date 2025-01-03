@@ -1,5 +1,7 @@
 package users;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public abstract class User {
@@ -94,27 +96,35 @@ public abstract class User {
 	    }
 	}
 	
-	//Handle Passwords
-	public String getPassword() {
+    // Get the hashed password
+    public String getPassword() {
+        return this.password;
+    }
 
-//		    // Use BCrypt for hashing (example)
-//		    this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+    // Set a password with hashing
+    public void setPassword(String password) {
+    	String hashedPassword = hashPassword(password);
+        this.password = hashedPassword;
+    }
 
-
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		//hashpassword
-		this.password = password;
-	}
-	
-//	public boolean validatePassword(String inputPassword) {
-//	    return BCrypt.checkpw(inputPassword, this.password);
-//	}
-
-	
-	public abstract String getRole ();
+    // Method to validate password (checks if the hashed version matches)
+    public boolean validatePassword(String inputPassword) {
+        return this.password.equals(hashPassword(inputPassword));
+    }
+	    
+	private String hashPassword(String password) {
+	        try {
+	            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	            byte[] hashedBytes = digest.digest(password.getBytes());
+	            StringBuilder hexString = new StringBuilder();
+	            for (byte b : hashedBytes) {
+	                hexString.append(String.format("%02x", b));
+	            }
+	            return hexString.toString();
+	        } catch (NoSuchAlgorithmException e) {
+	            throw new RuntimeException("Error hashing password", e);
+	        }
+	    }
 
 	public String getBusinessName() {
 		return businessName;
@@ -123,19 +133,8 @@ public abstract class User {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
-
 	
-	public String toHTMLString() {
-	    return "<tr>" +
-	            "<td>" + firstName + "</td>" +
-	            "<td>" + lastName + "</td>" +
-	            "<td>" + username + "</td>" +
-	            "<td>" + emailAddress + "</td>" +
-	            "<td>" + password + "</td>" +
-	            "<td>" + customerId + "</td>" +
-	            "<td>" + telephoneNum + "</td>" +
-	            "<td>" + businessName + "</td>" +
-	            "</tr>";
-	}
+	public abstract String getRole ();
+	
 
 }
