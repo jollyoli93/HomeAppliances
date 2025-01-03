@@ -21,7 +21,7 @@ public abstract class User {
 		this.lastName = lastName;
 		this.emailAddress = emailAddress;
 		this.username = username;
-		this.setPassword(password);
+		this.password = password;
 	}
 
 	public String getFirstName() {
@@ -107,12 +107,13 @@ public abstract class User {
         this.password = hashedPassword;
     }
 
-    // Method to validate password (checks if the hashed version matches)
     public boolean validatePassword(String inputPassword) {
-        return this.password.equals(hashPassword(inputPassword));
+        // Hash the input password and compare to stored hash
+        String hashedInputPassword = hashPassword(inputPassword);
+        return this.password.equals(hashedInputPassword);
     }
 	    
-	private String hashPassword(String password) {
+	public String hashPassword(String password) {
 		if (password != null) {
 	        try {
 	            MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -320,7 +320,15 @@ public class UserDao extends DAO<User> {
 		    fields.put("last_name", user.getLastName());
 		    fields.put("email_address", user.getEmailAddress());
 		    fields.put("username", user.getUsername());
-		    fields.put("password", user.getPassword());
+		    
+		    // Ensure the password is hashed before storing it
+		    String plainPassword = user.getPassword();
+		    System.out.println("Before hashing " + plainPassword);
+		    user.setPassword(plainPassword);
+		    String hashedPassword = user.getPassword();
+		    System.out.println("After hashing " + hashedPassword);
+		    
+		    fields.put("password", hashedPassword);
 		    
 		    if (additionalFields != null) {
 		        fields.putAll(additionalFields);
@@ -732,6 +740,29 @@ public class UserDao extends DAO<User> {
 				}	
 	        }
 			return 0;
+		}
+		
+		public int getUserIdFromUsername(String username) {
+		    String query = "SELECT user_id FROM users WHERE username = ?";
+ 
+		    try (Connection connect = connector.initializeDBConnection(); 
+			         PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+					
+			        preparedStatement.setString(1, username);
+			        
+			        ResultSet result = preparedStatement.executeQuery();
+
+				 	if (result.next()) {
+			         int id = result.getInt("user_id");
+			         return id;
+			
+			     } else {
+			         throw new IllegalArgumentException("User not found: " + username);
+			     }
+			 } catch (SQLException e) {
+			     e.printStackTrace();
+			     throw new RuntimeException("Error fetching user by username", e);
+			 }
 		}
 
 }

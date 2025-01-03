@@ -12,8 +12,7 @@ import applianceHandlers.DeleteApplianceHandler;
 import applianceHandlers.DeleteApplianceConfirmationHandler;
 import applianceHandlers.EditApplianceForm;
 import applianceHandlers.UpdateApplianceHandler;
-import loginHandlers.AdminLogin;
-import loginHandlers.CustomerLogin;
+import loginHandlers.LoginHandler;
 import userHandlers.ConfirmCreateUserHandler;
 import userHandlers.CreateUserHandler;
 import userHandlers.DeleteUserConfirmationHandler;
@@ -55,8 +54,8 @@ public class Main {
   private static void registerContexts(HttpServer server, ApplianceDao applianceDao, UserDao userDao) {
     // Registering routes for the homepage, admin pages, login pages, etc.
     server.createContext("/", new RootHandler());
-    server.createContext("/customerLogin", new CustomerLogin());
-    server.createContext("/adminLogin", new AdminLogin());
+    server.createContext("/home", new CustomerHomeHandler());
+    server.createContext("/login", new LoginHandler(userDao));
 
     // ADMIN
     server.createContext("/admin", new AdminHandler());
