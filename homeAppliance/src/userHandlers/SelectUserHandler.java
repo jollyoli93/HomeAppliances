@@ -4,7 +4,7 @@ import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
-public class UsersHandler implements HttpHandler {
+public class SelectUserHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         he.sendResponseHeaders(200, 0);
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
@@ -29,20 +29,20 @@ public class UsersHandler implements HttpHandler {
                         "</div>" +
                     "</nav>" +
                     "<div class=\"container mt-4\">" +
-                        "<h1 class=\"mb-4\">User Admin Dashboard</h1>" +
+                        "<h1 class=\"mb-4\">Select Account Type</h1>" +
                         "<div class=\"list-group\">" +
-                            "<a href=\"/admin/users/view\" class=\"list-group-item list-group-item-action\">" +
-                                "<h5 class=\"mb-1\">View Customers</h5>" +
-                                "<small>View all registered users.</small>" +
+                            "<a href=\"/admin/users/add?type=admin\" class=\"list-group-item list-group-item-action\">" +
+                                "<h5 class=\"mb-1\">Create Admin Account</h5>" +
+                                "<small>Add a new admin account</small>" +
                             "</a>" +
-                            "<a href=\"/admin/users/view-admin\" class=\"list-group-item list-group-item-action\">" +
-	                            "<h5 class=\"mb-1\">View Admin</h5>" +
-	                            "<small>View admin accounts</small>" +
+                            "<a href=\"/admin/users/add?type=customer\" class=\"list-group-item list-group-item-action\">" +
+                                "<h5 class=\"mb-1\">Create Customer Account</h5>" +
+                                "<small>Add a new basic customer account</small>" +
+                            "</a>" +
+                            "<a href=\"/admin/users/add?type=business\" class=\"list-group-item list-group-item-action\">" +
+	                            "<h5 class=\"mb-1\">Create Business Account</h5>" +
+	                            "<small>Add a new business accounts</small>" +
 	                        "</a>" +
-                            "<a href=\"/admin/users/add-select\" class=\"list-group-item list-group-item-action\">" +
-                            "<h5 class=\"mb-1\">Create New User</h5>" +
-                            "<small>Add a new account</small>" +
-                        "</a>" +
                         "</div>" +
                     "</div>" +
                     "<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"></script>" +

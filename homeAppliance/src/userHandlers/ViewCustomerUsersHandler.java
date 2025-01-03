@@ -35,7 +35,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<h1 class=\"mt-4\">Users List</h1>" +
                 "<div class=\"mb-3\">" +
                 "<a href=\"/admin/users/\" class=\"btn btn-primary\">Go back</a> " +
-                "<a href=\"/admin/users/create\" class=\"btn btn-success ml-2\">Create New User</a>" +
+                "<a href=\"/admin/users/add-select\" class=\"btn btn-success ml-2\">Create New User</a>" +
                 "</div>"
             );
 

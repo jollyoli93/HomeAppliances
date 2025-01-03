@@ -41,7 +41,7 @@ public void handle(HttpExchange he) throws IOException {
           "<div class=\"container\">" +
           "  <h1 class=\"mt-4\">Admin List</h1>" +
           "  <a href=\"/admin/users/\" class=\"btn btn-primary mb-3\">Go back</a>" + 
-          "  <a href=\"/admin/users/create\" class=\"btn btn-success mb-3\">Create New Admin</a>" + // Link to user creation page
+          "  <a href=\"/admin/users/add?type=admin\" class=\"btn btn-success mb-3\">Create New Admin</a>" + // Link to user creation page
           "  <h2>Admin</h2>" +
           "  <table class=\"table table-striped\">" +
           "    <thead class=\"thead-dark\">" +
@@ -68,7 +68,7 @@ public void handle(HttpExchange he) throws IOException {
                       "<td>" + user.getEmailAddress() + "</td>" + 
                       "<td>" + 
                       "<a href=\"/admin/users/edit?id=" + user.getCustomerId() + "\" class=\"btn btn-warning btn-sm\">Edit</a> " +
-                      "<a href=\"/admin/users/delete?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" + 
+                      "<a href=\"/admin/users/delete-confirm?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm\">Delete</a>" + 
                       "</td>" +
                       "</tr>");
           }

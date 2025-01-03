@@ -48,9 +48,6 @@ public class AddApplianceConfirmHandler implements HttpHandler {
             Map<String, String> queryParams = WebUtil.requestStringToMap(query);
             String selectedDepartment = queryParams.get("department");
             String applianceType = queryParams.get("appliance");
-
-            System.out.println("Debug: " + selectedDepartment + " " + applianceType);
-
             // Select department
             department = ApplianceDepartments.selectApplianceDepartment(selectedDepartment);
             System.out.println(department);
@@ -134,12 +131,9 @@ public class AddApplianceConfirmHandler implements HttpHandler {
             String body = new String(is.readAllBytes());
 
             // Parse the body into a map
-            Map<String, String> formParams = WebUtil.requestStringToMap(body); // Assumes `key=value&key2=value2` format
+            Map<String, String> formParams = WebUtil.requestStringToMap(body); 
             String selectedDepartment = formParams.get("category");
             String applianceType = formParams.get("description");
-
-            System.out.println("Debug (Body): " + body);
-            System.out.println("Debug (Parsed): " + selectedDepartment + " " + applianceType);
 
             // Select department
             department = ApplianceDepartments.selectApplianceDepartment(selectedDepartment.toLowerCase());
