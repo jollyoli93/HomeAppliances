@@ -47,11 +47,11 @@ public class CustomerHomeHandler implements HttpHandler {
             "  <p class=\"lead\">Your one-stop shop for high-quality appliances for every need.</p>" +
             "</div>" +
 
-            // Add Links in the Middle
+            // user options
             "<div class=\"container text-center mt-4\">" +
-            "  <a href=\"/appliances\" class=\"btn btn-primary btn-lg m-2\">View Appliances</a>" +
-            "  <a href=\"/cart\" class=\"btn btn-info btn-lg m-2\">Shopping Cart</a>" +
-            "  <a href=\"/edit-details\" class=\"btn btn-warning btn-lg m-2\">Edit Details</a>" +
+            "  <a href=\"users/appliances\" class=\"btn btn-primary btn-lg m-2\">View Appliances</a>" +
+            "  <a href=\"users/cart\" class=\"btn btn-info btn-lg m-2\">Shopping Cart</a>" +
+            "  <a href=\"users/edit\" class=\"btn btn-warning btn-lg m-2\">Edit Account Details</a>" +
             "</div>" +
 
             "<footer class=\"text-center mt-4\">" +

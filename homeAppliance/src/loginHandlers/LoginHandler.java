@@ -90,7 +90,11 @@ public class LoginHandler implements HttpHandler {
             sendResponse(he, 401, "Invalid login credentials");
             return;
         }
-
+        
+        //Clear any previous sessions
+        String currentSession = WebUtil.extractSessionId(he);
+        sessionManager.removeSession(currentSession);
+        
         // Create a new session for the user
         String sessionId = sessionManager.createSession();
         Session session = sessionManager.getSession(sessionId);

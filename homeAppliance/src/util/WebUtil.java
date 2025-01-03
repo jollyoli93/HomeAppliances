@@ -49,5 +49,13 @@ public class WebUtil {
 	return map;
   }
   
+  public static String extractSessionId(HttpExchange he) {
+      String cookieHeader = he.getRequestHeaders().getFirst("Cookie");
+      if (cookieHeader != null && cookieHeader.startsWith("SESSIONID=")) {
+          return cookieHeader.substring("SESSIONID=".length());
+      }
+      return null;
+  }
+  
   
 }

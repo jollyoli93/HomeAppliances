@@ -1,4 +1,4 @@
-package userHandlers;
+package adminUserHandlers;
 
 import DAO.UserDao;
 import users.User;

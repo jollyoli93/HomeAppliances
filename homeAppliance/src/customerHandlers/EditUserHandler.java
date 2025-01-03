@@ -1,4 +1,4 @@
-package userHandlers;
+package customerHandlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -46,7 +46,7 @@ public class EditUserHandler implements HttpHandler {
                     "</head>" +
                     "<body><div class=\"container\">" +
                     "<h1 class=\"mt-4\">Edit " + user.getUsername() + "</h1>" +
-                    "<form method=\"post\" action=\"/admin/users/update\">" +
+                    "<form method=\"post\" action=\"/update\">" +
 	                    "<div class=\"form-group\">" +
 		                    "<label for=\"customerId\">Customer ID</label>" +
 		                    "<input type=\"text\" class=\"form-control\" id=\"customerId\" name=\"customerId\" value=\"" + user.getCustomerId() + "\" readonly>" +

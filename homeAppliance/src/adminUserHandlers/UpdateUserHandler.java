@@ -1,4 +1,4 @@
-package userHandlers;
+package adminUserHandlers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,19 +8,31 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import DAO.UserDao;
+import sessionManagement.Session;
+import sessionManagement.SessionManager;
 import util.WebUtil;
 
 public class UpdateUserHandler implements HttpHandler {
     private UserDao userDao;
-
-    public UpdateUserHandler(UserDao userDao) {
+    private SessionManager sessionManager;
+    
+    public UpdateUserHandler(UserDao userDao, SessionManager sessionManager) {
         this.userDao = userDao;
+        this.sessionManager = sessionManager;
     }
 
     @Override
     public void handle(HttpExchange he) throws IOException {
+    	String sessionId = WebUtil.extractSessionId(he);
+    	Session session = sessionManager.getSession(sessionId);
+    	
         if (!"POST".equalsIgnoreCase(he.getRequestMethod())) {
             he.sendResponseHeaders(405, -1); // Method Not Allowed
+            return;
+        }
+        
+        if (session == null) {
+            he.sendResponseHeaders(401, -1); // Not logged in
             return;
         }
 
@@ -49,7 +61,7 @@ public class UpdateUserHandler implements HttpHandler {
             String response;
             if (rowsUpdated > 0) {
                 response = "User updated successfully.";
-                he.getResponseHeaders().add("Location", "/admin/success");
+                he.getResponseHeaders().add("Location", "/success");
                 he.sendResponseHeaders(302, response.length());
             } else {
                 response = "Failed to update user.";

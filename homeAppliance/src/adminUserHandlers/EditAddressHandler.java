@@ -1,4 +1,4 @@
-package userHandlers;
+package adminUserHandlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;

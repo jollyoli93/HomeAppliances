@@ -1,4 +1,4 @@
-package userHandlers;
+package adminUserHandlers;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

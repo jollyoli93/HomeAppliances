@@ -43,11 +43,10 @@ public class SuccessPageHandler implements HttpHandler {
                     "<a href=\"/admin/appliances\" class=\"btn btn-success ml-2\">View Appliances</a>" +
                     "<a href=\"/admin/users\" class=\"btn btn-success ml-2\">View Users</a>"
                 );
-            } else if ("customer".equalsIgnoreCase(role)) {
+            } else if ("customer".equalsIgnoreCase(role) || "business".equalsIgnoreCase(role)) {
                 content.append(
-                    "<a href=\"/\" class=\"btn btn-primary\">Back to Homepage</a>" +
-                    "<a href=\"/products\" class=\"btn btn-success ml-2\">Browse Products</a>" +
-                    "<a href=\"/orders\" class=\"btn btn-success ml-2\">View Your Orders</a>"
+                    "<a href=\"/\" class=\"btn btn-primary\">Back to Homepage</a>"
+
                 );
             } else {
                 content.append("<p class=\"text-danger\">Unknown role. Please contact support.</p>");
