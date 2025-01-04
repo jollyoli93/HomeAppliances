@@ -227,7 +227,6 @@ public class UserDao extends DAO<User> {
 		            }
 		            
 		            address.setAddress_id(addressId);
-		            System.out.println("DEBUG: address id " + addressId);
 
 		            addressList.add(address);
 		        }

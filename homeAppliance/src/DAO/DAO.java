@@ -32,7 +32,6 @@ public abstract class DAO<T> {
 	
 	public boolean createTable (String name, String schema) {
 	    if (checkTableExists(name)) {
-	        System.out.println("DEBUG: Table " + name + " already exists.");
 	        return false; // Exit early if the table exists
 	    }
 	    
@@ -40,8 +39,6 @@ public abstract class DAO<T> {
 			 PreparedStatement preparedStatement = connect.prepareStatement(schema)) {
 			
 			int updated = preparedStatement.executeUpdate();
-			
-			System.out.println("Table created");
 			
 	        return updated > 0;
 		} catch (SQLException e) {
@@ -78,7 +75,6 @@ public abstract class DAO<T> {
 	
 	protected void addTableMap(String tableName, String schema) {
 	    if (tables.containsKey(tableName)) {
-	        System.out.println("DEBUG: Table " + tableName + " already exists in the map.");
 	        return;
 	    }
 	    tables.put(tableName, schema);
@@ -90,7 +86,6 @@ public abstract class DAO<T> {
 	        if (!checkTableExists(tableName)) {
 	            createTable(tableName, schema);
 	        } else {
-	            System.out.println("DEBUG: Table " + tableName + " already exists.");
 	        }
 	    });
 	}

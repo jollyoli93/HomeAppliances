@@ -443,6 +443,8 @@ public class UserConsole {
 		isPrimary = isPrimaryAddress(isPrimaryInput);
 		
 		System.out.println("Enter address type: ");
+		System.out.println("[1] Shipping");
+		System.out.println("[2] Billing");
 		addressType = handleInput.getInputString();
 		
 		address = selectAddressType(addressType, number, street, city, country, postcode, user_id, isPrimary);
@@ -468,11 +470,11 @@ public class UserConsole {
 	}
 	
 	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {
-		if (addressType.equalsIgnoreCase("shipping")) {
+		if ("1".equalsIgnoreCase(addressType)) {
 			return new ShippingAddress(number, street, city, country, postCode, customerId, isPrimary);
 		}
 		
-		if (addressType.equalsIgnoreCase("billing")) {
+		if ("2".equalsIgnoreCase(addressType)) {
 			return new BillingAddress(number, street, city, country, postCode, customerId, isPrimary);
 		}
 		

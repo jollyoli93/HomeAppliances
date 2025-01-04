@@ -253,7 +253,7 @@ class UserConsoleTest {
 
     @Test
     public void addUserAddress() {
-        String[] addAddress = {"6", "1", "12", "Maple Street", "Springfield", "USA", "12345", "true", "shipping"};
+        String[] addAddress = {"6", "1", "12", "Maple Street", "Springfield", "USA", "12345", "true", "1"};
         
 		System.out.println("_________________________________________________________________________________");
 		System.out.println("TEST - Update User address");
