@@ -21,8 +21,20 @@ public class ViewCustomerUsersHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
         try {
-            List<User> allUsers = userDao.findAll(0, null);
+            String query = he.getRequestURI().getQuery();
+            String sortOrder = "asc"; // Default to ascending
+            if (query != null && query.contains("sort=desc")) {
+                sortOrder = "desc"; // Sort by descending if the query contains sort=desc
+            }
+
             he.sendResponseHeaders(200, 0);
+
+            List<User> allUsers;
+            if ("desc".equals(sortOrder)) {
+                allUsers = userDao.getUsersSortedByUsernameDesc();
+            } else {
+                allUsers = userDao.getUsersSortedByUsernameAsc();
+            }
 
             out.write(
                 "<html>" +
@@ -36,6 +48,14 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<div class=\"mb-3\">" +
                 "<a href=\"/admin/users/\" class=\"btn btn-primary\">Go back</a> " +
                 "<a href=\"/admin/users/add-select\" class=\"btn btn-success ml-2\">Create New User</a>" +
+                "</div>"
+            );
+
+            // Sorting options for username
+            out.write(
+                "<div class=\"mb-3\">" +
+                "<a href=\"?sort=asc\" class=\"btn btn-primary\">Sort by Username (Ascending)</a>" +
+                "<a href=\"?sort=desc\" class=\"btn btn-primary ml-2\">Sort by Username (Descending)</a>" +
                 "</div>"
             );
 
@@ -73,12 +93,12 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                             "<a href=\"/admin/users/edit?id=" + user.getCustomerId() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
                             "<a href=\"/admin/users/delete-confirm?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
                             "</td>" +
-	                        "<td>"+
-	                        	adminOption(user)+
+                            "<td>"+
+                                adminOption(user) +
                             "</td>"+
                             "<td>"+
-                        		"<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
-                        	"</td>"+
+                                "<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
+                            "</td>"+
                             "</tr>"
                         );
                     }
@@ -122,14 +142,14 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                             "<td>" + user.getTelephoneNum() + "</td>" +
                             "<td>" + (user.getBusinessName() != null ? user.getBusinessName() : "") + "</td>" +
                             "<td class=\"d-flex\">" +
-	                            "<a href=\"/admin/users/edit?id=" + user.getCustomerId() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
-	                            "<a href=\"/admin/users/delete?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
+                            "<a href=\"/admin/users/edit?id=" + user.getCustomerId() + "\" class=\"btn btn-warning btn-sm mr-1\">Edit</a>" +
+                            "<a href=\"/admin/users/delete?id=" + user.getCustomerId() + "\" class=\"btn btn-danger btn-sm mr-1\">Delete</a>" +
                             "</td>" +
-	                        "<td>"+
-	                        	adminOption(user)+
+                            "<td>"+
+                                adminOption(user) +
                             "</td>"+
                             "<td>"+
-                            	"<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
+                                "<a href=\"/admin/users/view-address?id=" + user.getCustomerId() + "\" class=\"btn btn-info btn-sm mr-1\">View</a>" +
                             "</td>"+
                             "</tr>"
                         );
@@ -154,9 +174,8 @@ public class ViewCustomerUsersHandler implements HttpHandler {
         } finally {
             out.close();
         }
-       
     }
-    
+
     private String adminOption(User user) {
         if (userDao.isUserAdmin(user.getCustomerId())) {
             return "<form action=\"/admin/users/promote\" method=\"post\" class=\"d-inline-block\">" +

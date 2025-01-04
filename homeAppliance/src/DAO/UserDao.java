@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import appliances.Appliance;
+
 
 /**
  * This class provides the user database access functionality
@@ -91,7 +93,23 @@ public class UserDao extends DAO<User> {
 		public ArrayList<User> findAll(int id, HashMap<String, Object> sortParams) {
 			ArrayList<User> userList = new ArrayList<>(); 			
 			
-			String query = "SELECT * FROM users ";
+		    // Initialize query
+		    StringBuilder queryBuilder = new StringBuilder("SELECT * FROM users");
+
+		    // Add ORDER BY clause dynamically if sortParams are provided
+		    if (sortParams != null && !sortParams.isEmpty()) {
+		        queryBuilder.append(" ORDER BY ");
+		        int i = 0;
+		        for (String column : sortParams.keySet()) {
+		            queryBuilder.append(column).append(" ").append(sortParams.get(column));  // Column and order (ASC or DESC)
+		            if (i < sortParams.size() - 1) {
+		                queryBuilder.append(", ");
+		            }
+		            i++;
+		        }
+		    }
+
+		    String query = queryBuilder.toString();
 			
 	        try (Connection connect = connector.initializeDBConnection();
 	        	 Statement statement = connect.createStatement();
@@ -146,6 +164,30 @@ public class UserDao extends DAO<User> {
 			} 
 			
 			return userList;
+		}
+		
+		public ArrayList<User> getUsersSortedByUsernameDesc() {
+			ArrayList<User> users;
+			HashMap<String, Object> sortParams = new HashMap<String, Object>();
+			sortParams.put("username", "DESC");
+			users = findAll(0, sortParams);
+			
+			if (!users.isEmpty()) {
+				return users;
+			}
+			return null;
+		}
+		
+		public ArrayList<User> getUsersSortedByUsernameAsc() {
+			ArrayList<User> users;
+			HashMap<String, Object> sortParams = new HashMap<String, Object>();
+			sortParams.put("username", "ASC");
+			users = findAll(0, sortParams);
+			
+			if (!users.isEmpty()) {
+				return users;
+			}
+			return null;
 		}
 
 		public User getUser(int userId) {
