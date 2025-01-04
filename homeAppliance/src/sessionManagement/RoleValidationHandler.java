@@ -2,16 +2,15 @@ package sessionManagement;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-
 import util.WebUtil;
 
 import java.io.IOException;
 
-public class SessionValidationHandler implements HttpHandler {
-    private final HttpHandler next;
-    private final SessionManager sessionManager;
+public abstract class RoleValidationHandler implements HttpHandler {
+    protected final HttpHandler next;
+    protected final SessionManager sessionManager;
 
-    public SessionValidationHandler(HttpHandler next, SessionManager sessionManager) {
+    public RoleValidationHandler(HttpHandler next, SessionManager sessionManager) {
         this.next = next;
         this.sessionManager = sessionManager;
     }
@@ -19,15 +18,15 @@ public class SessionValidationHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String sessionId = WebUtil.extractSessionId(exchange);
-        Session session =  sessionManager.getSession(sessionId);
-        
-        //get user role
-        String role = (String) session.getAttribute("role");
+        Session session = sessionManager.getSession(sessionId);
 
-        if (sessionId != null && session != null && role.equals("admin")) {
+        if (sessionId != null && session != null && isValidRole(session)) {
             next.handle(exchange);
         } else {
-            exchange.sendResponseHeaders(401, -1);
+            exchange.sendResponseHeaders(401, -1); // Unauthorized
         }
     }
+
+    protected abstract boolean isValidRole(Session session);
 }
+

@@ -1,4 +1,4 @@
-package mainHandlers;
+package customerHandlers;
 
 import java.io.*;
 import com.sun.net.httpserver.HttpHandler;

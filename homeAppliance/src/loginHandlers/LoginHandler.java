@@ -80,6 +80,7 @@ public class LoginHandler implements HttpHandler {
         String username = formData.get("username");
         String password = formData.get("password");
 
+        
         if (username == null || password == null) {
             sendResponse(he, 400, "Username and password are required");
             return;
@@ -90,17 +91,15 @@ public class LoginHandler implements HttpHandler {
             sendResponse(he, 401, "Invalid login credentials");
             return;
         }
-        
-        //Clear any previous sessions
-        String currentSession = WebUtil.extractSessionId(he);
-        sessionManager.removeSession(currentSession);
-        
+               
         // Create a new session for the user
         String sessionId = sessionManager.createSession();
         Session session = sessionManager.getSession(sessionId);
+        
         session.setAttribute("userId", user.getCustomerId());
         session.setAttribute("role", user.getRole());
 
+        System.out.println(session.getAttributes());
         // Set the session ID in a cookie
         he.getResponseHeaders().add("Set-Cookie", "SESSIONID=" + sessionId + "; Path=/; HttpOnly");
 

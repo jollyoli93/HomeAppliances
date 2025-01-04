@@ -61,7 +61,7 @@ public class AddApplianceDeptHandler implements HttpHandler {
             "<body>" +
                 "<div class=\"container mt-4\">" +
                     "<h2>Select Department</h2>" +
-                    "<form method=\"get\" action=\"/admin/appliances/add/type\">" +
+                    "<form method=\"get\" action=\"/appliances/add/type\">" +
                         "<div class=\"form-group\">" +
                             "<label>Department</label>" +
                             "<select name=\"department\" class=\"form-control\" required>" +

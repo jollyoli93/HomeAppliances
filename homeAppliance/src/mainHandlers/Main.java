@@ -26,10 +26,14 @@ import applianceHandlers.DeleteApplianceHandler;
 import applianceHandlers.DeleteApplianceConfirmationHandler;
 import applianceHandlers.EditApplianceForm;
 import applianceHandlers.UpdateApplianceHandler;
+import customerHandlers.AddAppliancetoBasketHandler;
+import customerHandlers.AdminHandler;
+import customerHandlers.CustomerHomepageHandler;
 import customerHandlers.EditUserHandler;
 import loginHandlers.LoginHandler;
+import sessionManagement.AdminValidationHandler;
 import sessionManagement.SessionManager;
-import sessionManagement.SessionValidationHandler;
+import sessionManagement.UserValidationHandler;
 
 import java.net.InetSocketAddress;
 import java.io.IOException;
@@ -66,39 +70,41 @@ public class Main {
         server.createContext("/update", new UpdateUserHandler(userDao, sessionManager));
 
         // Admin routes with session validation
-        server.createContext("/admin", new SessionValidationHandler(new AdminHandler(), sessionManager));
-        server.createContext("/admin/appliances", new SessionValidationHandler(new ApplianceList(applianceDao), sessionManager));
+        server.createContext("/admin", new AdminValidationHandler(new AdminHandler(), sessionManager));
+        server.createContext("/admin/appliances", new AdminValidationHandler(new ApplianceList(applianceDao), sessionManager));
 
 
         // Department selection and type selection
-        server.createContext("/admin/appliances/add", new SessionValidationHandler(new AddApplianceDeptHandler(applianceDao), sessionManager));
-        server.createContext("/admin/appliances/add/type", new SessionValidationHandler(new AddApplianceTypeHandler(applianceDao), sessionManager));
-        server.createContext("/admin/appliances/add/confirm", new SessionValidationHandler(new AddApplianceConfirmHandler(applianceDao), sessionManager));
+        server.createContext("/appliances/add", new UserValidationHandler(new AddApplianceDeptHandler(applianceDao), sessionManager));
+        server.createContext("/appliances/add/type",new UserValidationHandler(new AddApplianceTypeHandler(applianceDao, sessionManager), sessionManager));
+        server.createContext("/appliances/admin/confirm", new AdminValidationHandler(new AddApplianceConfirmHandler(applianceDao), sessionManager));
 
         // Other appliance routes
-        server.createContext("/admin/appliances/edit", new SessionValidationHandler(new EditApplianceForm(applianceDao), sessionManager));
-        server.createContext("/admin/appliances/update", new SessionValidationHandler(new UpdateApplianceHandler(applianceDao), sessionManager));
-        server.createContext("/admin/appliances/delete", new SessionValidationHandler(new DeleteApplianceHandler(applianceDao), sessionManager));
-        server.createContext("/admin/appliances/delete-confirm", new SessionValidationHandler(new DeleteApplianceConfirmationHandler(applianceDao), sessionManager));
+        server.createContext("/admin/appliances/edit", new AdminValidationHandler(new EditApplianceForm(applianceDao), sessionManager));
+        server.createContext("/admin/appliances/update", new AdminValidationHandler(new UpdateApplianceHandler(applianceDao), sessionManager));
+        server.createContext("/admin/appliances/delete", new AdminValidationHandler(new DeleteApplianceHandler(applianceDao), sessionManager));
+        server.createContext("/admin/appliances/delete-confirm", new AdminValidationHandler(new DeleteApplianceConfirmationHandler(applianceDao), sessionManager));
 
         // User management
-        server.createContext("/admin/users", new SessionValidationHandler(new UsersHandler(), sessionManager));
-        server.createContext("/admin/users/view", new SessionValidationHandler(new ViewCustomerUsersHandler(userDao), sessionManager));
-        server.createContext("/admin/users/view-admin", new SessionValidationHandler(new ViewAdminUsersHandler(userDao), sessionManager));
-        server.createContext("/admin/users/view-address", new SessionValidationHandler(new ViewAddressHandler(userDao), sessionManager));
-        server.createContext("/admin/users/add", new SessionValidationHandler(new CreateUserHandler(userDao), sessionManager));
-        server.createContext("/admin/users/add-select", new SessionValidationHandler(new SelectUserHandler(), sessionManager));
-        server.createContext("/admin/users/add-confirm", new SessionValidationHandler(new ConfirmCreateUserHandler(userDao), sessionManager));
-        server.createContext("/admin/users/edit", new SessionValidationHandler(new EditUserAdminHandler(userDao), sessionManager));
-        server.createContext("/admin/users/update-address", new SessionValidationHandler(new UpdateAddressHandler(userDao), sessionManager));
-        server.createContext("/admin/users/edit-address", new SessionValidationHandler(new EditAddressHandler(userDao), sessionManager));
-        server.createContext("/admin/users/delete", new SessionValidationHandler(new DeleteUserHandler(userDao), sessionManager));
-        server.createContext("/admin/users/delete-confirm", new SessionValidationHandler(new DeleteUserConfirmationHandler(userDao), sessionManager));
-        server.createContext("/admin/users/promote", new SessionValidationHandler(new PromoteUserHandler(userDao), sessionManager));
+        server.createContext("/admin/users", new AdminValidationHandler(new UsersHandler(), sessionManager));
+        server.createContext("/admin/users/view", new AdminValidationHandler(new ViewCustomerUsersHandler(userDao), sessionManager));
+        server.createContext("/admin/users/view-admin", new AdminValidationHandler(new ViewAdminUsersHandler(userDao), sessionManager));
+        server.createContext("/admin/users/view-address", new AdminValidationHandler(new ViewAddressHandler(userDao), sessionManager));
+        server.createContext("/admin/users/add", new AdminValidationHandler(new CreateUserHandler(userDao), sessionManager));
+        server.createContext("/admin/users/add-select", new AdminValidationHandler(new SelectUserHandler(), sessionManager));
+        server.createContext("/admin/users/add-confirm", new AdminValidationHandler(new ConfirmCreateUserHandler(userDao), sessionManager));
+        server.createContext("/admin/users/edit", new AdminValidationHandler(new EditUserAdminHandler(userDao), sessionManager));
+        server.createContext("/admin/users/update-address", new AdminValidationHandler(new UpdateAddressHandler(userDao), sessionManager));
+        server.createContext("/admin/users/edit-address", new AdminValidationHandler(new EditAddressHandler(userDao), sessionManager));
+        server.createContext("/admin/users/delete", new AdminValidationHandler(new DeleteUserHandler(userDao), sessionManager));
+        server.createContext("/admin/users/delete-confirm", new AdminValidationHandler(new DeleteUserConfirmationHandler(userDao), sessionManager));
+        server.createContext("/admin/users/promote", new AdminValidationHandler(new PromoteUserHandler(userDao), sessionManager));
 
         // Customer routes
-        server.createContext("/home", new CustomerHomeHandler());
+        server.createContext("/home", new UserValidationHandler(new CustomerHomepageHandler(), sessionManager));
         server.createContext("/users/add", new CreateUserHandler(userDao));
-        server.createContext("/users/edit", new EditUserHandler(userDao, sessionManager));
+        server.createContext("/users/edit", new UserValidationHandler(new EditUserHandler(userDao, sessionManager), sessionManager));
+        server.createContext("/appliances/users/confirm", new UserValidationHandler(new AddAppliancetoBasketHandler(applianceDao,userDao, sessionManager), sessionManager));
+   //     server.createContext("/users/cart", new ShoppingCartHandler(userDao, sessionManager));
     }
 }

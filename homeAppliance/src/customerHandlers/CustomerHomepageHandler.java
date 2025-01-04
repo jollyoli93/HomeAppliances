@@ -1,4 +1,4 @@
-package mainHandlers;
+package customerHandlers;
 
 import java.io.OutputStreamWriter;
 import com.sun.net.httpserver.HttpHandler;
@@ -8,7 +8,7 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-public class CustomerHomeHandler implements HttpHandler {
+public class CustomerHomepageHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange he) throws IOException {
@@ -49,9 +49,9 @@ public class CustomerHomeHandler implements HttpHandler {
 
             // user options
             "<div class=\"container text-center mt-4\">" +
-            "  <a href=\"users/appliances\" class=\"btn btn-primary btn-lg m-2\">View Appliances</a>" +
-            "  <a href=\"users/cart\" class=\"btn btn-info btn-lg m-2\">Shopping Cart</a>" +
-            "  <a href=\"users/edit\" class=\"btn btn-warning btn-lg m-2\">Edit Account Details</a>" +
+            "  <a href=\"/appliances/add\" class=\"btn btn-primary btn-lg m-2\">View Appliances</a>" +
+            "  <a href=\"/users/cart\" class=\"btn btn-info btn-lg m-2\">Shopping Cart</a>" +
+            "  <a href=\"/users/edit\" class=\"btn btn-warning btn-lg m-2\">Edit Account Details</a>" +
             "</div>" +
 
             "<footer class=\"text-center mt-4\">" +
