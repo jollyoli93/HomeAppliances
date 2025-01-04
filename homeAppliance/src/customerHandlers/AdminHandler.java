@@ -30,7 +30,7 @@ public class AdminHandler implements HttpHandler {
                     "<div class=\"container mt-4\">" +
                         "<h1 class=\"mb-4\">Admin Dashboard</h1>" +
                         "<div class=\"list-group\">" +
-                            "<a href=\"/admin/appliances/add\" class=\"list-group-item list-group-item-action\">" +
+                            "<a href=\"/appliances/add\" class=\"list-group-item list-group-item-action\">" +
                                 "<h5 class=\"mb-1\">Add New Appliance</h5>" +
                                 "<small>Create a new appliance listing</small>" +
                             "</a>" +

@@ -54,7 +54,9 @@ public class AddApplianceConfirmHandler implements HttpHandler {
 
             // Select appliance
             appliance = department.selectAppliance(applianceType);
-            System.out.println(appliance);
+            
+            System.out.println(appliance.getDescription());
+            System.out.println(appliance.getId());
 
             if (appliance != null) {
                 out.write(
@@ -78,7 +80,7 @@ public class AddApplianceConfirmHandler implements HttpHandler {
                     "<body>" +
                     "<div class=\"container\">" +
                     "  <h1 class=\"mt-4\">Add Appliance</h1>" +
-                    "  <form method=\"post\" action=\"/admin/appliances/add/confirm\">" +
+                    "  <form method=\"post\" action=\"/appliances/admin/confirm\">" +
                     "    <div class=\"form-group\">" +
                     "    <div class=\"form-group\">" +
                     "      <label for=\"description\">Description</label>" +
@@ -127,6 +129,8 @@ public class AddApplianceConfirmHandler implements HttpHandler {
         String response;
 
         try (InputStream is = he.getRequestBody()) {
+        	System.out.println("Debug: Post reqest.");
+        	
             // Read the body of the request
             String body = new String(is.readAllBytes());
 
@@ -142,14 +146,18 @@ public class AddApplianceConfirmHandler implements HttpHandler {
             // Select appliance
             appliance = department.selectAppliance(applianceType.toLowerCase());
             System.out.println(appliance);
+            
+            System.out.println(appliance.getDescription());
 
             // Add appliance
             if (appliance != null) {
                 try {
 					applianceDao.addNewAppliance(appliance, null);
 					response = "Appliance added successfully!";
+					System.out.println(response);
+					
 	                // Redirect to admin
-	                he.getResponseHeaders().add("Location", "/admin/");
+	                he.getResponseHeaders().add("Location", "/success/");
 	                he.sendResponseHeaders(302, -1); // 302 Found (redirect)
 	                return;
 				} catch (Exception e) {
