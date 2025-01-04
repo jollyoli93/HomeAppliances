@@ -12,6 +12,7 @@ import java.util.Map;
 
 import appliances.Appliance;
 import appliances.ApplianceDepartments;
+import mainHandlers.ArraryList;
 import util.FactoryRegistry;
 
 
@@ -104,7 +105,31 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	    return applianceList;
 	}
-
+	
+	public ArrayList<Appliance> getAppliancesByPriceDesc() {
+		ArrayList<Appliance> appliances;
+		HashMap<String, Object> sortParams = new HashMap<String, Object>();
+		sortParams.put("price", "DESC");
+		appliances = findAll(0, sortParams);
+		
+		if (!appliances.isEmpty()) {
+			return appliances;
+		}
+		return null;
+	}
+	
+	public ArrayList<Appliance> getAppliancesByPriceAsc() {
+		ArrayList<Appliance> appliances;
+		HashMap<String, Object> sortParams = new HashMap<String, Object>();
+		sortParams.put("price", "ASC");
+		appliances = findAll(0, sortParams);
+		
+		if (!appliances.isEmpty()) {
+			return appliances;
+		}
+		return null;
+	}
+ 
 
 	public Appliance getAppliance(int id) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";

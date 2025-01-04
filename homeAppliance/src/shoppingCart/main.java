@@ -2,54 +2,30 @@ package shoppingCart;
 
 import java.util.ArrayList;
 
+import DAO.ApplianceDao;
 import DAO.ShoppingDao;
 import appliances.Appliance;
 import appliances.EntertainmentFactory;
+import mainHandlers.ArraryList;
+import printer.AppliancePrinter;
+import printer.Printer;
 import users.BusinessUser;
 import users.User;
 
 public class main {
 
 	public static void main(String[] args) {
-		User aladin = new BusinessUser("Aladin", "Ababwa", "princeali@magiccarpet.com", "princeali", "jasmine123", "07438273647", "Alibaba");
-		aladin.setCustomerId(5);
+		ApplianceDao appDao = new ApplianceDao("HomeAppliances");
+		ArrayList<Appliance> appliances = new ArrayList<Appliance>();
+	
 		
-		ShoppingCart cart = new ShoppingCart(aladin);
+		appliances = appDao.getAppliancesByPriceAsc();
 		
-		EntertainmentFactory tvs = new EntertainmentFactory();
 		
-		//add item to trolly
-		Appliance tv = tvs.selectAppliance("basic television");
-		tv.setId(8);
-		
-		ShoppingCartItem item1 = new ShoppingCartItem(aladin, tv);
+		for (Appliance app : appliances) {
+			System.out.println(app.getDetails());
 
-//		//add second item
-//		Appliance LCD = tvs.selectAppliance("lcd television");
-//		LCD.setId(2);
-//		
-//		ShoppingCartItem item2 = new ShoppingCartItem(aladin, LCD);
-//		item2.setId(2);
-
-		ShoppingDao cartDao = new ShoppingDao("HomeAppliances");
-		
-		//cartDao.addNewLineItem(item1, null);
-		
-		ArrayList<ShoppingCartItem> items = new ArrayList<>();
-		
-		items = cartDao.findAll(5, null);
-		
-		for (ShoppingCartItem item : items ) {
-			cart.addItem(item); 
 		}
-		System.out.println(cart.toString());
-		
-		cartDao.removeLineItem(8);
-		
-		for (ShoppingCartItem item : items ) {
-			cart.addItem(item); 
-		}
-		System.out.println(cart.toString());
 		
 	}
 
