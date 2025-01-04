@@ -124,6 +124,51 @@ public class ApplianceDao extends DAO<Appliance> {
 
 	    return appliance;
 	}
+	
+	public Appliance getApplianceByType(String description) {
+	    String query = "SELECT id, sku, description, category, price "
+	    		+ "FROM appliances "
+	    		+ "WHERE description = ? "
+	    		+ "LIMIT 1;";
+	    
+	    Appliance appliance = null;
+
+	    try (Connection connect = connector.initializeDBConnection();
+		     PreparedStatement preparedStatement = connect.prepareStatement(query)) {
+
+	        preparedStatement.setString(1, description);
+	        ResultSet result = preparedStatement.executeQuery();
+		        
+	        if (result.next()) {
+	        	int id = result.getInt("id");
+	        	String sku = result.getString("sku");
+	            String cat = result.getString("category");
+	            double price = result.getDouble("price");
+
+	            try {
+	                // Get the appropriate factory for the category
+	                ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat.toLowerCase());
+
+	                // Create the specific appliance using the factory method
+	                appliance = department.selectAppliance(description.toLowerCase());
+
+	                // Set the common properties
+	                appliance.setId(id);
+	                appliance.setPrice(price);
+	                
+	                System.out.println("Returning appliance no. " + appliance.getId());
+
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Error retrieving appliance: " + e.getMessage());
+	            }
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error connecting to the database");
+	        System.out.println("SQL Exception: " + e.getMessage());
+	    }
+
+	    return appliance;
+	}
 
 	
 	public boolean addNewAppliance(Appliance appliance, Map<String, String> additionalFields) {
