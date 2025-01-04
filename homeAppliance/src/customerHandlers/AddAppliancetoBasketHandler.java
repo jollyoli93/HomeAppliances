@@ -63,12 +63,13 @@ public class AddAppliancetoBasketHandler implements HttpHandler {
 	            String selectedDepartment = queryParams.get("department");
 	            String applianceType = queryParams.get("appliance");
 	            // Select department
+	            
+	            
 	            department = ApplianceDepartments.selectApplianceDepartment(selectedDepartment);
-	            System.out.println(department);
-
+	            
 	            // Select appliance
 	            appliance = department.selectAppliance(applianceType);
-	            System.out.println(appliance);
+
 
 	            if (appliance != null) {
 	                out.write(
@@ -143,17 +144,19 @@ public class AddAppliancetoBasketHandler implements HttpHandler {
 	        try (InputStream is = he.getRequestBody()) {
 	            // Read the body of the request
 	            String body = new String(is.readAllBytes());
-
+	            System.out.println("DEBUG: Print body " + body);
+	            
 	            // Select appliance
 	            appliance = getApplianceFromStore(body);
 	            System.out.println("Ready to add appliance: " + appliance);
 	            
 	            // Set user ID from session
 	        	User user = getUserProfile(he);
-	        	System.out.println("User profile is: " + user);
-
-	        	System.out.println("User object: " + user);
+	        	System.out.println("User profile is: " + user.getUsername());
 	            System.out.println("Ready to add appliance ID no: " + appliance.getId());
+	            
+	            //check appliance stock
+	            
 	            // Add appliance
 	            if (appliance != null && user != null) {
                 	cart = new ShoppingCartItem(user, appliance);
@@ -192,15 +195,20 @@ public class AddAppliancetoBasketHandler implements HttpHandler {
 	    	
             // Parse the body into a map
             Map<String, String> formParams = WebUtil.requestStringToMap(body); 
+            System.out.println(formParams);
+            
             String selectedDepartment = formParams.get("category");
             String applianceType = formParams.get("description");
-
+            
+            
+            
             // Select department
             department = ApplianceDepartments.selectApplianceDepartment(selectedDepartment.toLowerCase());
             System.out.println(department);
             
             //select appliance ID from database
-            appliance = applianceDao.getApplianceByType(applianceType);
+            appliance = applianceDao.getApplianceByType(applianceType.toLowerCase());
+            System.out.println("Appliance ID: " + appliance.getId());
             
             return appliance;
 	    }

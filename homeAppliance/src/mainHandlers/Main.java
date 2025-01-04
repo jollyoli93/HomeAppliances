@@ -3,6 +3,7 @@ package mainHandlers;
 import com.sun.net.httpserver.HttpServer;
 
 import DAO.ApplianceDao;
+import DAO.ShoppingDao;
 import DAO.UserDao;
 import adminUserHandlers.ConfirmCreateUserHandler;
 import adminUserHandlers.CreateUserHandler;
@@ -34,6 +35,7 @@ import loginHandlers.LoginHandler;
 import sessionManagement.AdminValidationHandler;
 import sessionManagement.SessionManager;
 import sessionManagement.UserValidationHandler;
+import shoppingCartHandler.ShoppingCartHandler;
 
 import java.net.InetSocketAddress;
 import java.io.IOException;
@@ -48,12 +50,13 @@ public class Main {
         // Create DAO objects
         ApplianceDao applianceDao = new ApplianceDao(dbpath);
         UserDao userDao = new UserDao(dbpath);
+        ShoppingDao shoppingDao = new ShoppingDao(dbpath);
 
         // Create session manager
         SessionManager sessionManager = new SessionManager();
 
         // Register contexts
-        registerContexts(server, applianceDao, userDao, sessionManager);
+        registerContexts(server, applianceDao, userDao, shoppingDao, sessionManager);
 
         // Start server
         server.setExecutor(null);
@@ -61,7 +64,7 @@ public class Main {
         System.out.println("The server is listening on port " + PORT);
     }
 
-    private static void registerContexts(HttpServer server, ApplianceDao applianceDao, UserDao userDao, SessionManager sessionManager) {
+    private static void registerContexts(HttpServer server, ApplianceDao applianceDao, UserDao userDao, ShoppingDao shoppingDao, SessionManager sessionManager) {
         // Public routes
         server.createContext("/", new RootHandler());
         server.createContext("/login", new LoginHandler(userDao, sessionManager));
@@ -105,6 +108,6 @@ public class Main {
         server.createContext("/users/add", new CreateUserHandler(userDao));
         server.createContext("/users/edit", new UserValidationHandler(new EditUserHandler(userDao, sessionManager), sessionManager));
         server.createContext("/appliances/users/confirm", new UserValidationHandler(new AddAppliancetoBasketHandler(applianceDao,userDao, sessionManager), sessionManager));
-   //     server.createContext("/users/cart", new ShoppingCartHandler(userDao, sessionManager));
+        server.createContext("/users/cart", new ShoppingCartHandler(userDao, shoppingDao, sessionManager));
     }
 }
