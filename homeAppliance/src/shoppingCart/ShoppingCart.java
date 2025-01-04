@@ -16,7 +16,6 @@ public class ShoppingCart {
         this.items = new ArrayList<>();
     }
 
-    // Add an item to the cart
     public void addItem(ShoppingCartItem item) {
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null");

@@ -10,11 +10,10 @@ public class ShoppingCartItem {
     private String desc; // Cached description
     private double price; // Cached price
 
-    public ShoppingCartItem(int id, User user, Appliance appliance) {
+    public ShoppingCartItem(User user, Appliance appliance) {
         if (user == null || appliance == null) {
             throw new IllegalArgumentException("User and Appliance cannot be null");
         }
-        this.id = id;
         this.user = user;
         this.appliance = appliance;
         this.desc = appliance.getDescription();

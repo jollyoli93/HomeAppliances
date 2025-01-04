@@ -41,7 +41,7 @@ class ShoppingCartTesting {
 		Appliance tv = entertainDept.selectAppliance("basic television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, customer, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(customer, tv);
 		
 		customerCart.addItem(item1);
 		
@@ -53,7 +53,7 @@ class ShoppingCartTesting {
 		Appliance tv = entertainDept.selectAppliance("basic television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, customer, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(customer, tv);
 		
 		customerCart.addItem(item1);
 		
@@ -70,10 +70,10 @@ class ShoppingCartTesting {
 		Appliance lcd = entertainDept.selectAppliance("lcd television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, customer, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(customer, tv);
 		customerCart.addItem(item1);
 		
-		ShoppingCartItem item2 = new ShoppingCartItem(1, customer, lcd);
+		ShoppingCartItem item2 = new ShoppingCartItem(customer, lcd);
 		customerCart.addItem(item2);
 		
         assertEquals(2, customerCart.getItems().size());
@@ -87,10 +87,10 @@ class ShoppingCartTesting {
 		Appliance lcd = entertainDept.selectAppliance("lcd television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, customer, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(customer, tv);
 		customerCart.addItem(item1);
 		
-		ShoppingCartItem item2 = new ShoppingCartItem(1, customer, lcd);
+		ShoppingCartItem item2 = new ShoppingCartItem(customer, lcd);
 		customerCart.addItem(item2);
 		
 		customerCart.clearCart();
@@ -103,7 +103,7 @@ class ShoppingCartTesting {
 		Appliance tv = entertainDept.selectAppliance("basic television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, customer, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(customer, tv);
 		customerCart.addItem(item1);
 		
         assertEquals(100, customerCart.getTotalPrice());
@@ -114,7 +114,7 @@ class ShoppingCartTesting {
 		Appliance tv = entertainDept.selectAppliance("basic television");
 		tv.setId(1);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, business, tv);
+		ShoppingCartItem item1 = new ShoppingCartItem(business, tv);
 		businessCart.addItem(item1);
 			
         assertEquals(80, businessCart.getTotalPrice());

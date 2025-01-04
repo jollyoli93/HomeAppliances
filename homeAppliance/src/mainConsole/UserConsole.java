@@ -228,7 +228,7 @@ public class UserConsole {
     }
 
     public void getAllUsers() {
-        ArrayList<User> userList = userDAO.findAll();
+        ArrayList<User> userList = userDAO.findAll(0);
 
         if (userList.isEmpty()) {
             return;

@@ -1,5 +1,8 @@
 package shoppingCart;
 
+import java.util.ArrayList;
+
+import DAO.ShoppingDao;
 import appliances.Appliance;
 import appliances.EntertainmentFactory;
 import users.BusinessUser;
@@ -17,25 +20,36 @@ public class main {
 		
 		//add item to trolly
 		Appliance tv = tvs.selectAppliance("basic television");
-		tv.setId(1);
+		tv.setId(8);
 		
-		ShoppingCartItem item1 = new ShoppingCartItem(1, aladin, tv);
-		
-		cart.addItem(item1);
-		//add second item
-		Appliance LCD = tvs.selectAppliance("lcd television");
-		LCD.setId(2);
-		
-		ShoppingCartItem item2 = new ShoppingCartItem(1, aladin, LCD);
-		cart.addItem(item2);
+		ShoppingCartItem item1 = new ShoppingCartItem(aladin, tv);
 
+//		//add second item
+//		Appliance LCD = tvs.selectAppliance("lcd television");
+//		LCD.setId(2);
+//		
+//		ShoppingCartItem item2 = new ShoppingCartItem(aladin, LCD);
+//		item2.setId(2);
+
+		ShoppingDao cartDao = new ShoppingDao("HomeAppliances");
 		
-		System.out.println(item1.toString());
-		System.out.println(item2.toString());
+		//cartDao.addNewLineItem(item1, null);
 		
+		ArrayList<ShoppingCartItem> items = new ArrayList<>();
 		
-		//total up shopping cart
-		System.out.println(cart.getTotalPrice());
+		items = cartDao.findAll(5);
+		
+		for (ShoppingCartItem item : items ) {
+			cart.addItem(item); 
+		}
+		System.out.println(cart.toString());
+		
+		cartDao.removeLineItem(8);
+		
+		for (ShoppingCartItem item : items ) {
+			cart.addItem(item); 
+		}
+		System.out.println(cart.toString());
 		
 	}
 

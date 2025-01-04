@@ -101,7 +101,7 @@ public class ApplianceConsole {
 
 	private void getAllProducts() {
 		try {
-			ArrayList<Appliance> list = applianceDAO.findAll();
+			ArrayList<Appliance> list = applianceDAO.findAll(0);
 			
 			for (Appliance obj : list) {
 				AppliancePrinter print = new AppliancePrinter(obj);

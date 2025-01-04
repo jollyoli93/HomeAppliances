@@ -180,7 +180,7 @@ public abstract class DAO<T> {
 	    }
 	}
 
-	public abstract ArrayList<T> findAll();
+	public abstract ArrayList<T> findAll(int optionalId);
 	public abstract int updateById(int id, String table, Map<String, Object> updateFields);
 
 }

@@ -35,6 +35,10 @@ public class ApplianceDao extends DAO<Appliance> {
     			+"price	INTEGER NOT NULL,"
     			+"PRIMARY KEY(id AUTOINCREMENT))";
     	
+		if (!checkTableExists("appliances")) {
+			createTable("appliances", tableSchema);
+		}
+    	
     	allowedTablesList.add("appliances");
     	registerAppliances.initApplianceFactories();
     	departments = registerAppliances.getDepartments();    	
@@ -42,13 +46,8 @@ public class ApplianceDao extends DAO<Appliance> {
 
 
 	@Override
-	public ArrayList<Appliance> findAll() {
+	public ArrayList<Appliance> findAll(int optionalId) {
 		ArrayList<Appliance> applianceList = new ArrayList<>(); 
-		
-		if (!checkTableExists("appliances")) {
-			createTable("appliances", tableSchema);
-		}
-		
 		
 		String query = "SELECT * FROM appliances";
 		
@@ -59,7 +58,7 @@ public class ApplianceDao extends DAO<Appliance> {
                while (result.next()) {
             	   Appliance product;
                 	   
-                   int id = result.getInt("id");
+                   int userId = result.getInt("id");
                    String desc = result.getString("description");
                    String cat = result.getString("category");
                    double price = result.getDouble("price");
@@ -72,7 +71,7 @@ public class ApplianceDao extends DAO<Appliance> {
                        product = department.selectAppliance(desc.toLowerCase());
                        
                        // Set the common properties
-                       product.setId(id);
+                       product.setId(userId);
                        product.setPrice(price);
                        
                        applianceList.add(product);

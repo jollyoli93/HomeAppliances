@@ -88,7 +88,7 @@ public class UserDao extends DAO<User> {
     }	
 
 		@Override
-		public ArrayList<User> findAll() {
+		public ArrayList<User> findAll(int id) {
 			ArrayList<User> userList = new ArrayList<>(); 			
 			
 			String query = "SELECT * FROM users ";

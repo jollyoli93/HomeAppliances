@@ -21,7 +21,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
         try {
-            List<User> allUsers = userDao.findAll();
+            List<User> allUsers = userDao.findAll(0);
             he.sendResponseHeaders(200, 0);
 
             out.write(
