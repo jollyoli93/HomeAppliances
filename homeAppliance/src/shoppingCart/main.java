@@ -37,7 +37,7 @@ public class main {
 		
 		ArrayList<ShoppingCartItem> items = new ArrayList<>();
 		
-		items = cartDao.findAll(5);
+		items = cartDao.findAll(5, null);
 		
 		for (ShoppingCartItem item : items ) {
 			cart.addItem(item); 

@@ -41,7 +41,7 @@ public class ShoppingDao extends DAO<ShoppingCartItem> {
 	}
 	
 	@Override
-	public ArrayList<ShoppingCartItem> findAll(int userId) {
+	public ArrayList<ShoppingCartItem> findAll(int userId, HashMap<String, Object> sortParams) {
 	    ArrayList<ShoppingCartItem> items = new ArrayList<>();
 	    String query = "SELECT line_id, user_id, item_id FROM shopping_cart WHERE user_id = ?;";
 

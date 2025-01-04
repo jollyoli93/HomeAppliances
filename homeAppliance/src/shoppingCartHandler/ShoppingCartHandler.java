@@ -56,7 +56,7 @@ public class ShoppingCartHandler implements HttpHandler {
             return;
         }
 
-        List<ShoppingCartItem> cartItems = shoppingDao.findAll(userId);
+        List<ShoppingCartItem> cartItems = shoppingDao.findAll(userId, null);
         ShoppingCart cart = new ShoppingCart(user);
 
         if (cartItems != null) {

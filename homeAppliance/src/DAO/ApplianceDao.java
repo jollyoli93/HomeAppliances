@@ -46,50 +46,65 @@ public class ApplianceDao extends DAO<Appliance> {
 
 
 	@Override
-	public ArrayList<Appliance> findAll(int optionalId) {
-		ArrayList<Appliance> applianceList = new ArrayList<>(); 
-		
-		String query = "SELECT * FROM appliances";
-		
-        try (Connection connect = connector.initializeDBConnection();
-        	 Statement statement = connect.createStatement();
-        	 ResultSet result = statement.executeQuery(query)) {
+	public ArrayList<Appliance> findAll(int optionalId, HashMap<String, Object> sortParams) {
+	    ArrayList<Appliance> applianceList = new ArrayList<>();
+	    
+	    // Initialize query
+	    StringBuilder queryBuilder = new StringBuilder("SELECT * FROM appliances");
 
-               while (result.next()) {
-            	   Appliance product;
-                	   
-                   int userId = result.getInt("id");
-                   String desc = result.getString("description");
-                   String cat = result.getString("category");
-                   double price = result.getDouble("price");
-                   
-                   try {
-                       // Get the appropriate department for the category
-                       ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat.toLowerCase());
-                       
-                       // Create the specific appliance using the factory
-                       product = department.selectAppliance(desc.toLowerCase());
-                       
-                       // Set the common properties
-                       product.setId(userId);
-                       product.setPrice(price);
-                       
-                       applianceList.add(product);
-                                       
-                   } catch (IllegalArgumentException e) {
-                       System.out.println("Error creating appliance: " + e.getMessage());
-                   }
-  
-               } 
+	    // Add ORDER BY clause dynamically if sortParams are provided
+	    if (sortParams != null && !sortParams.isEmpty()) {
+	        queryBuilder.append(" ORDER BY ");
+	        int i = 0;
+	        for (String column : sortParams.keySet()) {
+	            queryBuilder.append(column).append(" ").append(sortParams.get(column));  // Column and order (ASC or DESC)
+	            if (i < sortParams.size() - 1) {
+	                queryBuilder.append(", ");
+	            }
+	            i++;
+	        }
+	    }
 
-           } catch (SQLException e) {
-   				System.out.println("Error connecting to the database");
-               System.out.println("SQL Exception: " + e.getMessage());
-               
-           }
-		
-		return applianceList;
+	    String query = queryBuilder.toString();
+
+	    try (Connection connect = connector.initializeDBConnection();
+	         Statement statement = connect.createStatement();
+	         ResultSet result = statement.executeQuery(query)) {
+
+	        while (result.next()) {
+	            Appliance product;
+
+	            int userId = result.getInt("id");
+	            String desc = result.getString("description");
+	            String cat = result.getString("category");
+	            double price = result.getDouble("price");
+
+	            try {
+	                // Get the appropriate department for the category
+	                ApplianceDepartments department = ApplianceDepartments.selectApplianceDepartment(cat.toLowerCase());
+
+	                // Create the specific appliance using the factory
+	                product = department.selectAppliance(desc.toLowerCase());
+
+	                // Set the common properties
+	                product.setId(userId);
+	                product.setPrice(price);
+
+	                applianceList.add(product);
+
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Error creating appliance: " + e.getMessage());
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("Error connecting to the database");
+	        System.out.println("SQL Exception: " + e.getMessage());
+	    }
+
+	    return applianceList;
 	}
+
 
 	public Appliance getAppliance(int id) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
@@ -254,4 +269,6 @@ public class ApplianceDao extends DAO<Appliance> {
 	    int updatedRows = updateById(id, "appliances", update);
 	    return "Rows updated: " + updatedRows;
 	}
+	
+	
 }

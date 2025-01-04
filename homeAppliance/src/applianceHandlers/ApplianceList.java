@@ -29,7 +29,7 @@ public class ApplianceList implements HttpHandler {
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
 
-            List<Appliance> allAppliances = applianceDao.findAll(0);
+            List<Appliance> allAppliances = applianceDao.findAll(0, null);
 
             out.write(
                 "<html>" +
