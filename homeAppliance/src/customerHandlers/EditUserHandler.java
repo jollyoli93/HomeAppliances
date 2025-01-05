@@ -84,7 +84,7 @@ public class EditUserHandler implements HttpHandler {
 
                 html.append(
                     "<button type=\"submit\" class=\"btn btn-success\">Save Changes</button>" +
-                    "<a href=\"/admin/users\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
+            		"<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
                     "</form></div></body></html>");
 
                 out.write(html.toString());

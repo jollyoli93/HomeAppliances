@@ -105,6 +105,7 @@ public class AddApplianceTypeHandler implements HttpHandler {
         html += "</select>" +
                 "</div>" +
                 "<button type=\"submit\" class=\"btn btn-primary\">Next</button>" +
+				"<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
             "</form>" +
             "</div>" +
             "</body>" +

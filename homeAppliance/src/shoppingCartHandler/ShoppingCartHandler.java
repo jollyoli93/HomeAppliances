@@ -71,6 +71,7 @@ public class ShoppingCartHandler implements HttpHandler {
                 <!DOCTYPE html>
                 <html>
                 <head>
+        			<meta charset="UTF-8">
                     <title>Shopping Cart</title>
                     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
                 </head>
@@ -86,14 +87,14 @@ public class ShoppingCartHandler implements HttpHandler {
                                     <th>Item</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>Total </th>
                                 </tr>
                             </thead>
                             <tbody>
                 """);
 
         for (ShoppingCartItem item : cart.getItems()) {
-            double itemTotal = item.getPrice(); // Update as per quantity if needed
+            double itemTotal = item.getPrice(); 
             html.append(String.format("""
                     <tr>
                         <td>%s</td>
@@ -108,12 +109,13 @@ public class ShoppingCartHandler implements HttpHandler {
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3">Total</th>
+                                    <th colspan="3">Total (Discount applied to business customers)</th>
                                     <th>£%.2f</th>
                                 </tr>
                             </tfoot>
                         </table>
                         <a href="/checkout" class="btn btn-primary">Proceed to Checkout</a>
+                        <a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>
                     </div>
                 </body>
                 </html>

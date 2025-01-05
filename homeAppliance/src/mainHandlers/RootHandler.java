@@ -68,12 +68,12 @@ public class RootHandler implements HttpHandler {
 	    	                            "<div class=\"form-group\">" +
 	    	                                "<label for=\"customerUsername\">Username</label>" +
 	    	                                "<input type=\"text\" class=\"form-control\" id=\"customerUsername\" name=\"username\" " +
-	    	                                       "placeholder=\"Enter username\">" +
+	    	                                       "placeholder=\"Enter username\" required>" +
 	    	                            "</div>" +
 	    	                            "<div class=\"form-group\">" +
 	    	                                "<label for=\"customerPassword\">Password</label>" +
 	    	                                "<input type=\"password\" class=\"form-control\" id=\"customerPassword\" name=\"password\" " +
-	    	                                       "placeholder=\"Enter password\">" +
+	    	                                       "placeholder=\"Enter password\" required>" +
 	    	                            "</div>" +
 	    	                            "<button type=\"submit\" class=\"btn btn-primary\">Login</button>" +
 	    	                        "</form>" +

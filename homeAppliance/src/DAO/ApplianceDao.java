@@ -13,7 +13,6 @@ import java.util.Set;
 
 import appliances.Appliance;
 import appliances.ApplianceDepartments;
-import mainHandlers.ArraryList;
 import util.FactoryRegistry;
 
 

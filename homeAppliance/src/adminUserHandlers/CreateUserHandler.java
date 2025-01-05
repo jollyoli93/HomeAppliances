@@ -39,7 +39,7 @@ public class CreateUserHandler implements HttpHandler {
                         "</head>" +
                         "<body><div class=\"container\">" +
                         "<h1 class=\"mt-4\">Create " + type + " account </h1>" +
-                        "<form method=\"post\" action=\"/admin/users/add-confirm\">" +
+                        "<form method=\"post\" action=\"/users/add-confirm\">" +
                         "<input type=\"hidden\" name=\"type\" value=\"" + type + "\">" +
                         "<div class=\"form-group\">" +
                         "<label for=\"firstName\">First Name</label>" +
@@ -82,7 +82,7 @@ public class CreateUserHandler implements HttpHandler {
                         "</div>");
 
                 html.append("<button type=\"submit\" class=\"btn btn-success\">Create User</button>" +
-                        "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Cancel</a>" +
+                        "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
                         "</form></div></body></html>");
 
                 out.write(html.toString());

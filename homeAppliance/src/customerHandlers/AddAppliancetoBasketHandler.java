@@ -112,6 +112,7 @@ public class AddAppliancetoBasketHandler implements HttpHandler {
 	                    "      <input type=\"number\" step=\"0.01\" class=\"form-control\" id=\"price\" name=\"price\" value=\"" + appliance.getPrice() + "\" readonly>" +
 	                    "    </div>" +
 	                    "    <button type=\"submit\" class=\"btn btn-success\">Add to basket</button>" +
+        				"	<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
 	                    "  </form>" +
 	                    "</div>" +
 	                    "</body>" +

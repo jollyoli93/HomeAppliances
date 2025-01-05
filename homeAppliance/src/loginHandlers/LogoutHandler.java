@@ -1,4 +1,4 @@
-package mainHandlers;
+package loginHandlers;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import sessionManagement.Session;
 import sessionManagement.SessionManager;
 import util.WebUtil;
 
@@ -27,13 +26,10 @@ public class LogoutHandler implements HttpHandler {
             // Remove the session from the session manager
             sessionManager.removeSession(sessionId);
             
-            // Send a successful logout response
-            String response = "Logged out successfully.";
-            he.getResponseHeaders().set("Content-Type", "text/plain");
-            he.sendResponseHeaders(200, response.getBytes().length);
-            OutputStream os = he.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
+            //redirect to homepage
+            he.getResponseHeaders().add("Location", "/");
+            he.sendResponseHeaders(302, -1); // 302 Found (redirect)
+
         } else {
             // If no session ID is found, send a response indicating failure
             String response = "No session found to log out.";

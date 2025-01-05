@@ -23,8 +23,8 @@ public class UsersHandler implements HttpHandler {
                         "</button>" +
                         "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
                             "<ul class=\"navbar-nav\">" +
-                                "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
                                 "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/admin\">Dashboard</a></li>" +
+                                "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/logout\">Logout</a></li>" +
                             "</ul>" +
                         "</div>" +
                     "</nav>" +

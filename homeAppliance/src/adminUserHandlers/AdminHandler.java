@@ -1,4 +1,4 @@
-package customerHandlers;
+package adminUserHandlers;
 
 import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
@@ -23,7 +23,7 @@ public class AdminHandler implements HttpHandler {
                         "</button>" +
                         "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
                             "<ul class=\"navbar-nav\">" +
-                                "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                                "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/logout\">Logout</a></li>" +
                             "</ul>" +
                         "</div>" +
                     "</nav>" +

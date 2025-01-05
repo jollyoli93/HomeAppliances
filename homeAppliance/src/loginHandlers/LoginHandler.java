@@ -1,4 +1,4 @@
-package loginHandlers;
+ package loginHandlers;
 
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
@@ -80,8 +80,8 @@ public class LoginHandler implements HttpHandler {
         String username = formData.get("username");
         String password = formData.get("password");
 
-        
-        if (username == null || password == null) {
+        // Check if username or password is null or empty
+        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             sendResponse(he, 400, "Username and password are required");
             return;
         }
@@ -91,11 +91,11 @@ public class LoginHandler implements HttpHandler {
             sendResponse(he, 401, "Invalid login credentials");
             return;
         }
-               
+
         // Create a new session for the user
         String sessionId = sessionManager.createSession();
         Session session = sessionManager.getSession(sessionId);
-        
+
         session.setAttribute("userId", user.getCustomerId());
         session.setAttribute("role", user.getRole());
 
@@ -117,6 +117,7 @@ public class LoginHandler implements HttpHandler {
                 sendResponse(he, 403, "Invalid user role");
         }
     }
+
 
     private User validateUser(String username, String password) {
         try {

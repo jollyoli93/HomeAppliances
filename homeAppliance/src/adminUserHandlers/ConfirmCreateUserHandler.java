@@ -68,7 +68,7 @@ public class ConfirmCreateUserHandler implements HttpHandler {
             }
 
             // Redirect after successful user creation
-            he.getResponseHeaders().set("Location", "/admin/success");
+            he.getResponseHeaders().set("Location", "/success");
             he.sendResponseHeaders(302, -1); // Redirect
 
         } catch (Exception e) {

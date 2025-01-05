@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import DAO.ApplianceDao;
 import DAO.ShoppingDao;
 import DAO.UserDao;
+import adminUserHandlers.AdminHandler;
 import adminUserHandlers.ConfirmCreateUserHandler;
 import adminUserHandlers.CreateUserHandler;
 import adminUserHandlers.DeleteUserConfirmationHandler;
@@ -28,10 +29,10 @@ import applianceHandlers.DeleteApplianceConfirmationHandler;
 import applianceHandlers.EditApplianceForm;
 import applianceHandlers.UpdateApplianceHandler;
 import customerHandlers.AddAppliancetoBasketHandler;
-import customerHandlers.AdminHandler;
 import customerHandlers.CustomerHomepageHandler;
 import customerHandlers.EditUserHandler;
 import loginHandlers.LoginHandler;
+import loginHandlers.LogoutHandler;
 import sessionManagement.AdminValidationHandler;
 import sessionManagement.SessionManager;
 import sessionManagement.UserValidationHandler;
@@ -71,6 +72,7 @@ public class Main {
         server.createContext("/logout", new LogoutHandler(sessionManager));
         server.createContext("/success", new SuccessPageHandler(sessionManager));
         server.createContext("/update", new UpdateUserHandler(userDao, sessionManager));
+        server.createContext("/users/add-confirm", new ConfirmCreateUserHandler(userDao));
 
         // Admin routes with session validation
         server.createContext("/admin", new AdminValidationHandler(new AdminHandler(), sessionManager));
@@ -95,7 +97,6 @@ public class Main {
         server.createContext("/admin/users/view-address", new AdminValidationHandler(new ViewAddressHandler(userDao), sessionManager));
         server.createContext("/admin/users/add", new AdminValidationHandler(new CreateUserHandler(userDao), sessionManager));
         server.createContext("/admin/users/add-select", new AdminValidationHandler(new SelectUserHandler(), sessionManager));
-        server.createContext("/admin/users/add-confirm", new AdminValidationHandler(new ConfirmCreateUserHandler(userDao), sessionManager));
         server.createContext("/admin/users/edit", new AdminValidationHandler(new EditUserAdminHandler(userDao), sessionManager));
         server.createContext("/admin/users/update-address", new AdminValidationHandler(new UpdateAddressHandler(userDao), sessionManager));
         server.createContext("/admin/users/edit-address", new AdminValidationHandler(new EditAddressHandler(userDao), sessionManager));

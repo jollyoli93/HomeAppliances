@@ -45,7 +45,7 @@ public class SuccessPageHandler implements HttpHandler {
                 );
             } else if ("customer".equalsIgnoreCase(role) || "business".equalsIgnoreCase(role)) {
                 content.append(
-                    "<a href=\"/\" class=\"btn btn-primary\">Back to Homepage</a>"
+                    "<a href=\"/home\" class=\"btn btn-primary\">Back to Homepage</a>"
 
                 );
             } else {

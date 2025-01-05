@@ -44,6 +44,7 @@ public class SelectUserHandler implements HttpHandler {
 	                            "<small>Add a new business accounts</small>" +
 	                        "</a>" +
                         "</div>" +
+        				"<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
                     "</div>" +
                     "<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\"></script>" +
                     "<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js\"></script>" +
