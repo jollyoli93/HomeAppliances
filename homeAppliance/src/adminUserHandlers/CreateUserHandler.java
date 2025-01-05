@@ -11,13 +11,31 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.UserDao;
 import util.WebUtil;
 
+/**
+ * Handles HTTP requests for rendering the user creation form.
+ * 
+ * <p>Generates an HTML form for creating users of various types (admin, customer, or business).</p>
+ * 
+ * @author 24862664
+ */
 public class CreateUserHandler implements HttpHandler {
     private UserDao userDao;
 
+    /**
+     * Constructs a handler for creating users.
+     * 
+     * @param userDao the DAO used for user operations
+     */
     public CreateUserHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Processes the HTTP request and generates an HTML form for user creation.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during response writing
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
@@ -32,6 +50,7 @@ public class CreateUserHandler implements HttpHandler {
             if (type != null) {
                 StringBuilder html = new StringBuilder();
 
+                // HTML form construction
                 html.append("<html>" +
                         "<head><title>Create " + type + "</title>" +
                         "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\" " +
@@ -58,6 +77,7 @@ public class CreateUserHandler implements HttpHandler {
                         "<input type=\"email\" class=\"form-control\" id=\"emailAddress\" name=\"emailAddress\" required>" +
                         "</div>");
 
+                // Additional fields for customer or business users
                 if (type.contains("customer") || type.contains("business")) {
                     html.append("<div class=\"form-group\">" +
                             "<label for=\"telephoneNum\">Telephone Number</label>" +
@@ -65,6 +85,7 @@ public class CreateUserHandler implements HttpHandler {
                             "</div>");
                 }
 
+                // Additional field for business users
                 if (type.contains("business")) {
                     html.append("<div class=\"form-group\">" +
                             "<label for=\"businessName\">Business Name</label>" +
@@ -72,6 +93,7 @@ public class CreateUserHandler implements HttpHandler {
                             "</div>");
                 }
 
+                // Password fields
                 html.append("<div class=\"form-group\">" +
                         "<label for=\"password\">Password</label>" +
                         "<input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" required>" +
@@ -81,6 +103,7 @@ public class CreateUserHandler implements HttpHandler {
                         "<input type=\"password\" class=\"form-control\" id=\"confirmPassword\" name=\"confirmPassword\" required>" +
                         "</div>");
 
+                // Submit and Back buttons
                 html.append("<button type=\"submit\" class=\"btn btn-success\">Create User</button>" +
                         "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
                         "</form></div></body></html>");

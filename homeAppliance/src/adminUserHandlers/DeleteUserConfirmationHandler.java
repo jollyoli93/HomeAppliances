@@ -9,6 +9,9 @@ import java.io.OutputStream;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * @author 24862664
+ */
 public class DeleteUserConfirmationHandler implements HttpHandler {
     private UserDao userDao;
     
