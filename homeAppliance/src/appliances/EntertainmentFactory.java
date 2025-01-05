@@ -1,5 +1,9 @@
+//STUDENT NO. 24862664
 package appliances;
 
+/**
+ * @author 24862664
+ */
 public class EntertainmentFactory extends ApplianceDepartments {
     public EntertainmentFactory() {
         initializeApplianceTypes();

@@ -4,11 +4,38 @@ import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Handles HTTP requests for the admin dashboard page.
+ * 
+ * <p>This handler serves the HTML content for the Admin Dashboard, which includes navigation links 
+ * to add new appliances, view all appliances, and manage users. It uses Bootstrap for styling.</p>
+ * 
+ * @author 24862664
+ */
 public class AdminHandler implements HttpHandler {
+
+    /**
+     * Handles incoming HTTP requests and sends the Admin Dashboard page as the response.
+     * 
+     * <p>The response is an HTML page styled with Bootstrap that includes links for admin actions:
+     * <ul>
+     *     <li>Add New Appliance</li>
+     *     <li>View All Appliances</li>
+     *     <li>Manage Users</li>
+     * </ul>
+     * </p>
+     * 
+     * @param he the {@link HttpExchange} object containing the HTTP request and response data
+     * @throws IOException if an I/O error occurs during the response handling
+     */
+    @Override
     public void handle(HttpExchange he) throws IOException {
+        // Sending HTTP response headers
         he.sendResponseHeaders(200, 0);
+
+        // Writing the HTML content to the response body
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
-        
+
         out.write(
             "<html>" +
                 "<head>" +
@@ -49,7 +76,8 @@ public class AdminHandler implements HttpHandler {
                 "</body>" +
             "</html>"
         );
-        
+
+        // Closing the writer to finish the response
         out.close();
     }
 }

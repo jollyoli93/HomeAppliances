@@ -1,9 +1,7 @@
 package adminUserHandlers;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 
@@ -17,19 +15,37 @@ import users.CustomerUser;
 import users.User;
 import util.WebUtil;
 
+/**
+ * Handles HTTP requests for creating a new user.
+ * 
+ * <p>This handler processes form data, validates the user type, and creates a new user in the system 
+ * based on the provided information. Supports admin, customer, and business users.</p>
+ * 
+ * @author 24862664
+ */
 public class ConfirmCreateUserHandler implements HttpHandler {
     private UserDao userDao;
 
+    /**
+     * Constructs a new handler with the specified {@link UserDao}.
+     * 
+     * @param userDao the DAO used to manage user data
+     */
     public ConfirmCreateUserHandler(UserDao userDao) {
         this.userDao = userDao;
     }
     
+    /**
+     * Handles incoming HTTP requests and creates a new user based on the form data.
+     * 
+     * @param he the {@link HttpExchange} object containing the HTTP request and response
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
         
         try {
-            // Read POST body (Form data)
             Map<String, String> params = WebUtil.getResponseMap(he);
 
             String type = params.get("type");
@@ -41,7 +57,6 @@ public class ConfirmCreateUserHandler implements HttpHandler {
             String businessName = params.get("businessName");
             String password = params.get("password");
 
-            // Check for valid user type
             if (type == null || (!type.equals("admin") && !type.equals("customer") && !type.equals("business"))) {
                 he.sendResponseHeaders(400, 0);
                 out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
@@ -67,12 +82,11 @@ public class ConfirmCreateUserHandler implements HttpHandler {
                     throw new IllegalArgumentException("Invalid user type");
             }
 
-            // Redirect after successful user creation
             he.getResponseHeaders().set("Location", "/success");
-            he.sendResponseHeaders(302, -1); // Redirect
+            he.sendResponseHeaders(302, -1);
 
         } catch (Exception e) {
-            he.sendResponseHeaders(500, 0); // Internal Server Error
+            he.sendResponseHeaders(500, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
             out.write("<html><body><h1>Internal Server Error</h1></body></html>");
             e.printStackTrace();
