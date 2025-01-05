@@ -8,13 +8,31 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import appliances.ApplianceDepartments;
 
+/**
+ * Handles the HTTP request for selecting an appliance department.
+ * This handler fetches the list of appliance departments and renders an HTML form to select a department.
+ * 
+ * @author [Your Name]
+ */
 public class AddApplianceDeptHandler implements HttpHandler {
     private ApplianceDao applianceDao;
 
+    /**
+     * Constructor to initialize the handler with the appliance DAO.
+     *
+     * @param applianceDao The DAO responsible for interacting with appliance data.
+     */
     public AddApplianceDeptHandler(ApplianceDao applianceDao) {
         this.applianceDao = applianceDao;
     }
 
+    /**
+     * Handles the incoming HTTP request and sends a response with a form for selecting a department.
+     * If no departments are available, a 404 error is returned.
+     *
+     * @param he The HTTP exchange object containing request and response data.
+     * @throws IOException If an I/O error occurs while handling the request or sending the response.
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         // Get the list of departments from the appliance factories
@@ -47,16 +65,16 @@ public class AddApplianceDeptHandler implements HttpHandler {
                 "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\">" +
             "</head>" +
             "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">" +
-	            "<a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
-	            "<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\">" +
-	                "<span class=\"navbar-toggler-icon\"></span>" +
-	            "</button>" +
-	            "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
-	                "<ul class=\"navbar-nav\">" +
-	                    "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                "<a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
+                "<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\">" +
+                    "<span class=\"navbar-toggler-icon\"></span>" +
+                "</button>" +
+                "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
+                    "<ul class=\"navbar-nav\">" +
+                        "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
                         "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/admin\">Dashboard</a></li>" +
-	                "</ul>" +
-	            "</div>" +
+                    "</ul>" +
+                "</div>" +
             "</nav>" +
             "<body>" +
                 "<div class=\"container mt-4\">" +
@@ -69,7 +87,7 @@ public class AddApplianceDeptHandler implements HttpHandler {
                             "</select>" +
                         "</div>" +
                         "<button type=\"submit\" class=\"btn btn-primary\">Next</button>" +
-        				"<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
+                        "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
                     "</form>" +
                 "</div>" +
             "</body>" +

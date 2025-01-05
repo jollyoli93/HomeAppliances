@@ -4,11 +4,32 @@ import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Handles the HTTP requests for displaying the user administration dashboard.
+ * This handler generates an HTML page with links to view users, view admin accounts,
+ * and create new users.
+ * 
+ * @author 24862664
+ */
 public class UsersHandler implements HttpHandler {
+
+    /**
+     * Handles the HTTP request to display the user admin dashboard page.
+     * It generates an HTML page that provides links to view registered customers,
+     * view admin accounts, and create new user accounts.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response data.
+     * @throws IOException if an I/O error occurs during the response writing.
+     */
+    @Override
     public void handle(HttpExchange he) throws IOException {
+        // Send HTTP response headers with a 200 OK status and no content length
         he.sendResponseHeaders(200, 0);
+
+        // Set up output stream to write the response body
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
         
+        // Write the HTML content for the user admin dashboard
         out.write(
             "<html>" +
                 "<head>" +
@@ -51,6 +72,7 @@ public class UsersHandler implements HttpHandler {
             "</html>"
         );
         
+        // Close the BufferedWriter to complete the response
         out.close();
     }
 }

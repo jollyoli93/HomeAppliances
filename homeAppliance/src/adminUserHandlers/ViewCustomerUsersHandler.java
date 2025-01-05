@@ -1,41 +1,66 @@
 package adminUserHandlers;
 
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
 import DAO.UserDao;
 import users.User;
 import com.sun.net.httpserver.HttpExchange;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.BufferedWriter;
-import java.io.IOException;
 
+/**
+ * Handles HTTP requests for displaying and managing customer and business users.
+ * It fetches all users from the database, sorts them based on the username,
+ * and displays their details categorized as either customer or business.
+ * The page also allows actions such as editing, deleting, promoting, and viewing addresses.
+ * 
+ * @author 24862664
+ */
 public class ViewCustomerUsersHandler implements HttpHandler {
     private UserDao userDao;
-    
+
+    /**
+     * Constructs a ViewCustomerUsersHandler with a specified UserDao.
+     * 
+     * @param userDao the DAO object for interacting with user data
+     */
     public ViewCustomerUsersHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Handles HTTP requests to display a list of customer and business users.
+     * It sorts the users based on the provided query parameter (ascending or descending)
+     * and generates an HTML response showing users categorized as customers or businesses.
+     * Each user has associated actions such as edit, delete, and promote.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response data
+     * @throws IOException if an I/O error occurs during the response writing
+     */
+    @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
+
         try {
+            // Get the query parameter for sorting order (ascending or descending)
             String query = he.getRequestURI().getQuery();
             String sortOrder = "asc"; // Default to ascending
             if (query != null && query.contains("sort=desc")) {
-                sortOrder = "desc"; // Sort by descending if the query contains sort=desc
+                sortOrder = "desc"; // Sort by descending if query contains sort=desc
             }
 
+            // Send a successful response and start writing the HTML content
             he.sendResponseHeaders(200, 0);
 
             List<User> allUsers;
+            // Get users based on the sorting order
             if ("desc".equals(sortOrder)) {
                 allUsers = userDao.getUsersSortedByUsernameDesc();
             } else {
                 allUsers = userDao.getUsersSortedByUsernameAsc();
             }
 
+            // Start the HTML response with Bootstrap styling
             out.write(
                 "<html>" +
                 "<head><title>Customer and Business List</title>" +
@@ -59,7 +84,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "</div>"
             );
 
-            // Customers Table
+            // Display Customers Table
             out.write(
                 "<h2>Customers</h2>" +
                 "<table class=\"table table-striped\">" +
@@ -78,6 +103,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<tbody>"
             );
 
+            // Iterate over users and display customer users
             if (allUsers != null) {
                 for (User user : allUsers) {
                     ArrayList<String> userRoles = userDao.getUserRoles(user.getCustomerId());
@@ -107,7 +133,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 out.write("<tr><td colspan=\"6\">No customers found.</td></tr>");
             }
 
-            // Business Table
+            // Display Business Table
             out.write(
                 "</tbody>" +
                 "</table>" +
@@ -129,6 +155,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
                 "<tbody>"
             );
 
+            // Iterate over users and display business users
             if (allUsers != null) {
                 for (User user : allUsers) {
                     ArrayList<String> userRoles = userDao.getUserRoles(user.getCustomerId());
@@ -168,6 +195,7 @@ public class ViewCustomerUsersHandler implements HttpHandler {
             );
 
         } catch (Exception e) {
+            // In case of an error, send a 500 Internal Server Error response
             he.sendResponseHeaders(500, 0);
             out.write("<html><body><h1>Error fetching user data</h1></body></html>");
             e.printStackTrace();
@@ -176,6 +204,12 @@ public class ViewCustomerUsersHandler implements HttpHandler {
         }
     }
 
+    /**
+     * Generates the HTML for the "Promote" or "Remove" button depending on the user's admin status.
+     * 
+     * @param user the {@link User} object representing the user
+     * @return a string containing the HTML for the promote/remove button
+     */
     private String adminOption(User user) {
         if (userDao.isUserAdmin(user.getCustomerId())) {
             return "<form action=\"/admin/users/promote\" method=\"post\" class=\"d-inline-block\">" +
