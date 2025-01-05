@@ -68,7 +68,7 @@ public class Main {
         // Public routes
         server.createContext("/", new RootHandler());
         server.createContext("/login", new LoginHandler(userDao, sessionManager));
-        server.createContext("/logout", new LoginHandler(userDao, sessionManager));
+        server.createContext("/logout", new LogoutHandler(sessionManager));
         server.createContext("/success", new SuccessPageHandler(sessionManager));
         server.createContext("/update", new UpdateUserHandler(userDao, sessionManager));
 
