@@ -34,70 +34,77 @@ public class ApplianceConsole {
 	}
 	
 	public String displayMenu() {
-		int input = 0;
-		
-		while (input != 6) {
-			System.out.println("------------------------");
-			System.out.println("Choose from these options");
-			System.out.println("------------------------");
-			
-			
-			System.out.println("[1] List all products");
-			System.out.println("[2] Search by the product ID");
-			System.out.println("[3] Add a new product");
-			System.out.println("[4] Update a product");
-			System.out.println("[5] Delete a product by ID");
-			System.out.println("[6] Back");
-			System.out.println();
-			
-			input = handleInput.getInputInt();
-			
-				switch (input) {
-					case 0:
-						System.out.println("Try again");
-						System.out.println();
+	    String input = "0";
+	    boolean flag = true;
+	    int count = 0;
+	    String consoleOutput = "";
 
-						break;
-					case 1:
-						getAllProducts();
-						break;
-						
-					case 2:
-						getProductById();								
-						break;
-						
-					case 3:
-						addProduct();
-						break;
-					case 4:
-						updatePrice();
-						System.out.println(consoleOutput);
-						System.out.println();
-						break;
-						
-					case 5:
-						deleteProduct();
-						break;
-						
-					case 6:
-						break;
-						
-					default:
-						System.out.println("Not valid, please select again...");
-						break;
-						}
-				
-				if (input != 6) {
-					System.out.println("Press 6 to exit or any key to continue");
-					input = handleInput.getInputInt();
-				}
-		}
-		
-		consoleOutput = handleInput.output("Exiting");
-		System.out.println(consoleOutput);
-		return consoleOutput;
-		
+	    while (flag) {
+	        System.out.println("------------------------");
+	        System.out.println("Choose from these options");
+	        System.out.println("------------------------");
+
+	        System.out.println("[1] List all products");
+	        System.out.println("[2] Search by the product ID");
+	        System.out.println("[3] Add a new product");
+	        System.out.println("[4] Update a product");
+	        System.out.println("[5] Delete a product by ID");
+	        System.out.println("[q] Back");
+	        System.out.println();
+
+	        input = handleInput.getInputString();
+
+	        switch (input) {
+	            case "1":
+	                getAllProducts();
+	                break;
+
+	            case "2":
+	                getProductById();
+	                break;
+
+	            case "3":
+	                addProduct();
+	                break;
+
+	            case "4":
+	                updatePrice();
+	                break;
+
+	            case "5":
+	                deleteProduct();
+	                break;
+
+	            case "q":
+	                consoleOutput = "Returning";
+	                System.out.println(consoleOutput);
+	                flag = false; // Set flag to false to exit the loop
+	                break;
+
+	            default:
+	                count++;
+	                if (count >= 3) {
+	                    System.out.println("Too many invalid attempts. Exiting...");
+	                    flag = false; // Exit after 3 invalid attempts
+	                } else {
+	                    System.out.println("Invalid option. Try again. " + (3 - count) + " attempts left.");
+	                }
+	                break;
+	        }
+
+	        if (flag) {
+	            System.out.println("Type q to exit or any key to continue:");
+	            input = handleInput.getInputString();
+	            if ("q".equalsIgnoreCase(input)) {
+	                flag = false; // Exit if user types q
+	            }
+	        }
+	    }
+
+	    consoleOutput = handleInput.output("Exiting");
+	    return consoleOutput;
 	}
+
 
 	private void getAllProducts() {
 		try {

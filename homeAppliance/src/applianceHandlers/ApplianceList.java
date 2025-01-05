@@ -45,11 +45,13 @@ public class ApplianceList implements HttpHandler {
 
 	        out.write(
 	        	    "<html>" +
-	        	    "<head> <title>Appliance Library</title> " +
+	        	    "<head> <title>Appliance Stock</title> " +
 	        	    "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\" " +
 	        	    "integrity=\"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2\" crossorigin=\"anonymous\">" +
 	        	    "</head>" +
 	        	    "<body>" +
+	        	    
+	        	    //JS script to filter products
 	        	    "<script>" +
 	        	    "function filterAppliances() {" +
 	        	    "    const category = document.getElementById('filter-category').value.toLowerCase();" +
@@ -67,6 +69,7 @@ public class ApplianceList implements HttpHandler {
 	        	    "    });" +
 	        	    "}" +
 	        	    "</script>" +
+	        	    
 	        	    "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">" +
 	        	    "  <a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
 	        	    "  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" " +

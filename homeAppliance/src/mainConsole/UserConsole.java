@@ -55,7 +55,7 @@ public class UserConsole {
             System.out.println("[5] Delete a user by ID");
             System.out.println("[6] Add a user address");
             System.out.println("[7] Manage admin");
-            System.out.println("[back] Go Back");
+            System.out.println("[q] Go Back");
             System.out.println();
             input = handleInput.getInputString();
 
@@ -85,15 +85,25 @@ public class UserConsole {
                     consoleOutput = handleAdminStatus();
                     System.out.println(consoleOutput);
                     break;
-                case "back":
+                case "q":
                     flag = false;
-                    System.out.println("Returning");
+                    consoleOutput = "Returning";
+                    System.out.println(consoleOutput);
                     break;
                 default:
                 	if (count>1) flag = false;
                 	count++;
                     System.out.println("Try again " + (3 - count) + " trys left");
+                    break;
             }
+            
+	        if (flag) {
+	            System.out.println("Type q to exit or any key to continue:");
+	            input = handleInput.getInputString();
+	            if ("q".equalsIgnoreCase(input)) {
+	                flag = false; // Exit if user types q
+	            }
+	        }
         } while (flag);
 
         System.out.println();
