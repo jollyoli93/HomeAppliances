@@ -12,13 +12,29 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ * Handles HTTP requests for editing a user's details.
+ * 
+ * @author 24862664
+ */
 public class EditUserAdminHandler implements HttpHandler {
     private UserDao userDao;
     
+    /**
+     * Constructs a handler for editing user details.
+     * 
+     * @param userDao the {@link UserDao} instance used to access user data
+     */
     public EditUserAdminHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Processes the HTTP request to render the user editing form.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during the response writing
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;

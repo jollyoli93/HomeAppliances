@@ -9,13 +9,29 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.UserDao;
 import util.WebUtil;
 
+/**
+ * Handles HTTP requests for deleting a user.
+ * 
+ * @author 24862664
+ */
 public class DeleteUserHandler implements HttpHandler {
-    private UserDao userDao;
-    
+    private final UserDao userDao;
+
+    /**
+     * Constructs a handler for deleting a user.
+     * 
+     * @param userDao the {@link UserDao} instance used to access user data
+     */
     public DeleteUserHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Processes the HTTP request to delete a user.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during the response writing
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         try {
@@ -54,4 +70,3 @@ public class DeleteUserHandler implements HttpHandler {
         }
     }
 }
-

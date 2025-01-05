@@ -10,15 +10,28 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 /**
+ * Handles HTTP requests to display a confirmation page for deleting a user.
+ * 
  * @author 24862664
  */
 public class DeleteUserConfirmationHandler implements HttpHandler {
-    private UserDao userDao;
-    
+    private final UserDao userDao;
+
+    /**
+     * Constructs a handler for deleting user confirmations.
+     * 
+     * @param userDao the {@link UserDao} instance used to access user data
+     */
     public DeleteUserConfirmationHandler(UserDao userDao) {
         this.userDao = userDao;
     }
-    
+
+    /**
+     * Processes the HTTP request and generates a confirmation page for deleting a user.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during the response writing
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         int id = Integer.parseInt(he.getRequestURI().getQuery().split("=")[1]);

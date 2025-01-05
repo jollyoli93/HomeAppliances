@@ -4,7 +4,19 @@ import java.io.*;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 
+/**
+ * Handles the HTTP requests for displaying the user account selection dashboard.
+ * 
+ * @author 24862664
+ */
 public class SelectUserHandler implements HttpHandler {
+
+    /**
+     * Handles the HTTP request to display the user account selection page.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during the response writing
+     */
     public void handle(HttpExchange he) throws IOException {
         he.sendResponseHeaders(200, 0);
         BufferedWriter out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
@@ -55,3 +67,4 @@ public class SelectUserHandler implements HttpHandler {
         out.close();
     }
 }
+

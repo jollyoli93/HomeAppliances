@@ -11,13 +11,29 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 
+/**
+ * Handles HTTP requests for editing a user's address.
+ * 
+ * @author 24862664
+ */
 public class EditAddressHandler implements HttpHandler {
-    private UserDao userDao;
+    private final UserDao userDao;
 
+    /**
+     * Constructs a handler for editing a user's address.
+     * 
+     * @param userDao the {@link UserDao} instance used to access user data
+     */
     public EditAddressHandler(UserDao userDao) {
         this.userDao = userDao;
     }
 
+    /**
+     * Processes the HTTP request to render the address editing form for a user.
+     * 
+     * @param he the {@link HttpExchange} object containing the request and response
+     * @throws IOException if an I/O error occurs during the response writing
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
