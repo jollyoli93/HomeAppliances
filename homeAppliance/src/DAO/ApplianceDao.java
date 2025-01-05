@@ -16,6 +16,12 @@ import appliances.ApplianceDepartments;
 import util.FactoryRegistry;
 
 
+/**
+ * Data Access Object (DAO) for managing appliances in the database.
+ * Provides methods for querying, adding, updating, and deleting appliances.
+ * 
+ * @author 24862664
+ */
 public class ApplianceDao extends DAO<Appliance> {
 	String tableName;
 	String dbPath;
@@ -23,6 +29,10 @@ public class ApplianceDao extends DAO<Appliance> {
 	Map<String, ApplianceDepartments> departments;
 	FactoryRegistry registerAppliances = new FactoryRegistry();
 	
+    /**
+     * Constructor that initialises the database connection and schema.
+     * @param dbPath The path to the database file.
+     */
 	public ApplianceDao(String dbPath) {
         this.dbPath = dbPath;
         connector = new SqlLiteConnection(dbPath);
@@ -45,7 +55,12 @@ public class ApplianceDao extends DAO<Appliance> {
     	departments = registerAppliances.getDepartments();    	
     }
 
-
+    /**
+     * Retrieves all appliances from the database with optional sorting.
+     * @param optionalId Optional filter for appliance ID.
+     * @param sortParams Sorting parameters.
+     * @return List of appliances.
+     */
 	@Override
 	public ArrayList<Appliance> findAll(int optionalId, HashMap<String, Object> sortParams) {
 	    ArrayList<Appliance> applianceList = new ArrayList<>();
@@ -106,6 +121,10 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return applianceList;
 	}
 	
+	  /**
+     * Retrieves appliances sorted by price in descending order.
+     * @return List of appliances sorted by price.
+     */
 	public ArrayList<Appliance> getAppliancesByPriceDesc() {
 		ArrayList<Appliance> appliances;
 		HashMap<String, Object> sortParams = new HashMap<String, Object>();
@@ -118,6 +137,10 @@ public class ApplianceDao extends DAO<Appliance> {
 		return null;
 	}
 	
+	/**
+     * Retrieves appliances sorted by price in ascending order.
+     * @return List of appliances sorted by price.
+     */
 	public ArrayList<Appliance> getAppliancesByPriceAsc() {
 		ArrayList<Appliance> appliances;
 		HashMap<String, Object> sortParams = new HashMap<String, Object>();
@@ -130,7 +153,11 @@ public class ApplianceDao extends DAO<Appliance> {
 		return null;
 	}
  
-
+	/**
+     * Retrieves an appliance by its ID.
+     * @param id Appliance ID.
+     * @return Appliance object.
+     */
 	public Appliance getAppliance(int id) {
 	    String query = "SELECT sku, description, category, price FROM appliances WHERE id = ?";
 	    Appliance appliance = null;
@@ -165,6 +192,11 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return appliance;
 	}
 	
+	/**
+     * Retrieves an appliance by its description.
+     * @param description Appliance description.
+     * @return Appliance object.
+     */
 	public Appliance getApplianceByType(String description) {
 	    String query = "SELECT id, sku, description, category, price "
 	    		+ "FROM appliances "
@@ -210,7 +242,12 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return appliance;
 	}
 
-	
+	/**
+     * Adds a new appliance to the database.
+     * @param appliance The appliance to add.
+     * @param additionalFields Additional fields for the appliance.
+     * @return true if the appliance was added successfully.
+     */
 	public boolean addNewAppliance(Appliance appliance, Map<String, String> additionalFields) {
 	    Map<String, Object> fields = new HashMap<>();
 	    fields.put("sku", appliance.getSku());
@@ -227,6 +264,11 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return result;
 	}
 
+	/**
+     * Deletes an appliance by its ID.
+     * @param id Appliance ID.
+     * @return Number of rows affected.
+     */
     public int deleteApplianceById(int id) {
     	Map<String, Object> conditions = new HashMap<>();
     	conditions.put("id", id);
@@ -241,6 +283,13 @@ public class ApplianceDao extends DAO<Appliance> {
 		return 0;
     }
     
+    /**
+     * Updates an appliance by its ID with new field values.
+     * @param id Appliance ID.
+     * @param table The table to update.
+     * @param updateFields Fields to update.
+     * @return Number of rows updated.
+     */
     @Override
     public int updateById(int id, String table, Map<String, Object> updateFields) {
         if (!allowedTablesList.contains(table)) {
@@ -288,6 +337,13 @@ public class ApplianceDao extends DAO<Appliance> {
         }
     }
 	
+    /**
+     * Updates a specific field of an appliance by its ID.
+     * @param id Appliance ID.
+     * @param field Field to update.
+     * @param value New value for the field.
+     * @return A message indicating the result.
+     */
 	public String updateFieldById(int id, String field, Object value) {
 	    Map<String, Object> update = new HashMap<>();
 	    update.put(field, value);
@@ -295,7 +351,11 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return "Rows updated: " + updatedRows;
 	}
 	
-	// For testing purposes
+	/**
+     * Drops the appliance table for testing purposes.
+     * @param table The table to drop.
+     * @return Message indicating success or failure.
+     */
 	public String dropApplianceTable(String table) {
 	    // Ensure only test-related tables are dropped
 	    Set<String> allowedTables = Set.of("HomeApplianceTest");

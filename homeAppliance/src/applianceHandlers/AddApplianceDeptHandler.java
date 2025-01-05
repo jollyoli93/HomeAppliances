@@ -12,7 +12,7 @@ import appliances.ApplianceDepartments;
  * Handles the HTTP request for selecting an appliance department.
  * This handler fetches the list of appliance departments and renders an HTML form to select a department.
  * 
- * @author [Your Name]
+ * @author 24862664
  */
 public class AddApplianceDeptHandler implements HttpHandler {
     private ApplianceDao applianceDao;

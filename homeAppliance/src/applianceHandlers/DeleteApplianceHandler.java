@@ -12,7 +12,7 @@ import util.WebUtil;
  * Handles the HTTP requests for deleting an appliance.
  * This handler processes the appliance deletion based on the appliance ID provided in the form data.
  * 
- * @author [Your Name]
+ * @author 24862664
  */
 public class DeleteApplianceHandler implements HttpHandler {
     private ApplianceDao applianceDao;

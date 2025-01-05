@@ -20,7 +20,7 @@ import util.WebUtil;
  * Handles HTTP requests for selecting the appliance type based on the selected department.
  * This handler generates a dynamic form based on the department selected by the user.
  * 
- * @author [Your Name]
+ * @author 24862664
  */
 public class AddApplianceTypeHandler implements HttpHandler {
     private ApplianceDao applianceDao;

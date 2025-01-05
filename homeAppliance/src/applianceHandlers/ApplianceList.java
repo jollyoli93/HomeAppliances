@@ -17,7 +17,7 @@ import java.io.IOException;
  * Handles HTTP requests for displaying a list of appliances.
  * This handler generates an HTML page showing a list of appliances, with the ability to filter and sort them.
  * 
- * @author [Your Name]
+ * @author 24862664
  */
 public class ApplianceList implements HttpHandler {
     private ApplianceDao applianceDao;

@@ -11,7 +11,7 @@ import appliances.Appliance;
  * Handles the HTTP requests for confirming the deletion of an appliance.
  * This handler generates an HTML page asking the user to confirm whether they want to delete the appliance.
  * 
- * @author [Your Name]
+ * @author 24862664
  */
 public class DeleteApplianceConfirmationHandler implements HttpHandler {
     private ApplianceDao applianceDao;

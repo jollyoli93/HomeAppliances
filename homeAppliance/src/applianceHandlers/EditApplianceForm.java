@@ -3,37 +3,57 @@ package applianceHandlers;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import DAO.ApplianceDao;
-import DAO.DAO;
 import appliances.Appliance;
 import util.WebUtil;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+/**
+ * Handles HTTP requests for displaying the edit appliance form.
+ * This handler retrieves an appliance's details from the database and renders a form for editing the appliance.
+ * 
+ * @author 24862664
+ */
 public class EditApplianceForm implements HttpHandler {
-	private ApplianceDao applianceDao;
-	
-	public EditApplianceForm(ApplianceDao applianceDao) {
-		this.applianceDao = applianceDao;
-	}
+    private ApplianceDao applianceDao;
+
+    /**
+     * Constructor to initialize the handler with the appliance DAO.
+     *
+     * @param applianceDao The DAO responsible for appliance-related operations.
+     */
+    public EditApplianceForm(ApplianceDao applianceDao) {
+        this.applianceDao = applianceDao;
+    }
+
+    /**
+     * Handles the incoming HTTP request to display the edit appliance form.
+     * The appliance's details are fetched from the database and presented in a form for editing.
+     * 
+     * @param he The HTTP exchange object containing the request and response data.
+     * @throws IOException If an I/O error occurs while handling the request or sending the response.
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
         try {
+            // Retrieve the query string and parse it into a map
             String query = he.getRequestURI().getQuery();
             Map<String, String> queryParams = WebUtil.requestStringToMap(query);
             String id = queryParams.get("id");
 
+            // Send response headers with status code 200 (OK)
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
 
+            // Fetch appliance details from the database
             Appliance appliance = applianceDao.getAppliance(Integer.parseInt(id));
 
-            if ( appliance != null) {
+            // If appliance is found, display the edit form
+            if (appliance != null) {
                 out.write(
                     "<html>" +
                     "<head> <title>Edit Appliance</title> " +
@@ -70,15 +90,18 @@ public class EditApplianceForm implements HttpHandler {
                     "</body>" +
                     "</html>");
             } else {
+                // If appliance not found, show error message
                 out.write("<html><body><h1>Appliance Not Found</h1></body></html>");
             }
         } catch (Exception e) {
+            // Handle exceptions, respond with 500 Internal Server Error
             he.sendResponseHeaders(500, 0);
             if (out != null) {
                 out.write("<html><body><h1>Internal Server Error</h1></body></html>");
             }
             e.printStackTrace();
         } finally {
+            // Close the output stream
             if (out != null) {
                 try {
                     out.close();
@@ -88,5 +111,4 @@ public class EditApplianceForm implements HttpHandler {
             }
         }
     }
-
 }

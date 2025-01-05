@@ -15,6 +15,7 @@ import util.WebUtil;
 /**
  * Handles the logic for confirming the addition of a new appliance.
  * This handler processes both GET and POST requests related to appliance addition.
+ * @author 24862664
  */
 public class AddApplianceConfirmHandler implements HttpHandler {
     private ApplianceDao applianceDao;
