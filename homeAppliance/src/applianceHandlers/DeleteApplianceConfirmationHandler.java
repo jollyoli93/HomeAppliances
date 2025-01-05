@@ -1,4 +1,3 @@
-// DeleteConfirmationHandler.java
 package applianceHandlers;
 
 import java.io.IOException;
@@ -8,18 +7,40 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
 import appliances.Appliance;
 
+/**
+ * Handles the HTTP requests for confirming the deletion of an appliance.
+ * This handler generates an HTML page asking the user to confirm whether they want to delete the appliance.
+ * 
+ * @author [Your Name]
+ */
 public class DeleteApplianceConfirmationHandler implements HttpHandler {
     private ApplianceDao applianceDao;
     
+    /**
+     * Constructor to initialize the handler with the appliance DAO.
+     *
+     * @param applianceDao The DAO responsible for appliance-related operations.
+     */
     public DeleteApplianceConfirmationHandler(ApplianceDao applianceDao) {
         this.applianceDao = applianceDao;
     }
     
+    /**
+     * Handles the incoming HTTP request for confirming the deletion of an appliance.
+     * It retrieves the appliance by its ID and displays a confirmation page.
+     * The user can confirm or cancel the deletion.
+     * 
+     * @param he The HTTP exchange object containing the request and response data.
+     * @throws IOException If an I/O error occurs while handling the request or sending the response.
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
+        // Retrieve the appliance ID from the query string
         int id = Integer.parseInt(he.getRequestURI().getQuery().split("=")[1]);
+        // Fetch the appliance details
         Appliance appliance = applianceDao.getAppliance(id);
         
+        // Generate the HTML response for the confirmation page
         String html = "<html>" +
             "<head>" +
                 "<title>Confirm Delete</title>" +
@@ -45,6 +66,7 @@ public class DeleteApplianceConfirmationHandler implements HttpHandler {
             "</body>" +
         "</html>";
         
+        // Send the response headers and the HTML content
         he.sendResponseHeaders(200, html.length());
         OutputStream os = he.getResponseBody();
         os.write(html.getBytes());

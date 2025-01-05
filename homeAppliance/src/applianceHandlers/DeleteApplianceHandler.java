@@ -8,13 +8,32 @@ import com.sun.net.httpserver.HttpHandler;
 import DAO.ApplianceDao;
 import util.WebUtil;
 
+/**
+ * Handles the HTTP requests for deleting an appliance.
+ * This handler processes the appliance deletion based on the appliance ID provided in the form data.
+ * 
+ * @author [Your Name]
+ */
 public class DeleteApplianceHandler implements HttpHandler {
     private ApplianceDao applianceDao;
     
+    /**
+     * Constructor to initialize the handler with the appliance DAO.
+     *
+     * @param applianceDao The DAO responsible for appliance-related operations.
+     */
     public DeleteApplianceHandler(ApplianceDao applianceDao) {
         this.applianceDao = applianceDao;
     }
     
+    /**
+     * Handles the incoming HTTP request to delete an appliance based on the provided appliance ID.
+     * It retrieves the appliance ID from the form data, calls the DAO to delete the appliance, 
+     * and responds with a success message or error details.
+     * 
+     * @param he The HTTP exchange object containing the request and response data.
+     * @throws IOException If an I/O error occurs while handling the request or sending the response.
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         try {

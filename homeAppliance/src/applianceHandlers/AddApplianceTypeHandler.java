@@ -16,16 +16,35 @@ import sessionManagement.Session;
 import sessionManagement.SessionManager;
 import util.WebUtil;
 
+/**
+ * Handles HTTP requests for selecting the appliance type based on the selected department.
+ * This handler generates a dynamic form based on the department selected by the user.
+ * 
+ * @author [Your Name]
+ */
 public class AddApplianceTypeHandler implements HttpHandler {
     private ApplianceDao applianceDao;
     private SessionManager sessionManager;
 
+    /**
+     * Constructor to initialize the handler with the appliance DAO and session manager.
+     *
+     * @param applianceDao The DAO responsible for appliance-related operations.
+     * @param sessionManager The session manager to manage user sessions.
+     */
     public AddApplianceTypeHandler(ApplianceDao applianceDao, SessionManager sessionManager) {
         this.applianceDao = applianceDao;
         this.sessionManager = sessionManager;
     }
 
-    
+    /**
+     * Handles the incoming HTTP request for selecting an appliance type based on the selected department.
+     * It validates the department and generates the appropriate form for selecting an appliance.
+     * It also checks the role of the user and generates the form action accordingly.
+     * 
+     * @param he The HTTP exchange object containing the request and response data.
+     * @throws IOException If an I/O error occurs while handling the request or sending the response.
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         // Get the query parameters
@@ -105,7 +124,7 @@ public class AddApplianceTypeHandler implements HttpHandler {
         html += "</select>" +
                 "</div>" +
                 "<button type=\"submit\" class=\"btn btn-primary\">Next</button>" +
-				"<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
+                "<a href=\"javascript:window.history.back();\" class=\"btn btn-secondary ml-2\">Back</a>" +
             "</form>" +
             "</div>" +
             "</body>" +
@@ -118,8 +137,13 @@ public class AddApplianceTypeHandler implements HttpHandler {
         }
     }
 
-    
-    private String getSessionRole (HttpExchange he) {
+    /**
+     * Retrieves the role of the user from the session.
+     * 
+     * @param he The HTTP exchange object containing the request data.
+     * @return The role of the user (e.g., admin, customer, etc.).
+     */
+    private String getSessionRole(HttpExchange he) {
         String sessionId = WebUtil.extractSessionId(he);
         Session session = sessionManager.getSession(sessionId);
         String role = (String) session.getAttribute("role");
