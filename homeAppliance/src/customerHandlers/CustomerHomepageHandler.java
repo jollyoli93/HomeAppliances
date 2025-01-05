@@ -2,14 +2,24 @@ package customerHandlers;
 
 import java.io.OutputStreamWriter;
 import com.sun.net.httpserver.HttpHandler;
-
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+/**
+ * Handles the customer homepage view.
+ * 
+ * @author 24862664
+ */
 public class CustomerHomepageHandler implements HttpHandler {
 
+    /**
+     * Handles the HTTP request to display the customer homepage.
+     * 
+     * @param he the HTTP exchange
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         // Send HTTP response headers
@@ -63,7 +73,5 @@ public class CustomerHomepageHandler implements HttpHandler {
         );
 
         out.close();
-
-
     }
 }

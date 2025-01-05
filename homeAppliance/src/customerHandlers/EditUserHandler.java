@@ -10,26 +10,43 @@ import util.WebUtil;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.Map;
 import java.util.ArrayList;
 
+/**
+ * Handles user profile editing page.
+ * 
+ * @author 24862664
+ */
 public class EditUserHandler implements HttpHandler {
     private UserDao userDao;
     private SessionManager sessionManager;
     
+    /**
+     * Constructs an EditUserHandler instance.
+     * 
+     * @param userDao the UserDao object to interact with user data
+     * @param sessionManager the SessionManager to manage user sessions
+     */
     public EditUserHandler(UserDao userDao, SessionManager sessionManager) {
         this.userDao = userDao;
         this.sessionManager = sessionManager;
     }
 
+    /**
+     * Handles the HTTP request to edit the user profile.
+     * Displays the user information in an editable form.
+     * 
+     * @param he the HTTP exchange
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;
         try {
-        	String sessionId = WebUtil.extractSessionId(he);
-        	Session session = sessionManager.getSession(sessionId);
-        	
-        	int userId = (int) session.getAttribute("userId");
+            String sessionId = WebUtil.extractSessionId(he);
+            Session session = sessionManager.getSession(sessionId);
+            
+            int userId = (int) session.getAttribute("userId");
 
             he.sendResponseHeaders(200, 0);
             out = new BufferedWriter(new OutputStreamWriter(he.getResponseBody()));
@@ -47,30 +64,30 @@ public class EditUserHandler implements HttpHandler {
                     "<body><div class=\"container\">" +
                     "<h1 class=\"mt-4\">Edit " + user.getUsername() + "</h1>" +
                     "<form method=\"post\" action=\"/update\">" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"customerId\">Customer ID</label>" +
-		                    "<input type=\"text\" class=\"form-control\" id=\"customerId\" name=\"customerId\" value=\"" + user.getCustomerId() + "\" readonly>" +
-	                    "</div>" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"firstName\">First Name</label>" +
-		                    "<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\" value=\"" + user.getFirstName() + "\">" +
-	                    "</div>" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"lastName\">Last Name</label>" +
-		                    "<input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\" value=\"" + user.getLastName() + "\">" +
-	                    "</div>" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"username\">Username</label>" +
-		                    "<input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"" + user.getUsername() + "\">" +
-	                    "</div>" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"emailAddress\">Email Address</label>" +
-		                    "<input type=\"email\" class=\"form-control\" id=\"emailAddress\" name=\"emailAddress\" value=\"" + user.getEmailAddress() + "\">" +
-	                    "</div>" +
-	                    "<div class=\"form-group\">" +
-		                    "<label for=\"telephoneNum\">Telephone Number</label>" +
-		                    "<input type=\"tel\" class=\"form-control\" id=\"telephoneNum\" name=\"telephoneNum\" value=\"" + user.getTelephoneNum() + "\" pattern=\"\\d{11}\" title=\"Please enter 11 digits\">" +
-	                    "</div>");
+                    "<div class=\"form-group\">" +
+                    "<label for=\"customerId\">Customer ID</label>" +
+                    "<input type=\"text\" class=\"form-control\" id=\"customerId\" name=\"customerId\" value=\"" + user.getCustomerId() + "\" readonly>" +
+                    "</div>" +
+                    "<div class=\"form-group\">" +
+                    "<label for=\"firstName\">First Name</label>" +
+                    "<input type=\"text\" class=\"form-control\" id=\"firstName\" name=\"firstName\" value=\"" + user.getFirstName() + "\">" +
+                    "</div>" +
+                    "<div class=\"form-group\">" +
+                    "<label for=\"lastName\">Last Name</label>" +
+                    "<input type=\"text\" class=\"form-control\" id=\"lastName\" name=\"lastName\" value=\"" + user.getLastName() + "\">" +
+                    "</div>" +
+                    "<div class=\"form-group\">" +
+                    "<label for=\"username\">Username</label>" +
+                    "<input type=\"text\" class=\"form-control\" id=\"username\" name=\"username\" value=\"" + user.getUsername() + "\">" +
+                    "</div>" +
+                    "<div class=\"form-group\">" +
+                    "<label for=\"emailAddress\">Email Address</label>" +
+                    "<input type=\"email\" class=\"form-control\" id=\"emailAddress\" name=\"emailAddress\" value=\"" + user.getEmailAddress() + "\">" +
+                    "</div>" +
+                    "<div class=\"form-group\">" +
+                    "<label for=\"telephoneNum\">Telephone Number</label>" +
+                    "<input type=\"tel\" class=\"form-control\" id=\"telephoneNum\" name=\"telephoneNum\" value=\"" + user.getTelephoneNum() + "\" pattern=\"\\d{11}\" title=\"Please enter 11 digits\">" +
+                    "</div>");
 
                 if (userRoles.contains("business")) {
                     String businessName = user.getBusinessName();
@@ -84,7 +101,7 @@ public class EditUserHandler implements HttpHandler {
 
                 html.append(
                     "<button type=\"submit\" class=\"btn btn-success\">Save Changes</button>" +
-            		"<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
+                    "<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
                     "</form></div></body></html>");
 
                 out.write(html.toString());

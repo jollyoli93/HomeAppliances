@@ -105,7 +105,7 @@ public abstract class Appliance {
 }
 
 /**
- * Represents a Basic TV Appliance.
+ * Create a Basic TV Appliance.
  */
 class BasicTVAppliance extends Appliance {
     /**
@@ -120,7 +120,7 @@ class BasicTVAppliance extends Appliance {
 }
 
 /**
- * Represents an LCD TV Appliance.
+ * Create an LCD TV Appliance.
  */
 class LCDTVAppliance extends Appliance {
     /**
@@ -135,7 +135,7 @@ class LCDTVAppliance extends Appliance {
 }
 
 /**
- * Represents a Basic Washing Machine Appliance.
+ * Create a Basic Washing Machine Appliance.
  */
 class BasicWashingMachineAppliance extends Appliance {
     /**
@@ -150,7 +150,7 @@ class BasicWashingMachineAppliance extends Appliance {
 }
 
 /**
- * Represents a Super Fast Washing Machine Appliance.
+ * Create a Super Fast Washing Machine Appliance.
  */
 class SuperFastWashingMachineAppliance extends Appliance {
     /**
