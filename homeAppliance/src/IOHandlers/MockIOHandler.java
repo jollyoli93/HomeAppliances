@@ -40,7 +40,7 @@ public class MockIOHandler implements InputOutputHandler {
     @Override
     public String getInputString() {
         if (mockStringValue.isEmpty()) {
-        	return "back";
+        	return "q";
         }
 		return mockStringValue.poll();
     }

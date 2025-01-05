@@ -13,14 +13,16 @@ import appliances.Appliance;
 import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
+import exceptions.InvalidUserIdException;
 import printer.AppliancePrinter;
 import printer.Printer;
+import util.Util;
 
 public class ApplianceConsole {
     private ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
     private String dbPath;
-	private String consoleOutput = null;
+	private String consoleOutput = "";
 
 	public ApplianceConsole(String dbPath) {
 		this.dbPath = dbPath;
@@ -37,7 +39,6 @@ public class ApplianceConsole {
 	    String input = "0";
 	    boolean flag = true;
 	    int count = 0;
-	    String consoleOutput = "";
 
 	    while (flag) {
 	        System.out.println("------------------------");
@@ -56,28 +57,36 @@ public class ApplianceConsole {
 
 	        switch (input) {
 	            case "1":
-	                getAllProducts();
+	                consoleOutput = getAllProducts();
+	                System.out.println(consoleOutput);
 	                break;
 
 	            case "2":
-	                getProductById();
+	            	consoleOutput = getProductById();
+	                System.out.println(consoleOutput);
+
 	                break;
 
 	            case "3":
-	                addProduct();
+	                consoleOutput = addProduct();
+	                System.out.println(consoleOutput);
+
 	                break;
 
 	            case "4":
 	                updatePrice();
+	                System.out.println(consoleOutput);
+
 	                break;
 
 	            case "5":
-	                deleteProduct();
+	            	consoleOutput = deleteProduct();
+	                System.out.println(consoleOutput);
+
 	                break;
 
 	            case "q":
-	                consoleOutput = "Returning";
-	                System.out.println(consoleOutput);
+	                System.out.println("Returning");
 	                flag = false; // Set flag to false to exit the loop
 	                break;
 
@@ -100,13 +109,11 @@ public class ApplianceConsole {
 	            }
 	        }
 	    }
-
-	    consoleOutput = handleInput.output("Exiting");
 	    return consoleOutput;
 	}
 
 
-	private void getAllProducts() {
+	private String getAllProducts() {
 		try {
 			ArrayList<Appliance> list = applianceDAO.findAll(0, null);
 			
@@ -114,38 +121,52 @@ public class ApplianceConsole {
 				AppliancePrinter print = new AppliancePrinter(obj);
 				print.print();
 			}
+			
+			if(list.isEmpty()) {
+				return "No products in the database";
+			}
+			
+			return "Product list returned";
+			
 		} catch (NullPointerException e) {
-			System.out.println("No products in the database");
-			System.out.println();
+			return "No products in the database";
 		}
 	}
 	
-	private void getProductById() {
-		try {
-			Appliance appliance = null;
-			AppliancePrinter printer = null;
-			
-			System.out.println("Enter Product ID");
-			
-			int id = handleInput.getInputInt();
+	private String getProductById() {
+	    Appliance appliance = null;
+	    int id = 0;
 
-			System.out.println("Searching for product " + id);
-			System.out.println();
-			
-			appliance = applianceDAO.getAppliance(id);
-			
-			printer = new AppliancePrinter(appliance);
-			printer.print();
-			
-		} catch (NullPointerException e) {
-			consoleOutput = handleInput.output("No item found in the database");
-			System.out.println(consoleOutput);
-			System.out.println();
-		}
+	    try {
+	        System.out.println("Enter Product ID");
+	        String stringInput = handleInput.getInputString();
+	        id = Integer.parseInt(stringInput);
+
+	        System.out.println("Searching for product " + id);
+
+	        appliance = applianceDAO.getAppliance(id);
+
+	        if (appliance == null) {
+	            return "No item found in the database";
+	        } else {
+	            AppliancePrinter printer = new AppliancePrinter(appliance);
+	            printer.print(); // Print the appliance details.
+	            consoleOutput = appliance.getDescription() + " found.";
+	            return consoleOutput;
+	        }
+	    } catch (NumberFormatException e) {
+	        consoleOutput = "Invalid product ID. Please enter a valid number.";
+	        return consoleOutput;
+	    } catch (Exception e) {
+	        consoleOutput = "An error occurred while searching for the product.";
+	        e.printStackTrace(); // Log the exception for debugging.
+	        return consoleOutput;
+	    }
 
 	}
+
 	
-	private void addProduct() {
+	private String addProduct() {
 		ApplianceDepartments applianceFactory = selectDepartment();
 		Appliance appliance = selectAppliance(applianceFactory);
 		int userInput;
@@ -153,51 +174,52 @@ public class ApplianceConsole {
 		
 		System.out.println("How many would you like to add to your stock?");
 		
-		userInput = handleInput.getInputInt();
+		String stringInput = handleInput.getInputString();
+		userInput = Integer.parseInt(stringInput);
 
 		
 		for (int i = 0; i < userInput; i++) {
 			added = applianceDAO.addNewAppliance(appliance, null);
 			
 			if (added == false) {
-				System.out.println("Failed to add");
-				break;
+				return "Failed to add";
 			}
-		} 
-		
-		if (added == true) 
-				System.out.println("You have added " + userInput + " x " + appliance.getDescription());
-				System.out.println();
+			
+			return "You have added " + userInput + " x " + appliance.getDescription();
+			
+		}
+			
+		return "Failed to add product to the database";
 
 	}
 	
 	private ApplianceDepartments selectDepartment () {
 		ApplianceDepartments applianceFactory = null;
 		
-		int userInput = 0;
+		String stringInput = null;
 		do {
 			System.out.println("Please select department from the list below");
 			System.out.println("[1] Entertainment");
 			System.out.println("[2] Home Cleaning");
 			System.out.println("[3] Go back - fix bug");
 			
-			userInput = handleInput.getInputInt();
+			stringInput = handleInput.getInputString();
 			
-			switch (userInput) {
-				case 1:
+			switch (stringInput) {
+				case "1":
 					applianceFactory = new EntertainmentFactory();
 					break;
-				case 2:
+				case "2":
 					applianceFactory = new HomeCleaningFactory();
 					break;
-				case 3:
+				case "3":
 					break;
 				default:
 					System.out.println("Please try again");
 					System.out.println();
 
 			}
-		} while (userInput == 3);
+		} while (stringInput == "3");
 		
 		return applianceFactory;
 	}
@@ -207,6 +229,7 @@ public class ApplianceConsole {
 		ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
 		Appliance appliance = null;
 		
+		String stringInput;
 		int userInput;
 		int sizeOfTypesList = applianceTypes.size();
 		int endOfList = sizeOfTypesList + 1;
@@ -223,7 +246,8 @@ public class ApplianceConsole {
 				System.out.println("[" + printUserSelectionIndex + "] " + applianceType);
 			}
 			
-			userInput = handleInput.getInputInt();
+			stringInput = handleInput.getInputString();
+			userInput = Integer.parseInt(stringInput);
 			
 			if (userInput == endOfList) {
 				System.out.println("Exiting");
@@ -247,10 +271,10 @@ public class ApplianceConsole {
 	private void updatePrice() {
 		System.out.println("Please select an option");
 		System.out.println("[1] Update a product price by ID");
-		int userInputID = handleInput.getInputInt();
+		String stringInput = handleInput.getInputString();
 		
-		switch (userInputID) {
-			case 1: 
+		switch (stringInput) {
+			case "1": 
 				updatePriceByID();
 				break;
 		}
@@ -272,24 +296,22 @@ public class ApplianceConsole {
 		return consoleOutput;
 	}
 
-	private void deleteProduct() {
+	private String deleteProduct() {
 		System.out.println("Please enter ID");
 		System.out.println();
 		
-		int input = handleInput.getInputInt();
+		String stringInput = handleInput.getInputString();
+		int userInput = Integer.parseInt(stringInput);
+
 		
-		int deleted = applianceDAO.deleteApplianceById(input);
+		int deleted = applianceDAO.deleteApplianceById(userInput);
 		
 		if (deleted > 0) {
-			consoleOutput = "ID: " + input + " Deleted";
-			System.out.println("ID: " + input + " Deleted");
-			System.out.println();
+			consoleOutput = "ID: " + userInput + " Deleted";
+			return consoleOutput;
 
 		} else {
-			consoleOutput = "Failed to delete item.";
-			System.out.println("Failed");
-			System.out.println();
-
+			return "Failed to delete item.";
 		}
 	}
 

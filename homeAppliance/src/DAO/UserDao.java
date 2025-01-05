@@ -664,7 +664,13 @@ public class UserDao extends DAO<User> {
 		}
 		
 		//for testing purposes
-		public boolean dropUserTable() {
+		public String dropUserTable(String table) {
+			String allowedTable = "HomeApplianceTest";
+			
+			if (!table.equals(allowedTable)) {
+				return "Invalid table";
+			}
+			
 		    String disableFKQuery = "PRAGMA foreign_keys = OFF;";  // Disable foreign key checks temporarily
 		    String dropUserRolesTable = "DROP TABLE IF EXISTS user_roles;";  // Drop child table first
 		    String dropUsersTable = "DROP TABLE IF EXISTS users;";  // Drop parent table
@@ -686,12 +692,12 @@ public class UserDao extends DAO<User> {
 		        // Optionally, you can enable foreign key checks again after the tables are dropped (SQLite-specific)
 		        // stmt.executeUpdate("PRAGMA foreign_keys = ON;");
 
-		        return true;
+		        return "Table dropped.";
 
 		    } catch (SQLException e) {
 		        e.printStackTrace();
 		        System.out.println("SQL Exception: " + e.getMessage());
-		        return false;
+		        return "Failed to drop table";
 		    }
 		}
 

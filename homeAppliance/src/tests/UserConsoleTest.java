@@ -23,7 +23,7 @@ class UserConsoleTest {
 //		
 //		System.out.println("DEBUG: Console - dropping tables");
 
-		dao.dropUserTable();
+		dao.dropUserTable(dbpath);
 		
 //		System.out.println("DEBUG: Console - Initialise console");
 		//Initialise user console

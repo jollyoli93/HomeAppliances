@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import appliances.Appliance;
 import appliances.ApplianceDepartments;
@@ -295,5 +296,42 @@ public class ApplianceDao extends DAO<Appliance> {
 	    return "Rows updated: " + updatedRows;
 	}
 	
+	// For testing purposes
+	public String dropApplianceTable(String table) {
+	    // Ensure only test-related tables are dropped
+	    Set<String> allowedTables = Set.of("HomeApplianceTest");
+
+	    if (!allowedTables.contains(table)) {
+	        return "Invalid table";
+	    }
+
+	    // SQLite-specific queries
+	    String disableFKQuery = "PRAGMA foreign_keys = OFF;";
+	    String enableFKQuery = "PRAGMA foreign_keys = ON;";
+	    String dropApplianceTable = "DROP TABLE IF EXISTS appliances;";
+	    String dropCartTable = "DROP TABLE IF EXISTS shopping_cart;";
+
+	    try (Connection conn = connector.initializeDBConnection();
+	         Statement stmt = conn.createStatement()) {
+
+	        // Disable foreign key constraints temporarily
+	        stmt.executeUpdate(disableFKQuery);
+
+	        // Drop tables
+	        stmt.executeUpdate(dropCartTable); // Optional if shopping_cart always exists
+	        stmt.executeUpdate(dropApplianceTable);
+
+	        // Re-enable foreign key constraints
+	        stmt.executeUpdate(enableFKQuery);
+
+	        return "Tables dropped successfully.";
+
+	    } catch (SQLException e) {
+	        String errorMessage = "Failed to drop tables: " + e.getMessage();
+	        System.out.println(errorMessage);
+	        return errorMessage;
+	    }
+	}
+
 	
 }
