@@ -3,9 +3,6 @@
 package mainConsole;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import DAO.ApplianceDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
@@ -13,159 +10,155 @@ import appliances.Appliance;
 import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
-import exceptions.InvalidUserIdException;
 import printer.AppliancePrinter;
-import printer.Printer;
 import util.Util;
 
+/**
+ * Main console interface for managing appliances, providing options to
+ * list, search, add, update, and delete appliances in the database.
+ * 
+ * Handles user input and delegates database operations to the DAO layer.
+ * 
+ * Author: 24862664
+ */
 public class ApplianceConsole {
-    private ApplianceDao applianceDAO;
+    private final ApplianceDao applianceDAO;
     private InputOutputHandler handleInput;
-    private String dbPath;
-	private String consoleOutput = "";
+    private final String dbPath;
+    private String consoleOutput = "";
 
-	public ApplianceConsole(String dbPath) {
-		this.dbPath = dbPath;
-		this.handleInput = new ConsoleIOHandler();
-		
-		this.applianceDAO = new ApplianceDao(dbPath);
-	}
-	
-	public void setHandler(InputOutputHandler handleInput) {
-		this.handleInput = handleInput;
-	}
-	
-	public String displayMenu() {
-	    String input = "0";
-	    boolean flag = true;
-	    int count = 0;
+    public ApplianceConsole(String dbPath) {
+        this.dbPath = dbPath;
+        this.handleInput = new ConsoleIOHandler();
+        this.applianceDAO = new ApplianceDao(dbPath);
+    }
 
-	    while (flag) {
-	        System.out.println("------------------------");
-	        System.out.println("Choose from these options");
-	        System.out.println("------------------------");
+    public void setHandler(InputOutputHandler handleInput) {
+        this.handleInput = handleInput;
+    }
 
-	        System.out.println("[1] List all products");
-	        System.out.println("[2] Search by the product ID");
-	        System.out.println("[3] Add a new product");
-	        System.out.println("[4] Update a product");
-	        System.out.println("[5] Delete a product by ID");
-	        System.out.println("[q] Back");
-	        System.out.println();
+    /**
+     * Displays the main menu and handles user interaction.
+     * 
+     * @return The final console output message.
+     */
+    public String displayMenu() {
+        String input;
+        boolean flag = true;
+        int invalidCount = 0;
 
-	        input = handleInput.getInputString();
+        while (flag) {
+            System.out.println("------------------------");
+            System.out.println("Choose from these options");
+            System.out.println("------------------------");
 
-	        switch (input) {
-	            case "1":
-	                consoleOutput = getAllProducts();
-	                System.out.println(consoleOutput);
-	                break;
+            System.out.println("[1] List all products");
+            System.out.println("[2] Search by the product ID");
+            System.out.println("[3] Add a new product");
+            System.out.println("[4] Update a product");
+            System.out.println("[5] Delete a product by ID");
+            System.out.println("[q] Back");
+            System.out.println();
 
-	            case "2":
-	            	consoleOutput = getProductById();
-	                System.out.println(consoleOutput);
+            input = handleInput.getInputString();
 
-	                break;
+            switch (input) {
+                case "1":
+                    consoleOutput = getAllProducts();
+                    break;
 
-	            case "3":
-	                consoleOutput = addProduct();
-	                System.out.println(consoleOutput);
+                case "2":
+                    consoleOutput = getProductById();
+                    break;
 
-	                break;
+                case "3":
+                    consoleOutput = addProduct();
+                    break;
 
-	            case "4":
-	                updatePrice();
-	                System.out.println(consoleOutput);
+                case "4":
+                    updatePrice();
+                    break;
 
-	                break;
+                case "5":
+                    consoleOutput = deleteProduct();
+                    break;
 
-	            case "5":
-	            	consoleOutput = deleteProduct();
-	                System.out.println(consoleOutput);
+                case "q":
+                    System.out.println("Returning");
+                    flag = false;
+                    continue;
 
-	                break;
+                default:
+                    invalidCount++;
+                    if (invalidCount >= 3) {
+                        System.out.println("Too many invalid attempts. Exiting...");
+                        flag = false;
+                    } else {
+                        System.out.println("Invalid option. Try again. " + (3 - invalidCount) + " attempts left.");
+                    }
+                    continue;
+            }
 
-	            case "q":
-	                System.out.println("Returning");
-	                flag = false; // Set flag to false to exit the loop
-	                break;
+            if (flag) {
+                System.out.println("Type q to exit or any key to continue:");
+                input = handleInput.getInputString();
+                if ("q".equalsIgnoreCase(input)) {
+                    flag = false;
+                }
+            }
+        }
+        return consoleOutput;
+    }
 
-	            default:
-	                count++;
-	                if (count >= 3) {
-	                    System.out.println("Too many invalid attempts. Exiting...");
-	                    flag = false; // Exit after 3 invalid attempts
-	                } else {
-	                    System.out.println("Invalid option. Try again. " + (3 - count) + " attempts left.");
-	                }
-	                break;
-	        }
+    /**
+     * Retrieves and displays all products from the database.
+     * 
+     * @return The console output message.
+     */
+    private String getAllProducts() {
+        try {
+            ArrayList<Appliance> list = applianceDAO.findAll(0, null);
 
-	        if (flag) {
-	            System.out.println("Type q to exit or any key to continue:");
-	            input = handleInput.getInputString();
-	            if ("q".equalsIgnoreCase(input)) {
-	                flag = false; // Exit if user types q
-	            }
-	        }
-	    }
-	    return consoleOutput;
-	}
+            for (Appliance obj : list) {
+                new AppliancePrinter(obj).print();
+            }
 
+            return list.isEmpty() ? "No products in the database" : "Product list returned";
+        } catch (NullPointerException e) {
+            return "No products in the database";
+        }
+    }
 
-	private String getAllProducts() {
-		try {
-			ArrayList<Appliance> list = applianceDAO.findAll(0, null);
-			
-			for (Appliance obj : list) {
-				AppliancePrinter print = new AppliancePrinter(obj);
-				print.print();
-			}
-			
-			if(list.isEmpty()) {
-				return "No products in the database";
-			}
-			
-			return "Product list returned";
-			
-		} catch (NullPointerException e) {
-			return "No products in the database";
-		}
-	}
-	
-	private String getProductById() {
-	    Appliance appliance = null;
-	    int id = 0;
+    /**
+     * Retrieves and displays a product by its ID.
+     * 
+     * @return The console output message.
+     */
+    private String getProductById() {
+        try {
+            System.out.println("Enter Product ID:");
+            int id = Integer.parseInt(handleInput.getInputString());
 
-	    try {
-	        System.out.println("Enter Product ID");
-	        String stringInput = handleInput.getInputString();
-	        id = Integer.parseInt(stringInput);
+            Appliance appliance = applianceDAO.getAppliance(id);
 
-	        System.out.println("Searching for product " + id);
+            if (appliance != null) {
+                new AppliancePrinter(appliance).print();
+                return appliance.getDescription() + " found.";
+            }
+            return "No item found in the database.";
+        } catch (NumberFormatException e) {
+            return "Invalid product ID. Please enter a valid number.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "An error occurred while searching for the product.";
+        }
+    }
 
-	        appliance = applianceDAO.getAppliance(id);
-
-	        if (appliance == null) {
-	            return "No item found in the database";
-	        } else {
-	            AppliancePrinter printer = new AppliancePrinter(appliance);
-	            printer.print(); // Print the appliance details.
-	            consoleOutput = appliance.getDescription() + " found.";
-	            return consoleOutput;
-	        }
-	    } catch (NumberFormatException e) {
-	        consoleOutput = "Invalid product ID. Please enter a valid number.";
-	        return consoleOutput;
-	    } catch (Exception e) {
-	        consoleOutput = "An error occurred while searching for the product.";
-	        e.printStackTrace(); // Log the exception for debugging.
-	        return consoleOutput;
-	    }
-
-	}
-
-	
+    /**
+     * Adds a new product to the database.
+     * 
+     * @return The console output message.
+     */
 	private String addProduct() {
 		ApplianceDepartments applianceFactory = selectDepartment();
 		Appliance appliance = selectAppliance(applianceFactory);
@@ -193,37 +186,37 @@ public class ApplianceConsole {
 
 	}
 	
-	private ApplianceDepartments selectDepartment () {
-		ApplianceDepartments applianceFactory = null;
-		
-		String stringInput = null;
-		do {
-			System.out.println("Please select department from the list below");
-			System.out.println("[1] Entertainment");
-			System.out.println("[2] Home Cleaning");
-			System.out.println("[3] Go back - fix bug");
-			
-			stringInput = handleInput.getInputString();
-			
-			switch (stringInput) {
-				case "1":
-					applianceFactory = new EntertainmentFactory();
-					break;
-				case "2":
-					applianceFactory = new HomeCleaningFactory();
-					break;
-				case "3":
-					break;
-				default:
-					System.out.println("Please try again");
-					System.out.println();
+    /**
+     * Allows the user to select an appliance department.
+     * 
+     * @return The selected ApplianceDepartments factory.
+     */
+    private ApplianceDepartments selectDepartment() {
+        while (true) {
+            System.out.println("Please select department from the list below");
+            System.out.println("[1] Entertainment");
+            System.out.println("[2] Home Cleaning");
+            System.out.println("[3] Go back");
 
-			}
-		} while (stringInput == "3");
-		
-		return applianceFactory;
-	}
+            String input = handleInput.getInputString();
+            switch (input) {
+                case "1":
+                    return new EntertainmentFactory();
+                case "2":
+                    return new HomeCleaningFactory();
+                case "3":
+                    return null;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+        }
+    }
 	
+    /**
+     * Allows the user to select an appliance type from a department.
+     * 
+     * @return The selected Appliance.
+     */
 	private Appliance selectAppliance (ApplianceDepartments factory) {
 		ApplianceDepartments applianceFactory = factory;
 		ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
@@ -280,6 +273,10 @@ public class ApplianceConsole {
 		}
 	}
 	
+	/**
+	 * 
+	 * @return Returns message indicating whether the update was successful or if the database is empty.
+	 */
 	private String updatePriceByID() {
 		System.out.println("Enter ID to update price");
 		int userInputID = handleInput.getInputInt();
@@ -296,6 +293,9 @@ public class ApplianceConsole {
 		return consoleOutput;
 	}
 
+	/**
+	 *  @return A message indicating whether the deletion was successful or not.
+	 */
 	private String deleteProduct() {
 		System.out.println("Please enter ID");
 		System.out.println();

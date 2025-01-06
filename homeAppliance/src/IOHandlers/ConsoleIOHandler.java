@@ -3,25 +3,40 @@ package IOHandlers;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Handles console-based input and output operations.
+ * 
+ * @author 24862664
+ */
 public class ConsoleIOHandler implements InputOutputHandler {
     private Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Reads an integer input from the console.
+     * Retries until valid input is provided.
+     * 
+     * @return the integer input
+     */
     @Override
     public int getInputInt() {
-    	while (true) {
-			try {
-				int next = scanner.nextInt();
-				scanner.nextLine();
-
-				return next;
-			} catch (InputMismatchException e) {
-				System.out.println("Invalid character please try again");
-				scanner.nextLine();
-				continue;
-			}
-		}
+        while (true) {
+            try {
+                int next = scanner.nextInt();
+                scanner.nextLine();
+                return next;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid character, please try again.");
+                scanner.nextLine();
+            }
+        }
     }
 
+    /**
+     * Reads a non-empty string input from the console.
+     * Retries until valid input is provided.
+     * 
+     * @return the string input
+     */
     @Override
     public String getInputString() {
         while (true) {
@@ -39,6 +54,12 @@ public class ConsoleIOHandler implements InputOutputHandler {
         }
     }
 
+    /**
+     * Reads a double input from the console.
+     * Retries until valid input is provided.
+     * 
+     * @return the double input
+     */
     @Override
     public double getInputDouble() {
         while (true) {
@@ -49,18 +70,25 @@ public class ConsoleIOHandler implements InputOutputHandler {
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid decimal number.");
                 scanner.nextLine(); // Clear the invalid input
-                continue;
             }
         }
     }
-	
+
+    /**
+     * Outputs a message to the console.
+     * 
+     * @param message the message to be output
+     * @return the output message
+     */
     @Override
     public String output(String message) {
-		return message;
+        return message;
     }
-    
-    public void clearInput() {
-    	scanner.next();
-    };
-}
 
+    /**
+     * Clears any remaining input from the scanner buffer.
+     */
+    public void clearInput() {
+        scanner.next();
+    }
+}

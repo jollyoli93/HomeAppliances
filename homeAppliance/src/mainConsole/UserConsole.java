@@ -21,6 +21,12 @@ import users.User;
 import users.UserFactory;
 import util.Util;
 
+/**
+ * UserConsole handles the user management interface for the Home Appliance Store.
+ * It allows for user creation, updating, deletion, and searching as well as managing user roles and addresses.
+ * 
+ * Author: 24862664
+ */
 public class UserConsole {
     private UserDao userDAO;
     private InputOutputHandler handleInput;
@@ -28,17 +34,31 @@ public class UserConsole {
     private String consoleOutput = null;
     User customer;
 
+    /**
+     * Constructs a UserConsole object with the specified database path.
+     *
+     * @param dbPath the path to the database
+     */
     public UserConsole(String dbPath) {
         this.dbPath = dbPath;
         this.handleInput = new ConsoleIOHandler();
-
         this.userDAO = new UserDao(dbPath);
     }
 
+    /**
+     * Sets the input handler for the console.
+     *
+     * @param handleInput the InputOutputHandler to set
+     */
     public void setHandler(InputOutputHandler handleInput) {
         this.handleInput = handleInput;
     }
 
+    /**
+     * Displays the user management menu and processes user input for various options.
+     *
+     * @return a string message indicating the result of the operation
+     */
     public String userMenu() {
         String input = "0";
         boolean flag = true;
@@ -91,25 +111,30 @@ public class UserConsole {
                     System.out.println(consoleOutput);
                     break;
                 default:
-                	if (count>1) flag = false;
-                	count++;
+                    if (count > 1) flag = false;
+                    count++;
                     System.out.println("Try again " + (3 - count) + " trys left");
                     break;
             }
-            
-	        if (flag) {
-	            System.out.println("Type q to exit or any key to continue:");
-	            input = handleInput.getInputString();
-	            if ("q".equalsIgnoreCase(input)) {
-	                flag = false; // Exit if user types q
-	            }
-	        }
+
+            if (flag) {
+                System.out.println("Type q to exit or any key to continue:");
+                input = handleInput.getInputString();
+                if ("q".equalsIgnoreCase(input)) {
+                    flag = false; // Exit if user types q
+                }
+            }
         } while (flag);
 
         System.out.println();
         return consoleOutput;
     }
 
+    /**
+     * Selects the update method for updating user details.
+     *
+     * @return a string indicating the result of the update operation
+     */
     private String selectUpdateMethod() {
         String inputIdString, selectUpdate;
         int userId = 0, updatedRows = 0;
@@ -199,6 +224,9 @@ public class UserConsole {
         return "returning";
     }
 
+    /**
+     * Displays the user details for a specific user ID.
+     */
     public void getUserInterface() {
         String userIdString = null;
         User user = null;
@@ -207,7 +235,7 @@ public class UserConsole {
         System.out.println("Enter User ID.");
         userIdString = handleInput.getInputString();
         try {
-        	userId = Util.parseUserId(userIdString);
+            userId = Util.parseUserId(userIdString);
         } catch (InvalidUserIdException e) {
             System.out.println(e.getMessage());
             return;
@@ -237,6 +265,9 @@ public class UserConsole {
         }
     }
 
+    /**
+     * Retrieves and displays all users.
+     */
     public void getAllUsers() {
         ArrayList<User> userList = userDAO.findAll(0, null);
 
@@ -265,6 +296,11 @@ public class UserConsole {
         }
     }
 
+    /**
+     * Adds a new user via the console interface.
+     *
+     * @return a string message indicating the result of the user addition
+     */
     public String addUserInterface() {
         Boolean success = false;
 
@@ -300,6 +336,12 @@ public class UserConsole {
         return consoleOutput;
     }
 
+    /**
+     * Adds a new user based on the provided role.
+     *
+     * @param role the role of the user to add (e.g., admin, customer, business)
+     * @return true if the user was successfully added, false otherwise
+     */
     private boolean addUserByRole(String role) {
         String first_name = null;
         String last_name = null;
@@ -353,12 +395,17 @@ public class UserConsole {
         }
     }
 
-	private String deleteByUserID() {
-	    System.out.println("Please enter the user ID number you wish to delete:");
-	    String inputIdString = handleInput.getInputString();
-	    System.out.println("DEBUG: " + inputIdString);
-	    int deleted = 0;
-	    int userId = 0;
+    /**
+     * Deletes a user based on the provided user ID.
+     * 
+     * @return A string message indicating the success or failure of the deletion process.
+     */
+    private String deleteByUserID() {
+        System.out.println("Please enter the user ID number you wish to delete:");
+        String inputIdString = handleInput.getInputString();
+        System.out.println("DEBUG: " + inputIdString);
+        int deleted = 0;
+        int userId = 0;
 
         try {
             userId = Util.parseUserId(inputIdString);
@@ -366,63 +413,72 @@ public class UserConsole {
             System.out.println(e.getMessage());
             return "Failed to update user: " + e.getMessage();
         }
-		    
-	        deleted = userDAO.deleteUserById(userId); // Attempt to delete user
-	    
-	    if (deleted > 0) {
-	        System.out.println("User deleted successfully.");
-	        consoleOutput = "User deleted successfully.";
-	        return consoleOutput;
-	    } else {
-	        System.out.println("Failed to delete user.");
-	        consoleOutput = "Failed to delete user.";
-	        return consoleOutput;
-	    }
-	}
-	
-	public String addAddressInterface () {
-		Boolean success = false;
-		int userId = 0;
-		
-			while (success == false) {				
-				try {
-					System.out.println("Enter user ID.");
-					String userIdString = handleInput.getInputString();
-					
-					try {
-			            userId = Util.parseUserId(userIdString);
-			        } catch (InvalidUserIdException e) {
-			            System.out.println(e.getMessage());
-			            return "Failed to update user: " + e.getMessage();
-			        }
-					
-					success = addAddressHandler(userId);
-	
-					if (success == true) {
-						System.out.println();
-						System.out.println("Succesfully added to the database");
-						
-						
-						consoleOutput = "Succesfully added to the database";
-						return consoleOutput;
-					}
-					else {
-						System.out.println();
-						System.out.println("Error adding user - try again");
-						consoleOutput = "Error adding user - try again";
-						return consoleOutput;
-					}
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					System.out.println("CATCH: Error adding user - try again");
-					e.printStackTrace();
-				}
-			}
-			return consoleOutput;
-	}
-	
-	private Address userAddressHandler (int user_id) {
+        
+        deleted = userDAO.deleteUserById(userId); // Attempt to delete user
+
+        if (deleted > 0) {
+            System.out.println("User deleted successfully.");
+            consoleOutput = "User deleted successfully.";
+            return consoleOutput;
+        } else {
+            System.out.println("Failed to delete user.");
+            consoleOutput = "Failed to delete user.";
+            return consoleOutput;
+        }
+    }
+
+    /**
+     * Provides an interface to add an address to a user.
+     * 
+     * @return A string message indicating the success or failure of the address addition process.
+     */
+    public String addAddressInterface() {
+        Boolean success = false;
+        int userId = 0;
+        
+        while (success == false) {                
+            try {
+                System.out.println("Enter user ID.");
+                String userIdString = handleInput.getInputString();
+                
+                try {
+                    userId = Util.parseUserId(userIdString);
+                } catch (InvalidUserIdException e) {
+                    System.out.println(e.getMessage());
+                    return "Failed to update user: " + e.getMessage();
+                }
+                
+                success = addAddressHandler(userId);
+
+                if (success == true) {
+                    System.out.println();
+                    System.out.println("Successfully added to the database");
+                    
+                    consoleOutput = "Successfully added to the database";
+                    return consoleOutput;
+                }
+                else {
+                    System.out.println();
+                    System.out.println("Error adding user - try again");
+                    consoleOutput = "Error adding user - try again";
+                    return consoleOutput;
+                }
+                
+            } catch (Exception e) {
+                System.out.println("CATCH: Error adding user - try again");
+                e.printStackTrace();
+            }
+        }
+        return consoleOutput;
+    }
+
+    /**
+     * Collects address details from the user and returns an Address object.
+     * 
+     * @param user_id The ID of the user to which the address will be linked.
+     * @return An Address object with the provided details.
+     */
+    private Address userAddressHandler(int user_id) {
         String number;
         String street;
         String city;
@@ -432,165 +488,203 @@ public class UserConsole {
         Address address;
         String addressType;
         
-		System.out.println("Enter Building Number: ");
-		number = handleInput.getInputString();
-		
-		System.out.println("Enter Street: ");
-		street = handleInput.getInputString();
+        System.out.println("Enter Building Number: ");
+        number = handleInput.getInputString();
+        
+        System.out.println("Enter Street: ");
+        street = handleInput.getInputString();
 
-		System.out.println("Enter City: ");
-		city = handleInput.getInputString();
-		
-		System.out.println("Enter Country: ");
-		country = handleInput.getInputString();
-		
-		System.out.println("Enter Postcode: ");
-		postcode = handleInput.getInputString();
-		
-		System.out.println("Is it the primary address? true or false: ");
-		String isPrimaryInput = handleInput.getInputString();
-		
-		isPrimary = isPrimaryAddress(isPrimaryInput);
-		
-		System.out.println("Enter address type: ");
-		System.out.println("[1] Shipping");
-		System.out.println("[2] Billing");
-		addressType = handleInput.getInputString();
-		
-		address = selectAddressType(addressType, number, street, city, country, postcode, user_id, isPrimary);
-		
-		return address;
-	}
-	
-	private boolean addAddressHandler (int user_id) {
-		Address address = userAddressHandler(user_id);
-		 return userDAO.addAddress(address, null);
-	}
-	
-	private int updateAddressHandler (int user_id) {
-		Address address = userAddressHandler(user_id);
-	
-		try {
-			return userDAO.updateUserAddress(user_id, address);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	
-	private Address selectAddressType (String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {
-		if ("1".equalsIgnoreCase(addressType)) {
-			return new ShippingAddress(number, street, city, country, postCode, customerId, isPrimary);
-		}
-		
-		if ("2".equalsIgnoreCase(addressType)) {
-			return new BillingAddress(number, street, city, country, postCode, customerId, isPrimary);
-		}
-		
-		System.out.println("No such address type");
-		return null;
-	}
-	
-	private boolean isPrimaryAddress (String isPrimaryInput) {
-		boolean flag = false;
-		
-		do {
-			if (isPrimaryInput.equalsIgnoreCase("true")) {
-				flag = true;
-				return true;
-			} else if (isPrimaryInput.equalsIgnoreCase("false")) {
-				flag = true;
-				return false;
-			} else {
-				System.out.println("Incorrect input");
-			}
-		} while (flag = false);
-		
-		return false;
-	}
+        System.out.println("Enter City: ");
+        city = handleInput.getInputString();
+        
+        System.out.println("Enter Country: ");
+        country = handleInput.getInputString();
+        
+        System.out.println("Enter Postcode: ");
+        postcode = handleInput.getInputString();
+        
+        System.out.println("Is it the primary address? true or false: ");
+        String isPrimaryInput = handleInput.getInputString();
+        
+        isPrimary = isPrimaryAddress(isPrimaryInput);
+        
+        System.out.println("Enter address type: ");
+        System.out.println("[1] Shipping");
+        System.out.println("[2] Billing");
+        addressType = handleInput.getInputString();
+        
+        address = selectAddressType(addressType, number, street, city, country, postcode, user_id, isPrimary);
+        
+        return address;
+    }
 
-	private String handleAdminStatus () {
-		Boolean success = false, hasAdminStatus = false;
-		String userIdString = null, input = null;
-		int userId = 0, output = 0;
-		ArrayList<String> userRoles = new ArrayList<String>();	
-		
-		do {
-			System.out.println("Enter user ID");
-			userIdString = handleInput.getInputString();
-			try {
-	            userId = Util.parseUserId(userIdString);
-	        } catch (InvalidUserIdException e) {
-	            System.out.println(e.getMessage());
-	            return "Failed to update user: " + e.getMessage();
-	        }
-			
-			//get user role status
-			hasAdminStatus = userDAO.isUserAdmin(userId);
-			
-			if (hasAdminStatus) {
+    /**
+     * Handles the process of adding an address for a user.
+     * 
+     * This method calls the userAddressHandler to collect address details and then attempts to add the address to the database.
+     * 
+     * @param user_id The ID of the user to which the address will be added.
+     * @return A boolean value indicating whether the address was successfully added.
+     */
+    private boolean addAddressHandler(int user_id) {
+        Address address = userAddressHandler(user_id);
+        return userDAO.addAddress(address, null);
+    }
 
-				System.out.println("------------------------");
-				System.out.println("Choose from these options");
-				System.out.println("------------------------");
-				System.out.println("[1] Remove admin status");
-				System.out.println("[2] Return");
-				System.out.println();
-				
-				input = handleInput.getInputString();
-				
-				switch (input) {
-				case "1":					
-					try {
-						output = userDAO.removeAdminById(userId);
-						return "Number of rows updated: " + output;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return "Failed to give admin status.";
-					}
-					
-				case "2":
-					return "Returning.";
-				default:
-					System.out.println("Invalid input");
-					break;
-				}
-			} 
-			else if (!hasAdminStatus) {
-				System.out.println("------------------------");
-				System.out.println("Choose from these options");
-				System.out.println("------------------------");
-				System.out.println("[1] Give admin status");
-				System.out.println("[2] Return");
-				System.out.println();
-				
-				input = handleInput.getInputString();
-				
-				
-				switch (input) {
-				case "1":
-					try {
-						output = userDAO.giveAdminStatus(userId);
-						return "Number of rows updated: " + output;
-					} catch (Exception e) {
-						e.printStackTrace();
-						return "Failed to give admin status.";
-					}
-				case "2":
-					return "Returning.";
-				default:
-					System.out.println("Invalid input");
-					break;
-				}
-				
-			}
-			
-		} while (success == false);
-		
-		return "No change to user roles";
-	}
-	
+    /**
+     * Handles the process of updating a user's address.
+     * 
+     * This method calls the userAddressHandler to collect updated address details and then attempts to update the user's address in the database.
+     * 
+     * @param user_id The ID of the user whose address is being updated.
+     * @return An integer indicating the number of rows affected by the update.
+     */
+    private int updateAddressHandler(int user_id) {
+        Address address = userAddressHandler(user_id);
+
+        try {
+            return userDAO.updateUserAddress(user_id, address);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    /**
+     * Selects the address type (Shipping or Billing) based on the user input and creates the appropriate address object.
+     * 
+     * @param addressType The type of address selected by the user ("1" for shipping, "2" for billing).
+     * @param number The building number of the address.
+     * @param street The street of the address.
+     * @param city The city of the address.
+     * @param country The country of the address.
+     * @param postCode The postcode of the address.
+     * @param customerId The ID of the user to whom the address belongs.
+     * @param isPrimary Whether the address is primary or not.
+     * @return An Address object of the appropriate type (Shipping or Billing).
+     */
+    private Address selectAddressType(String addressType, String number, String street, String city, String country, String postCode, int customerId, boolean isPrimary) {
+        if ("1".equalsIgnoreCase(addressType)) {
+            return new ShippingAddress(number, street, city, country, postCode, customerId, isPrimary);
+        }
+        
+        if ("2".equalsIgnoreCase(addressType)) {
+            return new BillingAddress(number, street, city, country, postCode, customerId, isPrimary);
+        }
+        
+        System.out.println("No such address type");
+        return null;
+    }
+
+    /**
+     * Determines whether the address is a primary address based on the user's input.
+     * 
+     * @param isPrimaryInput The user's input indicating whether the address is primary or not.
+     * @return A boolean value indicating whether the address is primary.
+     */
+    private boolean isPrimaryAddress(String isPrimaryInput) {
+        boolean flag = false;
+        
+        do {
+            if (isPrimaryInput.equalsIgnoreCase("true")) {
+                flag = true;
+                return true;
+            } else if (isPrimaryInput.equalsIgnoreCase("false")) {
+                flag = true;
+                return false;
+            } else {
+                System.out.println("Incorrect input");
+            }
+        } while (flag == false);
+        
+        return false;
+    }
+
+    /**
+     * Handles the process of updating the admin status for a user.
+     * @return A string message indicating the result of the admin status operation.
+     */
+    private String handleAdminStatus() {
+        Boolean success = false, hasAdminStatus = false;
+        String userIdString = null, input = null;
+        int userId = 0, output = 0;
+        ArrayList<String> userRoles = new ArrayList<String>();    
+        
+        do {
+            System.out.println("Enter user ID");
+            userIdString = handleInput.getInputString();
+            try {
+                userId = Util.parseUserId(userIdString);
+            } catch (InvalidUserIdException e) {
+                System.out.println(e.getMessage());
+                return "Failed to update user: " + e.getMessage();
+            }
+            
+            // Get user role status
+            hasAdminStatus = userDAO.isUserAdmin(userId);
+            
+            if (hasAdminStatus) {
+
+                System.out.println("------------------------");
+                System.out.println("Choose from these options");
+                System.out.println("------------------------");
+                System.out.println("[1] Remove admin status");
+                System.out.println("[2] Return");
+                System.out.println();
+                
+                input = handleInput.getInputString();
+                
+                switch (input) {
+                case "1":                    
+                    try {
+                        output = userDAO.removeAdminById(userId);
+                        return "Number of rows updated: " + output;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return "Failed to remove admin status.";
+                    }
+                    
+                case "2":
+                    return "Returning.";
+                default:
+                    System.out.println("Invalid input");
+                    break;
+                }
+            } 
+            else if (!hasAdminStatus) {
+                System.out.println("------------------------");
+                System.out.println("Choose from these options");
+                System.out.println("------------------------");
+                System.out.println("[1] Give admin status");
+                System.out.println("[2] Return");
+                System.out.println();
+                
+                input = handleInput.getInputString();
+                
+                
+                switch (input) {
+                case "1":
+                    try {
+                        output = userDAO.giveAdminStatus(userId);
+                        return "Number of rows updated: " + output;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return "Failed to give admin status.";
+                    }
+                case "2":
+                    return "Returning.";
+                default:
+                    System.out.println("Invalid input");
+                    break;
+                }
+                
+            }
+            
+        } while (success == false);
+        
+        return "No change to user roles";
+    }
+
 	
 	
 }
