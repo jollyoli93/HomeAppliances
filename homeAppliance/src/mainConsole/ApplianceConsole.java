@@ -3,6 +3,8 @@
 package mainConsole;
 
 import java.util.ArrayList;
+import java.util.Map;
+
 import DAO.ApplianceDao;
 import IOHandlers.ConsoleIOHandler;
 import IOHandlers.InputOutputHandler;
@@ -11,6 +13,7 @@ import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
 import printer.AppliancePrinter;
+import util.FactoryRegistry;
 import util.Util;
 
 /**
@@ -26,11 +29,13 @@ public class ApplianceConsole {
     private InputOutputHandler handleInput;
     private final String dbPath;
     private String consoleOutput = "";
+    private FactoryRegistry factoryRegistery;
 
     public ApplianceConsole(String dbPath) {
         this.dbPath = dbPath;
         this.handleInput = new ConsoleIOHandler();
         this.applianceDAO = new ApplianceDao(dbPath);
+        this.factoryRegistery = new FactoryRegistry();
     }
 
     public void setHandler(InputOutputHandler handleInput) {
@@ -187,33 +192,59 @@ public class ApplianceConsole {
 	}
 	
     /**
-     * Allows the user to select an appliance department.
+     * Allows the user to dynamically select an appliance department from the factory method.
      * 
-     * @return The selected ApplianceDepartments factory.
+     * @return The selected ApplianceDepartments department type e.g. entertainment, home cleaning etc.
      */
     private ApplianceDepartments selectDepartment() {
-        while (true) {
-            System.out.println("Please select department from the list below");
-            System.out.println("[1] Entertainment");
-            System.out.println("[2] Home Cleaning");
-            System.out.println("[3] Go back");
+        Map<String, ApplianceDepartments> factoryDeptMap = factoryRegistery.getDepartments();
+        ArrayList<String> applianceDeptList = new ArrayList<>();
+        ApplianceDepartments department = null;
 
-            String input = handleInput.getInputString();
-            switch (input) {
-                case "1":
-                    return new EntertainmentFactory();
-                case "2":
-                    return new HomeCleaningFactory();
-                case "3":
-                    return null;
-                default:
-                    System.out.println("Invalid option. Try again.");
+        // Add department names to the list
+        factoryDeptMap.forEach((key, value) -> {
+            applianceDeptList.add(key);
+        });
+
+        int userInput;
+        int sizeOfTypesList = applianceDeptList.size();
+        int endOfList = sizeOfTypesList + 1;
+
+        do {
+            System.out.println("Please select a department:");
+            System.out.println();
+
+            // print departments to the user
+            for (int i = 0; i < sizeOfTypesList; i++) {
+                String deptType = applianceDeptList.get(i);  // Get department name from the list
+                int printUserSelectionIndex = i + 1;
+                System.out.println("[" + printUserSelectionIndex + "] " + deptType);
             }
-        }
+
+            System.out.println("[" + endOfList + "] Exit");
+
+            // Get user input
+            String stringInput = handleInput.getInputString();
+            userInput = Integer.parseInt(stringInput);
+
+            if (userInput == endOfList) {
+                System.out.println("Exiting");
+                return null;  
+            } else if (userInput > 0 && userInput <= sizeOfTypesList) {
+                // Select the appliance department based on the user's input
+                String selectedKey = (String) applianceDeptList.get(userInput - 1);  // Get the department key
+                department = factoryDeptMap.get(selectedKey);  // Fetch department object by key
+                return department;  // Return selected department
+            } else {
+                System.out.println("Input invalid. Please select a valid department number.");
+                System.out.println();
+            }
+
+        } while (true); 
     }
 	
     /**
-     * Allows the user to select an appliance type from a department.
+     * Allows the user to dynamically select an appliance type from a department.
      * 
      * @return The selected Appliance.
      */
