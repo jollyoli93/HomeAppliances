@@ -19,7 +19,7 @@ import util.Util;
  * 
  * Handles user input and delegates database operations to the DAO layer.
  * 
- * Author: 24862664
+ * @author 24862664
  */
 public class ApplianceConsole {
     private final ApplianceDao applianceDAO;

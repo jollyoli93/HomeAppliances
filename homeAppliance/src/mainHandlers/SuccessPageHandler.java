@@ -11,13 +11,28 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
+/**
+ * Landing page for all successfull POST requests
+ * @author 24862664
+ */
 public class SuccessPageHandler implements HttpHandler {
     private final SessionManager sessionManager;
 
+    /**
+     * Constructs a new SuccessPageHandler.
+     * 
+     * @param sessionManager The session manager responsible for session management.
+     */
     public SuccessPageHandler(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
-
+    
+	/**
+	 * Handles the request for the success page
+	 * 
+	 * @param he The HTTP exchange that represents the request-response interaction.
+	 * @throws IOException If an I/O error occurs while writing the response.
+	 */
     @Override
     public void handle(HttpExchange he) throws IOException {
         BufferedWriter out = null;

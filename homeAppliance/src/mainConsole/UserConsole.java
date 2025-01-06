@@ -25,7 +25,7 @@ import util.Util;
  * UserConsole handles the user management interface for the Home Appliance Store.
  * It allows for user creation, updating, deletion, and searching as well as managing user roles and addresses.
  * 
- * Author: 24862664
+ * @author 24862664
  */
 public class UserConsole {
     private UserDao userDAO;

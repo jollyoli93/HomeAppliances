@@ -2,10 +2,19 @@ package printer;
 
 import users.User;
 
+/**
+ * This class is responsible for printing an ordinary customer type user.
+ * 
+ * @author 24862664
+ */
 public class CustomerPrinter extends Printer {
-		
-		public CustomerPrinter(User obj) {
-			printBehaviour = new CustomerBehaviour(obj);
-		}
-		
+	
+    /**
+     * Constructs an CustomerPrinter object to print out a customer user profile.
+     * @param customer user object
+     */	
+	public CustomerPrinter(User obj) {
+		printBehaviour = new CustomerBehaviour(obj);
+	}
+	
 }
