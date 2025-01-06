@@ -17,6 +17,8 @@ import users.User;
 /**
  * Unit tests for shopping cart functionality, testing various operations like adding, 
  * removing, clearing items, and calculating total prices for different user types.
+ * 
+ * @author 24862664
  */
 class ShoppingCartTesting {
     User customer;

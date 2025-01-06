@@ -12,6 +12,8 @@ import mainConsole.UserConsole;
 /**
  * Unit tests for the UserConsole class, covering user creation, deletion, updates, and other actions
  * like handling admin status and updating user addresses.
+ * 
+ * @author 24862664
  */
 class UserConsoleTest {
     UserConsole console;
