@@ -107,8 +107,7 @@ public class UserConsole {
                     break;
                 case "q":
                     flag = false;
-                    consoleOutput = "Returning";
-                    System.out.println(consoleOutput);
+                    System.out.println("Returning");
                     break;
                 default:
                     if (count > 1) flag = false;

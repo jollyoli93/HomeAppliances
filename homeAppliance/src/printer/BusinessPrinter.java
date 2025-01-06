@@ -1,6 +1,6 @@
 package printer;
 
-import users.BusinessUser;
+import users.User;
 
 /**
  * This class is responsible for printing a business type user.
@@ -11,9 +11,9 @@ public class BusinessPrinter extends Printer {
 	
     /**
      * Constructs an BusinessPrinter object to print out a business user profile.
-     * @param business user object
+     * @param User object
      */
-	public BusinessPrinter(BusinessUser obj) {
+	public BusinessPrinter(User obj) {
 		printBehaviour = new BusinessBehaviour(obj);
 	}
 }

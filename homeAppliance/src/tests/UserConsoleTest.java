@@ -9,296 +9,235 @@ import DAO.UserDao;
 import IOHandlers.MockIOHandler;
 import mainConsole.UserConsole;
 
+/**
+ * Unit tests for the UserConsole class, covering user creation, deletion, updates, and other actions
+ * like handling admin status and updating user addresses.
+ */
 class UserConsoleTest {
-	UserConsole console;
-	UserDao dao;
-	String output;
-	String dbpath = "HomeApplianceTest";
-	
-	@BeforeEach
-	public void userConsoleTest () {
-//		System.out.println("DEBUG: Console - Connect to DAO");
-		//clear user table before each test
-		dao = new UserDao(dbpath);
-//		
-//		System.out.println("DEBUG: Console - dropping tables");
+    UserConsole console;
+    UserDao dao;
+    String output;
+    String dbpath = "HomeApplianceTest";
 
-		dao.dropUserTable(dbpath);
-		
-//		System.out.println("DEBUG: Console - Initialise console");
-		//Initialise user console
-		console = new UserConsole(dbpath);
+    /**
+     * Sets up test data by initialising UserDao and UserConsole, and clearing the user table.
+     */
+    @BeforeEach
+    public void userConsoleTest () {
+        dao = new UserDao(dbpath);
+        dao.dropUserTable(dbpath);
+        console = new UserConsole(dbpath);
+    }
+    
+    /**
+     * Tests adding a customer user.
+     */
+    @Test
+    public void addUserCustomer () {
+        String[] customer = {"3","customer", "Billy", "Jean", "billyjean@mjm.com", "BillyJean93", "NotMyLover", "07523435456"};
+        console.setHandler(new MockIOHandler(customer));
+        output = console.userMenu();
+        assertEquals("Succesfully added to the database", output);
+    }
 
-	}
-	
-	@Test
-	public void addUserCustomer () {
-		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum
-		String[] customer = {"3","customer", "Billy", "Jean", "billyjean@mjm.com", "BillyJean93", "NotMyLover", "07523435456"};
-		
-		console.setHandler(new MockIOHandler(customer));
-		output = console.userMenu();
-		
-		assertEquals("Succesfully added to the database", output);
-	}
+    /**
+     * Tests adding an admin user.
+     */
+    @Test
+    public void addUserAdmin () {
+        String[] admin = {"3","admin", "Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman"};
+        console.setHandler(new MockIOHandler(admin));
+        output = console.userMenu();
+        assertEquals("Succesfully added to the database", output);
+    }
 
-	@Test
-	public void addUserAdmin () {
-		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password
-		String[] admin = {"3","admin", "Man", "Human", "Manhuman@yahoo.com", "ManHuman", "Useruserman"};
-		
-		console.setHandler(new MockIOHandler(admin));
-		output = console.userMenu();
-		
-		assertEquals("Succesfully added to the database", output);
-	}
+    /**
+     * Tests adding a business user.
+     */
+    @Test
+    public void addUserBusiness () {
+        String[] business = {"3","business", "Jimmy", "Jean", "jimmyjean@mjm.com", "JimmyJean", "BillyJeansLover", "07565345827", "Music Shop"};
+        console.setHandler(new MockIOHandler(business));
+        output = console.userMenu();
+        assertEquals("Succesfully added to the database", output);
+    }
 
-	@Test
-	public void addUserBusiness () {
-		//CustomerUser(String firstName, String lastName, String emailAddress, String username, String password, String telephoneNum, String businessNamw
-		String[] business = {"3","business", "Jimmy", "Jean", "jimmyjean@mjm.com", "JimmyJean", "BillyJeansLover", "07565345827", "Music Shop"};
-		
-		console.setHandler(new MockIOHandler(business));
-		output = console.userMenu();
-		
-		assertEquals("Succesfully added to the database", output);
-	}
+    /**
+     * Tests finding all users.
+     */
+    @Test
+    public void findAllUsers () {
+        String[] findAllUsers = {"1"};
+        addUserCustomer();
+        addUserBusiness();
+        addUserAdmin();
+        console.setHandler(new MockIOHandler(findAllUsers));
+        console.userMenu();
+    }
 
-	
-	@Test
-	public void findAllUsers () {
-		String[] findAllUsers = {"1"};
+    /**
+     * Tests the case where the user list is empty.
+     */
+    @Test
+    public void userListIsEmpty () {
+        String[] findAllUsers = {"1"};
+        console.setHandler(new MockIOHandler(findAllUsers));
+        console.userMenu();
+        assertEquals(null, output);
+    }
 
-		addUserCustomer();
-		addUserBusiness();
-		addUserAdmin();
-		
-		console.setHandler(new MockIOHandler(findAllUsers));
-		console.userMenu();
-		
-	}
-	
-	@Test
-	public void userListIsEmpty () {
-		String[] findAllUsers = {"1"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - User list is Empty");
-		System.out.println("_________________________________________________________________________________");
-		
-		console.setHandler(new MockIOHandler(findAllUsers));
-		console.userMenu();
-		
-		assertEquals(null, output);
-	}
-	
-	@Test
-	public void deleteUserByID () {
-		String[] deleteUserOne = {"5", "1"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Delete user 1");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(deleteUserOne));
-		output = console.userMenu();
-		
-		assertEquals("User deleted successfully.", output);
-	}
-	
-	@Test
-	public void FailedTodeleteUserByID () {
-		String[] deleteUserOne = {"5", "1"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Delete user failed");
-		System.out.println("_________________________________________________________________________________");
-		
-		console.setHandler(new MockIOHandler(deleteUserOne));
-		output = console.userMenu();
-		
-		assertEquals("Failed to delete user.", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersFirstname () {
-		String[] UpdateFirstUser = {"4", "1","1", "Bobby", "9"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User First Name");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersSecondName () {
-		String[] UpdateFirstUser = {"4", "1","2", "Bobby", "9"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User First Name");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
+    /**
+     * Tests deleting a user by ID.
+     */
+    @Test
+    public void deleteUserByID () {
+        String[] deleteUserOne = {"5", "1"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(deleteUserOne));
+        output = console.userMenu();
+        assertEquals("User deleted successfully.", output);
+    }
 
-	@Test
-	public void FailedToUpdateUsersFirstname () {
-		String[] UpdateFirstUser = {"4", "0","1", "Bobby", "9"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Failed to Update User First Name");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 0", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersEmail () {
-		String[] UpdateFirstEmail = {"4", "1","3", "newemail@email.co.uk", "9"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User Email");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstEmail));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersPassword() {
-		String[] UpdateFirstUser = {"4", "1","4", "new password", "9"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User Password");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersBusinessName() {
-		String[] UpdateFirstUser = {"4", "1","7", "Best Biz"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User Business Name");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserBusiness();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
-	
-	@Test
-	public void CorrectUpdateFirstUsersTelephoneNum() {
-		String[] UpdateFirstUser = {"4", "1","6", "01514353521"};
-		
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User Telephone Num");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserBusiness();
-		
-		console.setHandler(new MockIOHandler(UpdateFirstUser));
-		output = console.userMenu();
-		
-		assertEquals("Number of rows updated: 1", output);
-	}
-	
+    /**
+     * Tests failure to delete a user by ID.
+     */
+    @Test
+    public void FailedTodeleteUserByID () {
+        String[] deleteUserOne = {"5", "1"};
+        console.setHandler(new MockIOHandler(deleteUserOne));
+        output = console.userMenu();
+        assertEquals("Failed to delete user.", output);
+    }
 
+    /**
+     * Tests updating the first name of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersFirstname () {
+        String[] UpdateFirstUser = {"4", "1", "1", "Bobby", "9"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests updating the last name of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersSecondName () {
+        String[] UpdateFirstUser = {"4", "1", "2", "Bobby", "9"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests failure to update a user's first name.
+     */
+    @Test
+    public void FailedToUpdateUsersFirstname () {
+        String[] UpdateFirstUser = {"4", "0", "1", "Bobby", "9"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 0", output);
+    }
+
+    /**
+     * Tests updating the email of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersEmail () {
+        String[] UpdateFirstEmail = {"4", "1", "3", "newemail@email.co.uk", "9"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(UpdateFirstEmail));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests updating the password of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersPassword() {
+        String[] UpdateFirstUser = {"4", "1", "4", "new password", "9"};
+        addUserCustomer();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests updating the business name of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersBusinessName() {
+        String[] UpdateFirstUser = {"4", "1", "7", "Best Biz"};
+        addUserBusiness();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests updating the telephone number of a user.
+     */
+    @Test
+    public void CorrectUpdateFirstUsersTelephoneNum() {
+        String[] UpdateFirstUser = {"4", "1", "6", "01514353521"};
+        addUserBusiness();
+        console.setHandler(new MockIOHandler(UpdateFirstUser));
+        output = console.userMenu();
+        assertEquals("Number of rows updated: 1", output);
+    }
+
+    /**
+     * Tests updating a user with all required details.
+     */
     @Test
     public void updateUser() {
         String[] updateCustomer = {"4", "1", "1", "William", "8"};
-        
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
+        addUserCustomer();
         console.setHandler(new MockIOHandler(updateCustomer));
         console.userMenu();
-       
-        
         assertEquals("Succesfully added to the database", output);
     }
 
+    /**
+     * Tests adding an address to a user.
+     */
     @Test
     public void addUserAddress() {
         String[] addAddress = {"6", "1", "12", "Maple Street", "Springfield", "USA", "12345", "true", "1"};
-        
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Update User address");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
+        addUserCustomer();
         console.setHandler(new MockIOHandler(addAddress));
         console.userMenu();
-        
-        
         assertEquals("Succesfully added to the database", output);
     }
 
+    /**
+     * Tests handling the admin status of a user.
+     */
     @Test
     public void handleAdminStatus() {
         String[] giveAdmin = {"7", "1", "1"};
-        
-        
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Handle Admin Status");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserCustomer();
-		
+        addUserCustomer();
         console.setHandler(new MockIOHandler(giveAdmin));
         output = console.userMenu();
-        
         assertEquals("Number of rows updated: 1", output);
     }
-    
+
+    /**
+     * Tests rejecting a user’s request to remove admin status.
+     */
     @Test
     public void rejectRemoveAdminStatus() {
         String[] giveAdmin = {"7", "1", "1"};
-        
-        
-		System.out.println("_________________________________________________________________________________");
-		System.out.println("TEST - Handle Admin Status");
-		System.out.println("_________________________________________________________________________________");
-		
-		addUserAdmin();
-		
+        addUserAdmin();
         console.setHandler(new MockIOHandler(giveAdmin));
         output = console.userMenu();
-        
         assertEquals("Number of rows updated: 0", output);
     }
 }

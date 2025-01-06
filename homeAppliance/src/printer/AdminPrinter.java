@@ -1,6 +1,6 @@
 package printer;
 
-import users.AdminUser;
+import users.User;
 
 /**
  * This class is responsible for printing tasks specific to an admin user.
@@ -12,9 +12,9 @@ public class AdminPrinter extends Printer {
     /**
      * Constructs an AdminPrinter object for the specified admin user.
      * 
-     * @param admin user
+     * @param User object
      */
-    public AdminPrinter(AdminUser user) {
+    public AdminPrinter(User user) {
         printBehaviour = new AdminBehaviour(user);
     }
 }

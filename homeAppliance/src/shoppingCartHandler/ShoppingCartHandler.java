@@ -16,17 +16,39 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+/**
+ * This class is responsible for managing the shopping cart page, including
+ * validating the session, displaying the cart items, and calculating the total price.
+ * 
+ * @author 24862664
+ */
 public class ShoppingCartHandler implements HttpHandler {
     private final SessionManager sessionManager;
     private final ShoppingDao shoppingDao;
     private final UserDao userDao;
 
+    /**
+     * Constructs a ShoppingCartHandler with the necessary dependencies.
+     *
+     * @param userDao The UserDao used to retrieve user information.
+     * @param shoppingDao The ShoppingDao used to retrieve shopping cart items.
+     * @param sessionManager The SessionManager used to manage user sessions.
+     */
     public ShoppingCartHandler(UserDao userDao, ShoppingDao shoppingDao, SessionManager sessionManager) {
         this.sessionManager = sessionManager;
         this.shoppingDao = shoppingDao;
         this.userDao = userDao;
     }
 
+    /**
+     * Handles an HTTP request to display the user's shopping cart.
+     * It retrieves the session, validates the user, and generates an HTML page
+     * displaying the cart items, along with the total price.
+     * If any issues arise, such as missing session or invalid user, an error page is sent.
+     *
+     * @param exchange The HttpExchange object containing the request and response.
+     * @throws IOException If an input or output exception occurs.
+     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         // Extract session
@@ -40,7 +62,6 @@ public class ShoppingCartHandler implements HttpHandler {
 
         // Retrieve user ID from the session
         int userId = (Integer) session.getAttribute("userId");
-        System.out.println("User ID: " + userId);
         
         if (userId == 0) {
             sendErrorResponse(exchange, 400, "Bad Request", "User session invalid.");
@@ -49,7 +70,6 @@ public class ShoppingCartHandler implements HttpHandler {
 
         // Fetch user and cart items
         User user = userDao.getUser(userId);
-        System.out.println("User is " + user);
         
         if (user == null) {
             sendErrorResponse(exchange, 404, "Not Found", "User not found.");
@@ -129,6 +149,15 @@ public class ShoppingCartHandler implements HttpHandler {
         }
     }
 
+    /**
+     * Sends an error response with an HTML error page.
+     * 
+     * @param exchange The HttpExchange object containing the response.
+     * @param statusCode The HTTP status code for the error response.
+     * @param title The title of the error page.
+     * @param message The error message to display.
+     * @throws IOException If an input or output exception occurs.
+     */
     private void sendErrorResponse(HttpExchange exchange, int statusCode, String title, String message) throws IOException {
         String errorPage = String.format("""
                 <!DOCTYPE html>
