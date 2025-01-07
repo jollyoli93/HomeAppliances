@@ -134,7 +134,7 @@ public class ShoppingCartHandler implements HttpHandler {
                                 </tr>
                             </tfoot>
                         </table>
-                        <a href="/checkout" class="btn btn-primary">Proceed to Checkout</a>
+                        <a href=\"/#checkout" class="btn btn-primary">Proceed to Checkout</a>
                         <a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>
                     </div>
                 </body>

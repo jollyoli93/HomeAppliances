@@ -22,8 +22,7 @@ public class Main {
     public static void main(String[] args) {
         // Initialise database and input/output handler
         String database = "HomeAppliances";
-        InputOutputHandler handleInput = new ConsoleIOHandler();
-
+        
         // Create StoreConsole instance and display main menu
         StoreConsole consoleHandler = new StoreConsole(database);
         consoleHandler.displayMainMenu();

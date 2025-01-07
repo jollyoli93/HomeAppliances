@@ -63,6 +63,7 @@ public class UserDao extends DAO<User> {
 		    + "country TEXT NOT NULL, "
 		    + "isPrimary TEXT NOT NULL, "
 		    + "user_id INTEGER NOT NULL, "
+		    + "address_type INTEGER NOT NULL, "
 		    + "address_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
 		    + "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
 		    + ");";
@@ -259,7 +260,6 @@ public class UserDao extends DAO<User> {
 	            throw new IllegalArgumentException("User not found for ID: " + userId);
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
 	        throw new RuntimeException("Error fetching user by ID", e);
 	    }
 	}
@@ -393,7 +393,8 @@ public class UserDao extends DAO<User> {
 	            }
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	       System.out.println("Failed to fetch address " + e);
+	       return null;
 	    }
 	    return null;
 	}
@@ -641,8 +642,6 @@ public class UserDao extends DAO<User> {
 	 * @return the role name associated with the user, or null if no role is found
 	 */
 	private String getRoleDesc(int id) {
-	    System.out.println(id);
-	    
 	    String getRoleQuery = 
 	            "SELECT roles.role_name " +
 	            "FROM users " +
@@ -675,14 +674,11 @@ public class UserDao extends DAO<User> {
 	 * @return the role ID associated with the given role name, or 0 if not found
 	 */
 	private int getRoleId(String role) {
-	    System.out.println(role);
-
 	    String getRoleQuery = "SELECT role_id FROM roles WHERE role_name = ?";
 
 	    try (Connection connect = connector.initializeDBConnection();
 	         PreparedStatement preparedStatement = connect.prepareStatement(getRoleQuery)) {
-	        
-	        System.out.println(role);
+	       
 	        preparedStatement.setString(1, role);
 	        ResultSet result = preparedStatement.executeQuery();
 
@@ -917,7 +913,7 @@ public class UserDao extends DAO<User> {
 	    userRoles = getUserRoles(id);
 	    
 	    if (userRoles.contains("admin") && (userRoles.size() == 1) ) {
-	        System.out.println("User is admin. Cannot remove admin status.");
+	        System.out.println("User has primary admin status. Cannot remove admin status.");
 	        return 0;
 	    } else if (!userRoles.contains("admin")) {
 	        System.out.println("User does not have admin status.");
@@ -932,7 +928,6 @@ public class UserDao extends DAO<User> {
 	            return deleteById("user_roles", update);
 	        } catch (Exception e) {
 	            System.out.println("Failed to give admin status.");
-	            e.printStackTrace();
 	            return 0;
 	        }    
 	    }
@@ -963,7 +958,7 @@ public class UserDao extends DAO<User> {
 	            throw new IllegalArgumentException("User not found: " + username);
 	        }
 	    } catch (SQLException e) {
-	        e.printStackTrace();
+	       
 	        throw new RuntimeException("Error fetching user by username", e);
 	    }
 	}

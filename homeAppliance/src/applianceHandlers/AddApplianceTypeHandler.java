@@ -99,20 +99,25 @@ public class AddApplianceTypeHandler implements HttpHandler {
 
         ApplianceDepartments applianceFactory;
 
-        switch (selectedDepartment.toLowerCase()) {
-            case "entertainment":
-                applianceFactory = new EntertainmentFactory();
-                break;
-            case "home cleaning":
-                applianceFactory = new HomeCleaningFactory();
-                break;
-            default:
-                he.sendResponseHeaders(400, 0);
-                try (OutputStream os = he.getResponseBody()) {
-                    os.write("<html><body><h1>400 Bad Request</h1><p>Invalid department selected.</p></body></html>".getBytes());
-                }
-                return;
-        }
+//        switch (selectedDepartment.toLowerCase()) {
+//            case "entertainment":
+//                applianceFactory = new EntertainmentFactory();
+//                break;
+//            case "home cleaning":
+//                applianceFactory = new HomeCleaningFactory();
+//                break;
+//            default:
+//                he.sendResponseHeaders(400, 0);
+//                try (OutputStream os = he.getResponseBody()) {
+//                    os.write("<html><body><h1>400 Bad Request</h1><p>Invalid department selected.</p></body></html>".getBytes());
+//                }
+//                return;
+//        }
+        
+        // Get the list of departments from the appliance factories
+        ArrayList<String> departments = ApplianceDepartments.selectApplianceDepartment("entertainment").listFactoryTypes();
+        
+        applianceFactory = ApplianceDepartments.selectApplianceDepartment(selectedDepartment);
 
         ArrayList<String> applianceTypes = applianceFactory.listAllApplianceTypes();
         System.out.println(applianceTypes);

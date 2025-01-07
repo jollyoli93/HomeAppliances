@@ -92,7 +92,51 @@ public class AddAppliancetoBasketHandler implements HttpHandler {
             appliance = department.selectAppliance(applianceType);
 
             if (appliance != null) {
-                out.write("<html><body><h1>Appliance Details</h1></body></html>");
+                out.write(
+                    "<html>" +
+                    "<head> <title>View Appliance</title> " +
+                    "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css\" " +
+                    "integrity=\"sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2\" crossorigin=\"anonymous\">" +
+                    "</head>" +
+                    "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">" +
+                    "<a class=\"navbar-brand\" href=\"/\">Home Appliance Store</a>" +
+                    "<button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\">" +
+                        "<span class=\"navbar-toggler-icon\"></span>" +
+                    "</button>" +
+                    "<div class=\"collapse navbar-collapse\" id=\"navbarNav\">" +
+                        "<ul class=\"navbar-nav\">" +
+                            "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/\">Home</a></li>" +
+                            "<li class=\"nav-item active\"><a class=\"nav-link\" href=\"/admin\">Dashboard</a></li>" +
+                        "</ul>" +
+                    "</div>" +
+                    "</nav>" +
+                    "<body>" +
+                    "<div class=\"container\">" +
+                    "  <h1 class=\"mt-4\">View Appliance</h1>" +
+                    "  <form method=\"post\" action=\"/appliances/users/confirm\">" +
+                    "    <div class=\"form-group\">" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"description\">Description</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"description\" name=\"description\" value=\"" + appliance.getDescription() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"category\">Category</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"category\" name=\"category\" value=\"" + appliance.getCategory() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"sku\">SKU</label>" +
+                    "      <input type=\"text\" class=\"form-control\" id=\"sku\" name=\"sku\" value=\"" + appliance.getSku() + "\" readonly>" +
+                    "    </div>" +
+                    "    <div class=\"form-group\">" +
+                    "      <label for=\"price\">Price</label>" +
+                    "      <input type=\"number\" step=\"0.01\" class=\"form-control\" id=\"price\" name=\"price\" value=\"" + appliance.getPrice() + "\" readonly>" +
+                    "    </div>" +
+                    "    <button type=\"submit\" class=\"btn btn-success\">Add to basket</button>" +
+    				"	<a href=\"javascript:window.history.back();\" class=\"btn btn-primary ml-2\">Back</a>" +
+                    "  </form>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>");
             } else {
                 out.write("<html><body><h1>Appliance Not Found</h1></body></html>");
             }

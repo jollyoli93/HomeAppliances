@@ -194,8 +194,7 @@ public class UserConsole {
                     updatedRows = updateAddressHandler(userId);
                     break;
                 case "6":
-                    System.out.println("Enter new telephone number");
-                    userInput = handleInput.getInputString();
+                    userInput = handleTelephoneInput();
                     updatedRows = userDAO.updateFieldById(userId, "telephone_num", userInput);
                     break;
                 case "7":
@@ -212,10 +211,10 @@ public class UserConsole {
             }
 
             if (updatedRows > 0) {
-                System.out.println("DEBUG: updated user.");
+                System.out.println("Updated user.");
                 return "Number of rows updated: " + updatedRows;
             } else {
-                System.out.println("DEBUG: Failed to update user.");
+                System.out.println("Failed to update user.");
                 return "Number of rows updated: " + updatedRows;
             }
         }
@@ -368,8 +367,7 @@ public class UserConsole {
 
         switch (role) {
             case "customer":
-                System.out.println("Telephone Number: ");
-                telephoneNum = handleInput.getInputString();
+                telephoneNum = handleTelephoneInput();
 
                 user = new CustomerUser(first_name, last_name, email, username, password, telephoneNum);
                 return userDAO.addNewCustomer(user, null);
@@ -379,8 +377,7 @@ public class UserConsole {
                 return userDAO.addNewAdmin(user);
 
             case "business":
-                System.out.println("Telephone Number: ");
-                telephoneNum = handleInput.getInputString();
+                telephoneNum = handleTelephoneInput();
 
                 System.out.println("Business Name: ");
                 businessName = handleInput.getInputString();
@@ -393,6 +390,22 @@ public class UserConsole {
                 return false;
         }
     }
+    
+    private String handleTelephoneInput() {
+        System.out.println("Telephone Number: (Must be 11 digits)");
+        String telephoneNum = handleInput.getInputString();
+
+        while (true) {
+            if (telephoneNum.length() != 11) {
+                System.out.println("Must be 11 digits.");
+                telephoneNum = handleInput.getInputString();
+            } else {
+                return telephoneNum; 
+            }
+        }
+    }
+
+        
 
     /**
      * Deletes a user based on the provided user ID.
@@ -402,7 +415,6 @@ public class UserConsole {
     private String deleteByUserID() {
         System.out.println("Please enter the user ID number you wish to delete:");
         String inputIdString = handleInput.getInputString();
-        System.out.println("DEBUG: " + inputIdString);
         int deleted = 0;
         int userId = 0;
 

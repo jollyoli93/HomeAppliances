@@ -27,7 +27,7 @@ public class StoreConsole {
      * Displays the main menu and allows the user to choose between store products, manage users, or exit.
      */
     public void displayMainMenu() {
-        int input;
+        String input;
         do {
             System.out.println("------------------------");
             System.out.println("Home Appliance Store");
@@ -37,24 +37,24 @@ public class StoreConsole {
             System.out.println("[2] Manage Users");
             System.out.println("[3] Exit");
 
-            input = handleInput.getInputInt();
+            input = handleInput.getInputString();
 
             switch (input) {
-                case 1:
+                case "1":
                     ApplianceConsole menuConsole = new ApplianceConsole(database);
                     menuConsole.displayMenu();
                     break;
-                case 2:
+                case "2":
                     UserConsole userConsole = new UserConsole(database);
                     userConsole.userMenu();
                     break;
-                case 3:
+                case "3:":
                     System.out.println("Exiting, see you again soon.");
                     break;
                 default:
                     System.out.println("Incorrect input, please try again.");
             }
-        } while (input != 3);
+        } while (input != "3");
     }
 
     /**

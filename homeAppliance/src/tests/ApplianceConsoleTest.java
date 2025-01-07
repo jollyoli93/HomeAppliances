@@ -195,4 +195,47 @@ class ApplianceConsoleTest {
 
         assertEquals("Failed to delete item.", statement);
     }
+    
+    /**
+     * Test case for updating a product by its ID.
+     * Simulates the user input updating a products price
+     */
+    @Test
+    public void updateProductPriceById () { 
+        String[] nums = {"4", "1" ,"1", "50"};
+        
+        addMockTVAppliance();
+        
+        console.setHandler(new MockIOHandler(nums));
+
+        System.out.println();
+        System.out.println("***********************************");
+        System.out.println("Mock Test: Updated product ID: 1");
+
+        String statement = console.displayMenu();    
+
+        assertEquals("Rows updated: 1", statement);
+    }
+    
+    /**
+     * Test case for failing to delete a product by its ID.
+     * Simulates the user input to attempt deleting a non-existent product and asserts
+     * that the correct error message is returned.
+     */
+    @Test
+    public void FailedToUpdateProductPriceById () { 
+        String[] nums = {"4", "1" ,"10", "50"};
+        
+        addMockTVAppliance();
+        
+        console.setHandler(new MockIOHandler(nums));
+
+        System.out.println();
+        System.out.println("***********************************");
+        System.out.println("Mock Test: Updated product ID: 1");
+
+        String statement = console.displayMenu();    
+
+        assertEquals("Rows updated: 0", statement);
+    }
 }

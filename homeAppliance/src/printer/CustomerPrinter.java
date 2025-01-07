@@ -11,7 +11,7 @@ public class CustomerPrinter extends Printer {
 	
     /**
      * Constructs an CustomerPrinter object to print out a customer user profile.
-     * @param User object
+     * @param User obj
      */	
 	public CustomerPrinter(User obj) {
 		printBehaviour = new CustomerBehaviour(obj);

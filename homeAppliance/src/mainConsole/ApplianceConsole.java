@@ -12,6 +12,7 @@ import appliances.Appliance;
 import appliances.ApplianceDepartments;
 import appliances.EntertainmentFactory;
 import appliances.HomeCleaningFactory;
+import exceptions.InvalidUserIdException;
 import printer.AppliancePrinter;
 import util.FactoryRegistry;
 import util.Util;
@@ -70,22 +71,27 @@ public class ApplianceConsole {
             switch (input) {
                 case "1":
                     consoleOutput = getAllProducts();
+                    System.out.println(consoleOutput);
                     break;
 
                 case "2":
                     consoleOutput = getProductById();
+                    System.out.println(consoleOutput);
                     break;
 
                 case "3":
                     consoleOutput = addProduct();
+                    System.out.println(consoleOutput);
                     break;
 
                 case "4":
-                    updatePrice();
+                    consoleOutput = updatePriceHandler();
+                    System.out.println(consoleOutput);
                     break;
 
                 case "5":
                     consoleOutput = deleteProduct();
+                    System.out.println(consoleOutput);
                     break;
 
                 case "q":
@@ -170,6 +176,7 @@ public class ApplianceConsole {
 		int userInput;
 		boolean added = false;
 		
+		
 		System.out.println("How many would you like to add to your stock?");
 		
 		String stringInput = handleInput.getInputString();
@@ -182,12 +189,9 @@ public class ApplianceConsole {
 			if (added == false) {
 				return "Failed to add";
 			}
-			
-			return "You have added " + userInput + " x " + appliance.getDescription();
-			
 		}
 			
-		return "Failed to add product to the database";
+		return "You have added " + userInput + " x " + appliance.getDescription();
 
 	}
 	
@@ -292,39 +296,49 @@ public class ApplianceConsole {
 		return appliance;
 	}
 	
-	private void updatePrice() {
+	/**
+	 * Handle updating price user selection
+	 * @return Returns message indicating whether the update was successful or if the database is empty.
+	 */
+	private String updatePriceHandler() {
 		System.out.println("Please select an option");
 		System.out.println("[1] Update a product price by ID");
 		String stringInput = handleInput.getInputString();
-		
+
 		switch (stringInput) {
 			case "1": 
-				updatePriceByID();
+				return updatePriceByID();
+			default:
+				System.out.println("Invalid input");
 				break;
 		}
+		return "Failed to update.";
 	}
 	
 	/**
-	 * 
+	 * Handle update price user input
 	 * @return Returns message indicating whether the update was successful or if the database is empty.
 	 */
 	private String updatePriceByID() {
 		System.out.println("Enter ID to update price");
-		int userInputID = handleInput.getInputInt();
+		String userInputID = handleInput.getInputString();
+		int applianceID = Integer.parseInt(userInputID);
 		
 		System.out.println("Enter new price");
-		double userInputPrice = handleInput.getInputDouble();
+		String userInputPrice = handleInput.getInputString();
+		double updatePrice = Double.parseDouble(userInputPrice);
 		
 		try {
-			consoleOutput = applianceDAO.updateFieldById(userInputID, "price", userInputPrice);
+			return applianceDAO.updateFieldById(applianceID, "price", updatePrice);
 			
 		} catch (NullPointerException ex) {
 			System.out.println("Product not in database");
 		}
-		return consoleOutput;
+		return "Failed to update";
 	}
 
 	/**
+	 * Handle deleting a product by ID
 	 *  @return A message indicating whether the deletion was successful or not.
 	 */
 	private String deleteProduct() {
